@@ -1,30 +1,43 @@
+using Restaurant.Commands;
 using Restaurant.Data;
 using Restaurant.Models;
+using Restaurant.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Linq;
-using System;
 
 namespace Restaurant.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
         private ObservableCollection<Category> _categories;
         private ObservableCollection<Dish> _dishes;
         private string _searchText;
         private Category _selectedCategory;
         private bool _isLoading;
+        private bool _isAuthenticated;
+        private string _userDisplayName;
 
-        public MainViewModel(IUnitOfWork unitOfWork)
+        public MainViewModel(IUnitOfWork unitOfWork, IUserService userService)
         {
             _unitOfWork = unitOfWork;
+            _userService = userService;
             Categories = new ObservableCollection<Category>();
             Dishes = new ObservableCollection<Dish>();
+
             LoadDataCommand = new RelayCommand(async () => await LoadDataAsync());
             SearchCommand = new RelayCommand(async () => await SearchDishesAsync());
             FilterByCategoryCommand = new RelayCommand(async () => await FilterDishesByCategoryAsync());
+            LogoutCommand = new RelayCommand(Logout);
+
+            _userService.UserChanged += UserService_UserChanged;
+            UpdateAuthenticationState();
+
+            // Load initial data
+            _ = LoadDataAsync();
         }
 
         public ObservableCollection<Category> Categories
@@ -63,9 +76,46 @@ namespace Restaurant.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool IsAuthenticated
+        {
+            get => _isAuthenticated;
+            set => SetProperty(ref _isAuthenticated, value);
+        }
+
+        public string UserDisplayName
+        {
+            get => _userDisplayName;
+            set => SetProperty(ref _userDisplayName, value);
+        }
+
         public ICommand LoadDataCommand { get; }
         public ICommand SearchCommand { get; }
         public ICommand FilterByCategoryCommand { get; }
+        public ICommand LogoutCommand { get; }
+
+        private void UserService_UserChanged(object sender, EventArgs e)
+        {
+            UpdateAuthenticationState();
+        }
+
+        private void UpdateAuthenticationState()
+        {
+            IsAuthenticated = _userService.IsAuthenticated;
+            if (IsAuthenticated)
+            {
+                var user = _userService.CurrentUser;
+                UserDisplayName = $"{user.FirstName} {user.LastName}";
+            }
+            else
+            {
+                UserDisplayName = string.Empty;
+            }
+        }
+
+        private void Logout()
+        {
+            _userService.ClearCurrentUser();
+        }
 
         private async Task LoadDataAsync()
         {
