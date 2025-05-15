@@ -9,18 +9,17 @@ namespace Restaurant.Models
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         // Navigation properties
-        public virtual ICollection<Dish> Dishes { get; set; }
+        public virtual ICollection<Dish> Dishes { get; set; } = new List<Dish>();
         public virtual ICollection<Menu> Menus { get; set; }
 
         public Category()
         {
-            Dishes = new HashSet<Dish>();
             Menus = new HashSet<Menu>();
         }
     }

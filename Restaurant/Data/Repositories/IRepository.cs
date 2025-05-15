@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Data.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<T> where T : class
     {
         // Query methods
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<T?> GetByIdAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> predicate);
 
         // Add methods
-        Task AddAsync(TEntity entity);
-        Task AddRangeAsync(IEnumerable<TEntity> entities);
+        Task AddAsync(T entity);
+        Task AddRangeAsync(IEnumerable<T> entities);
 
         // Remove methods
-        void Remove(TEntity entity);
-        void RemoveRange(IEnumerable<TEntity> entities);
+        void Remove(T entity);
+        void RemoveRange(IEnumerable<T> entities);
 
         // Update method
-        void Update(TEntity entity);
+        void Update(T entity);
     }
 } 

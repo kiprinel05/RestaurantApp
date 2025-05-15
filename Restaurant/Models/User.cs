@@ -6,46 +6,20 @@ namespace Restaurant.Models
     public enum UserRole
     {
         Customer,
-        Employee
+        Staff,
+        Admin
     }
 
     public class User
     {
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public string PhoneNumber { get; set; }
-
-        [Required]
-        [MaxLength(500)]
-        public string DeliveryAddress { get; set; }
-
-        [Required]
-        public string PasswordHash { get; set; }
-
-        [Required]
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string DeliveryAddress { get; set; } = string.Empty;
+        public string PasswordHash { get; set; } = string.Empty;
         public UserRole Role { get; set; }
-
-        // Navigation property
-        public virtual ICollection<Order> Orders { get; set; }
-
-        public User()
-        {
-            Orders = new HashSet<Order>();
-        }
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 } 

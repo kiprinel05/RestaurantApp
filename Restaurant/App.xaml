@@ -13,6 +13,7 @@
 
             <!-- Converters -->
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

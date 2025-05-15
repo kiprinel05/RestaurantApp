@@ -5,10 +5,13 @@ namespace Restaurant
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly required MainViewModel _viewModel;
+
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = App.Current.Services.GetService<MainViewModel>();
+            _viewModel = viewModel;
+            DataContext = _viewModel;
         }
     }
 } 

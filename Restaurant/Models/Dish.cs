@@ -7,40 +7,16 @@ namespace Restaurant.Models
     public class Dish
     {
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
-
-        [Column(TypeName = "decimal(18,2)")]
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
-
-        // Portion size in grams
-        public double PortionSize { get; set; }
-
-        // Total quantity available in restaurant in grams
-        public double TotalQuantityAvailable { get; set; }
-
-        [MaxLength(500)]
-        public string Description { get; set; }
-
-        // Foreign key for Category
+        public int PortionSize { get; set; }
         public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
-
-        // Navigation properties
-        public virtual ICollection<Allergen> Allergens { get; set; }
-        public virtual ICollection<DishImage> Images { get; set; }
-        public virtual ICollection<MenuDish> MenuDishes { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
-
-        public Dish()
-        {
-            Allergens = new HashSet<Allergen>();
-            Images = new HashSet<DishImage>();
-            MenuDishes = new HashSet<MenuDish>();
-            OrderItems = new HashSet<OrderItem>();
-        }
+        public virtual Category Category { get; set; } = null!;
+        public virtual ICollection<DishImage> Images { get; set; } = new List<DishImage>();
+        public virtual ICollection<Allergen> Allergens { get; set; } = new List<Allergen>();
+        public virtual ICollection<MenuDish> MenuDishes { get; set; } = new List<MenuDish>();
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
         [NotMapped]
         public bool IsAvailable => TotalQuantityAvailable >= PortionSize;

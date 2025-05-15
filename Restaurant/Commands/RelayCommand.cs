@@ -6,66 +6,61 @@ namespace Restaurant.Commands
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
+        private readonly Func<bool>? _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public event EventHandler? CanExecuteChanged;
+
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
-        public event EventHandler CanExecuteChanged
+        public bool CanExecute(object? parameter)
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            return _canExecute?.Invoke() ?? true;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute();
-        }
-
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             _execute();
         }
 
         public void RaiseCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
-        private readonly Predicate<T> _canExecute;
+        private readonly Func<bool>? _canExecute;
 
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
+        public event EventHandler? CanExecuteChanged;
+
+        public RelayCommand(Action<T> execute, Func<bool>? canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
-        public event EventHandler CanExecuteChanged
+        public bool CanExecute(object? parameter)
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            return _canExecute?.Invoke() ?? true;
         }
 
-        public bool CanExecute(object parameter)
+        public void Execute(object? parameter)
         {
-            return _canExecute == null || _canExecute((T)parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute((T)parameter);
+            if (parameter is T typedParameter)
+            {
+                _execute(typedParameter);
+            }
         }
 
         public void RaiseCanExecuteChanged()
         {
-            CommandManager.InvalidateRequerySuggested();
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 } 

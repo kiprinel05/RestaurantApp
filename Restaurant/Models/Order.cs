@@ -8,8 +8,10 @@ namespace Restaurant.Models
 {
     public enum OrderStatus
     {
-        Registered,
+        Pending,
+        Confirmed,
         InPreparation,
+        ReadyForDelivery,
         OutForDelivery,
         Delivered,
         Cancelled
@@ -39,10 +41,10 @@ namespace Restaurant.Models
 
         // Foreign key for User
         public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual User User { get; set; } = null!;
 
         // Navigation property
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
         public Order()
         {

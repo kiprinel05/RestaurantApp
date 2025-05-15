@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Restaurant.Models
 {
     public class MenuDish
@@ -5,12 +7,13 @@ namespace Restaurant.Models
         public int Id { get; set; }
 
         // Foreign keys
+        [Required]
         public int MenuId { get; set; }
-        public int DishId { get; set; }
+        public virtual Menu Menu { get; set; } = null!;
 
-        // Navigation properties
-        public virtual Menu Menu { get; set; }
-        public virtual Dish Dish { get; set; }
+        [Required]
+        public int DishId { get; set; }
+        public virtual Dish Dish { get; set; } = null!;
 
         // Quantity in grams for this dish when part of this menu
         public double PortionSize { get; set; }

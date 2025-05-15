@@ -8,25 +8,20 @@ namespace Restaurant.Models
     public class Menu
     {
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string Name { get; set; }
-
-        [MaxLength(500)]
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
+        public virtual ICollection<MenuDish> MenuDishes { get; set; } = new List<MenuDish>();
 
         // Foreign key for Category
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
         // Navigation property
-        public virtual ICollection<MenuDish> MenuDishes { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
         public Menu()
         {
-            MenuDishes = new HashSet<MenuDish>();
             OrderItems = new HashSet<OrderItem>();
         }
 

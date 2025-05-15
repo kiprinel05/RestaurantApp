@@ -11,8 +11,10 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/DarkTheme.xaml"/>
+                <ResourceDictionary Source="/Styles/AuthStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -31,7 +33,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Restaurant Menu" 
-                     Foreground="{StaticResource PrimaryTextBrush}"
+                     Foreground="{StaticResource TextPrimaryBrush}"
                      FontSize="24" 
                      FontWeight="SemiBold"
                      Margin="20,0,0,0"
@@ -45,7 +47,7 @@
                 
                 <TextBox Style="{StaticResource ModernTextBox}"
                          Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                         PlaceholderText="Search dishes..."
+                         Tag="Search dishes..."
                          Margin="0,0,10,0"/>
                 
                 <Button Grid.Column="1" 
@@ -59,9 +61,11 @@
                         Margin="20,0">
                 <Button Style="{StaticResource ModernButton}"
                         Content="Login"
+                        Command="{Binding ShowLoginCommand}"
                         Margin="0,0,10,0"/>
                 <Button Style="{StaticResource ModernButton}"
-                        Content="Register"/>
+                        Content="Register"
+                        Command="{Binding ShowRegisterCommand}"/>
             </StackPanel>
         </Grid>
 
@@ -79,19 +83,19 @@
                 <DockPanel>
                     <TextBlock Text="Categories"
                              DockPanel.Dock="Top"
-                             Foreground="{StaticResource PrimaryTextBrush}"
+                             Foreground="{StaticResource TextPrimaryBrush}"
                              FontSize="18"
                              FontWeight="SemiBold"
                              Margin="0,0,0,10"/>
                     
                     <ListBox ItemsSource="{Binding Categories}"
                             SelectedItem="{Binding SelectedCategory}"
-                            Style="{StaticResource ModernListBox}"
-                            ItemContainerStyle="{StaticResource ModernListBoxItem}">
+                            Background="Transparent"
+                            BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"
-                                         Foreground="{StaticResource PrimaryTextBrush}"/>
+                                         Foreground="{StaticResource TextPrimaryBrush}"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -111,7 +115,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Menu"
-                             Foreground="{StaticResource PrimaryTextBrush}"
+                             Foreground="{StaticResource TextPrimaryBrush}"
                              FontSize="24"
                              FontWeight="SemiBold"
                              Margin="0,0,0,20"/>
@@ -139,7 +143,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <Border Background="{StaticResource BorderBrush}"
+                                        <Border Background="{StaticResource SecondaryBackgroundBrush}"
                                                 CornerRadius="8">
                                             <Image Source="{Binding Images[0].ImagePath}"
                                                    Stretch="UniformToFill"/>
@@ -147,14 +151,14 @@
 
                                         <TextBlock Grid.Row="1"
                                                  Text="{Binding Name}"
-                                                 Foreground="{StaticResource PrimaryTextBrush}"
+                                                 Foreground="{StaticResource TextPrimaryBrush}"
                                                  FontSize="16"
                                                  FontWeight="SemiBold"
                                                  Margin="0,10,0,5"/>
 
                                         <TextBlock Grid.Row="2"
                                                  Text="{Binding Description}"
-                                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                                 Foreground="{StaticResource TextSecondaryBrush}"
                                                  TextWrapping="Wrap"
                                                  MaxHeight="40"/>
 
@@ -166,7 +170,7 @@
 
                                             <StackPanel VerticalAlignment="Bottom">
                                                 <TextBlock Text="{Binding PortionSize, StringFormat='{}{0}g'}"
-                                                         Foreground="{StaticResource SecondaryTextBrush}"/>
+                                                         Foreground="{StaticResource TextSecondaryBrush}"/>
                                                 <TextBlock Text="{Binding Price, StringFormat='${0:N2}'}"
                                                          Foreground="{StaticResource AccentBrush}"
                                                          FontSize="18"
@@ -176,6 +180,8 @@
                                             <Button Grid.Column="1"
                                                     Style="{StaticResource ModernButton}"
                                                     Content="Add to Cart"
+                                                    Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
                                                     VerticalAlignment="Bottom"/>
                                         </Grid>
                                     </Grid>

@@ -8,10 +8,10 @@ namespace Restaurant.Models
 
         [Required]
         [MaxLength(500)]
-        public string ImagePath { get; set; }
+        public string ImagePath { get; set; } = string.Empty;
 
         // Foreign key for Dish
         public int DishId { get; set; }
-        public virtual Dish Dish { get; set; }
+        public virtual Dish Dish { get; set; } = null!;
     }
 } 
