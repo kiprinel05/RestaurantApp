@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Auth Container Style -->
+    <Style x:Key="AuthContainer" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#FF3D3D3D"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="40"/>
+        <Setter Property="MinWidth" Value="500"/>
+        <Setter Property="MaxWidth" Value="600"/>
+        <Setter Property="MinHeight" Value="400"/>
+        <Setter Property="MaxHeight" Value="800"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Auth Form Style -->
+    <Style x:Key="AuthForm" TargetType="StackPanel">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+
+    <!-- Auth Button Container Style -->
+    <Style x:Key="AuthButtonContainer" TargetType="StackPanel">
+        <Setter Property="Margin" Value="0,30,0,0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+
+    <!-- Auth Header Style -->
+    <Style x:Key="AuthHeader" TargetType="TextBlock" BasedOn="{StaticResource HeaderText}">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="Margin" Value="0,0,0,40"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Auth Label Style -->
+    <Style x:Key="AuthLabel" TargetType="TextBlock" BasedOn="{StaticResource LabelText}">
+        <Setter Property="Margin" Value="0,16,0,8"/>
+    </Style>
+</ResourceDictionary> 

@@ -4,129 +4,153 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="clr-namespace:Restaurant.ViewModels"
+      xmlns:local="clr-namespace:Restaurant.Views"
       mc:Ignorable="d"
-      Title="Authentication">
+      Title="AuthView"
+      d:DataContext="{d:DesignInstance Type=vm:AuthViewModel}"
+      Background="{StaticResource PrimaryBackgroundBrush}">
 
-    <Grid Background="{StaticResource PrimaryBackgroundBrush}">
-        <ScrollViewer>
-            <Border Style="{StaticResource ModernCard}"
-                    MaxWidth="500"
-                    Margin="20">
-                <Grid>
-                    <!-- Login Form -->
-                    <Grid x:Name="LoginForm">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsLoginVisible}" Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        
-                        <StackPanel Margin="30">
-                            <TextBlock Text="Welcome Back"
-                                     Style="{StaticResource HeaderText}"/>
+    <Grid>
+        <Border Style="{StaticResource AuthContainer}"
+                MaxHeight="600"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <Grid>
+                <!-- Login Panel -->
+                <Grid x:Name="LoginPanel">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoginVisible}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLoginVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    
+                    <StackPanel Style="{StaticResource AuthForm}">
+                        <TextBlock Text="Welcome Back"
+                                 Style="{StaticResource AuthHeader}"/>
 
-                            <TextBlock Text="Email"
-                                     Style="{StaticResource LabelText}"/>
-                            <TextBox Text="{Binding LoginEmail, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Email"
+                                 Style="{StaticResource AuthLabel}"/>
+                        <TextBox Text="{Binding LoginEmail, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{StaticResource ModernTextBox}"/>
 
-                            <TextBlock Text="Password"
-                                     Style="{StaticResource LabelText}"/>
-                            <PasswordBox x:Name="LoginPasswordBox"/>
+                        <TextBlock Text="Password"
+                                 Style="{StaticResource AuthLabel}"/>
+                        <PasswordBox x:Name="LoginPasswordBox"
+                                   Style="{StaticResource ModernPasswordBox}"
+                                   PasswordChanged="OnLoginPasswordChanged"/>
 
-                            <TextBlock Text="{Binding LoginErrorMessage}"
-                                     Style="{StaticResource ErrorText}"/>
+                        <TextBlock Style="{StaticResource ErrorText}"
+                                 Text="{Binding LoginErrorMessage}"
+                                 Visibility="{Binding LoginErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                            <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
-                                <Button Content="Login"
-                                        Command="{Binding LoginCommand}"
-                                        Style="{StaticResource PrimaryButton}"/>
-
-                                <Button Content="Create Account"
-                                        Command="{Binding ShowRegisterCommand}"
-                                        Style="{StaticResource SecondaryButton}"/>
-                            </StackPanel>
+                        <StackPanel Style="{StaticResource AuthButtonContainer}">
+                            <Button Content="Sign In"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Command="{Binding LoginCommand}"/>
+                            <Button Content="Create Account"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Click="OnShowRegisterClick"/>
                         </StackPanel>
-                    </Grid>
+                    </StackPanel>
+                </Grid>
 
-                    <!-- Register Form -->
-                    <Grid x:Name="RegisterForm">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsLoginVisible}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        
-                        <StackPanel Margin="30">
+                <!-- Register Panel -->
+                <Grid x:Name="RegisterPanel">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoginVisible}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsLoginVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Disabled"
+                                Padding="0,0,10,0">
+                        <StackPanel Style="{StaticResource AuthForm}">
                             <TextBlock Text="Create Account"
-                                     Style="{StaticResource HeaderText}"/>
+                                     Style="{StaticResource AuthHeader}"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <StackPanel Margin="0,0,8,0">
                                     <TextBlock Text="First Name"
-                                             Style="{StaticResource LabelText}"/>
-                                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                                             Style="{StaticResource AuthLabel}"/>
+                                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"/>
                                 </StackPanel>
-                                
+
                                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
                                     <TextBlock Text="Last Name"
-                                             Style="{StaticResource LabelText}"/>
-                                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                                             Style="{StaticResource AuthLabel}"/>
+                                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ModernTextBox}"/>
                                 </StackPanel>
                             </Grid>
 
                             <TextBlock Text="Email"
-                                     Style="{StaticResource LabelText}"/>
-                            <TextBox Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Style="{StaticResource AuthLabel}"/>
+                            <TextBox Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ModernTextBox}"/>
 
                             <TextBlock Text="Password"
-                                     Style="{StaticResource LabelText}"/>
-                            <PasswordBox x:Name="RegisterPasswordBox"/>
+                                     Style="{StaticResource AuthLabel}"/>
+                            <PasswordBox x:Name="RegisterPasswordBox"
+                                       Style="{StaticResource ModernPasswordBox}"
+                                       PasswordChanged="OnRegisterPasswordChanged"/>
 
                             <TextBlock Text="Confirm Password"
-                                     Style="{StaticResource LabelText}"/>
-                            <PasswordBox x:Name="ConfirmPasswordBox"/>
+                                     Style="{StaticResource AuthLabel}"/>
+                            <PasswordBox x:Name="ConfirmPasswordBox"
+                                       Style="{StaticResource ModernPasswordBox}"
+                                       PasswordChanged="OnConfirmPasswordChanged"/>
 
                             <TextBlock Text="Phone Number"
-                                     Style="{StaticResource LabelText}"/>
-                            <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                                     Style="{StaticResource AuthLabel}"/>
+                            <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ModernTextBox}"/>
 
                             <TextBlock Text="Delivery Address"
-                                     Style="{StaticResource LabelText}"/>
+                                     Style="{StaticResource AuthLabel}"/>
                             <TextBox Text="{Binding DeliveryAddress, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ModernTextBox}"
                                     Height="80"
                                     TextWrapping="Wrap"
                                     AcceptsReturn="True"
                                     VerticalScrollBarVisibility="Auto"/>
 
-                            <TextBlock Text="{Binding RegisterErrorMessage}"
-                                     Style="{StaticResource ErrorText}"/>
+                            <TextBlock Style="{StaticResource ErrorText}"
+                                     Text="{Binding RegisterErrorMessage}"
+                                     Visibility="{Binding RegisterErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                            <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
+                            <StackPanel Style="{StaticResource AuthButtonContainer}">
                                 <Button Content="Register"
-                                        Command="{Binding RegisterCommand}"
-                                        Style="{StaticResource PrimaryButton}"/>
-
+                                        Style="{StaticResource PrimaryButton}"
+                                        Command="{Binding RegisterCommand}"/>
                                 <Button Content="Back to Login"
-                                        Command="{Binding ShowLoginCommand}"
-                                        Style="{StaticResource SecondaryButton}"/>
+                                        Style="{StaticResource SecondaryButton}"
+                                        Click="OnShowLoginClick"/>
                             </StackPanel>
                         </StackPanel>
-                    </Grid>
+                    </ScrollViewer>
                 </Grid>
-            </Border>
-        </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </Page> 

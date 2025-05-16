@@ -3,13 +3,22 @@ using CommunityToolkit.Mvvm.Input;
 using Restaurant.Services;
 using System.Threading.Tasks;
 using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using System.Diagnostics;
 
 namespace Restaurant.ViewModels
 {
-    public partial class AuthViewModel : ObservableObject
+    public partial class AuthViewModel : ObservableObject, INotifyPropertyChanged
     {
         private readonly IAuthenticationService _authService;
         private readonly INavigationService _navigationService;
+
+        public ICommand ShowRegisterCommand { get; }
+        public ICommand ShowLoginCommand { get; }
+        public ICommand LoginCommand { get; }
+        public ICommand RegisterCommand { get; }
 
         [ObservableProperty]
         private bool isLoginVisible = true;
@@ -54,25 +63,29 @@ namespace Restaurant.ViewModels
             _authService = authService;
             _navigationService = navigationService;
             IsLoginVisible = true;
+
+            ShowRegisterCommand = new RelayCommand(ShowRegister);
+            ShowLoginCommand = new RelayCommand(ShowLogin);
+            LoginCommand = new AsyncRelayCommand(LoginAsync);
+            RegisterCommand = new AsyncRelayCommand(RegisterAsync);
         }
 
-        [RelayCommand]
         public void ShowLogin()
         {
             IsLoginVisible = true;
             ClearErrors();
             ClearFields();
+            OnPropertyChanged(nameof(IsLoginVisible));
         }
 
-        [RelayCommand]
-        private void ShowRegister()
+        public void ShowRegister()
         {
             IsLoginVisible = false;
             ClearErrors();
             ClearFields();
+            OnPropertyChanged(nameof(IsLoginVisible));
         }
 
-        [RelayCommand]
         private async Task LoginAsync()
         {
             try
@@ -98,7 +111,6 @@ namespace Restaurant.ViewModels
             }
         }
 
-        [RelayCommand]
         private async Task RegisterAsync()
         {
             try
@@ -159,6 +171,13 @@ namespace Restaurant.ViewModels
                 PhoneNumber = string.Empty;
                 DeliveryAddress = string.Empty;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 } 

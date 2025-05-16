@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Primary Button Style -->
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+        <Setter Property="Padding" Value="20,12"/>
+        <Setter Property="Margin" Value="0,8"/>
+        <Setter Property="MinWidth" Value="140"/>
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="MainBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2" 
+                                                BlurRadius="5" 
+                                                Opacity="0.3"/>
+                            </Border.Effect>
+                        </Border>
+                        <ContentPresenter x:Name="contentPresenter"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF005999"/>
+                            <Setter TargetName="MainBorder" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="3" 
+                                                    BlurRadius="8" 
+                                                    Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#FF004C80"/>
+                            <Setter TargetName="MainBorder" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="1" 
+                                                    BlurRadius="3" 
+                                                    Opacity="0.2"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="contentPresenter" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#FF4D4D4D"/>
+                            <Setter Property="Foreground" Value="#FF8C8C8C"/>
+                            <Setter TargetName="MainBorder" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect ShadowDepth="0" 
+                                                    BlurRadius="0" 
+                                                    Opacity="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Secondary Button Style -->
+    <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+        <Setter Property="Padding" Value="20,12"/>
+        <Setter Property="Margin" Value="0,8"/>
+        <Setter Property="MinWidth" Value="140"/>
+        <Setter Property="Height" Value="44"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SecondaryTextBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="MainBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"/>
+                        <ContentPresenter x:Name="contentPresenter"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#22FFFFFF"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource PrimaryTextBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#33FFFFFF"/>
+                            <Setter TargetName="contentPresenter" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="BorderBrush" Value="#FF4D4D4D"/>
+                            <Setter Property="Foreground" Value="#FF8C8C8C"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary> 
