@@ -64,6 +64,7 @@ namespace Restaurant
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
             services.AddTransient<MenuListViewModel>();
+            services.AddTransient<EmployeeDashboardViewModel>();
 
             // Register MainWindow as singleton
             services.AddSingleton<MainWindow>();
@@ -73,11 +74,13 @@ namespace Restaurant
             services.AddSingleton<INavigationService>(sp => 
                 new NavigationService(
                     sp.GetRequiredService<Window>(),
-                    sp));
+                    sp,
+                    sp.GetRequiredService<IAuthenticationService>()));
 
             // Register views
             services.AddTransient<AuthView>();
             services.AddTransient<MenuView>();
+            services.AddTransient<EmployeeDashboardView>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

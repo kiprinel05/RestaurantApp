@@ -8,5 +8,7 @@ namespace Restaurant.Services
         Task<User?> LoginAsync(string email, string password);
         Task<(bool success, string message)> RegisterAsync(string firstName, string lastName, string email, string password, string phoneNumber, string deliveryAddress);
         Task<bool> IsEmailAvailableAsync(string email);
+        User? GetCurrentUser();
+        void Logout();
     }
 } 

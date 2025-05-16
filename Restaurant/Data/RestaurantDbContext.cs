@@ -103,20 +103,34 @@ namespace Restaurant.Data
                 .HasIndex(o => o.OrderCode)
                 .IsUnique();
 
-            // Seed test user
-            var testUser = new User
+            // Seed test users
+            var testUsers = new[]
             {
-                Id = 1,
-                FirstName = "Test",
-                LastName = "User",
-                Email = "test@test.com",
-                PasswordHash = HashPassword("test123"),
-                PhoneNumber = "0722222222",
-                DeliveryAddress = "Test Address",
-                Role = UserRole.Customer
+                new User
+                {
+                    Id = 1,
+                    FirstName = "Test",
+                    LastName = "Customer",
+                    Email = "customer@test.com",
+                    PasswordHash = HashPassword("test123"),
+                    PhoneNumber = "0722222222",
+                    DeliveryAddress = "Test Address",
+                    Role = UserRole.Customer
+                },
+                new User
+                {
+                    Id = 2,
+                    FirstName = "Test",
+                    LastName = "Employee",
+                    Email = "employee@test.com",
+                    PasswordHash = HashPassword("test123"),
+                    PhoneNumber = "0733333333",
+                    DeliveryAddress = "Restaurant Address",
+                    Role = UserRole.Employee
+                }
             };
 
-            modelBuilder.Entity<User>().HasData(testUser);
+            modelBuilder.Entity<User>().HasData(testUsers);
 
             // Seed test categories
             var categories = new[]

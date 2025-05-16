@@ -10,6 +10,7 @@ namespace Restaurant.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly RestaurantDbContext _context;
+        private User? _currentUser;
 
         public AuthenticationService(RestaurantDbContext context)
         {
@@ -24,6 +25,7 @@ namespace Restaurant.Services
             var hashedPassword = HashPassword(password);
             if (user.PasswordHash != hashedPassword) return null;
 
+            _currentUser = user; // Store the current user
             return user;
         }
 
@@ -55,6 +57,16 @@ namespace Restaurant.Services
         public async Task<bool> IsEmailAvailableAsync(string email)
         {
             return !await _context.Users.AnyAsync(u => u.Email == email);
+        }
+
+        public User? GetCurrentUser()
+        {
+            return _currentUser;
+        }
+
+        public void Logout()
+        {
+            _currentUser = null;
         }
 
         private string HashPassword(string password)
