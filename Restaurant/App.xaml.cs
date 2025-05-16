@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Data;
-using Restaurant.Data.Repositories;
 using Restaurant.Services;
 using Restaurant.ViewModels;
 using Restaurant.Views;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Restaurant
 {
@@ -14,48 +15,89 @@ namespace Restaurant
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider serviceProvider;
+        private ServiceProvider _serviceProvider;
 
         public App()
         {
-            ServiceCollection services = new ServiceCollection();
+            var services = new ServiceCollection();
             ConfigureServices(services);
-            serviceProvider = services.BuildServiceProvider();
+            _serviceProvider = services.BuildServiceProvider();
+
+            // Initialize the database
+            InitializeDatabase();
         }
 
-        private void ConfigureServices(ServiceCollection services)
+        private void InitializeDatabase()
         {
-            // Register DbContext
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<RestaurantDbContext>();
+                context.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error initializing database: {ex.Message}", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
+        }
+
+        public T GetService<T>() where T : class
+        {
+            return _serviceProvider.GetService<T>()!;
+        }
+
+        public T GetRequiredService<T>() where T : class
+        {
+            return _serviceProvider.GetRequiredService<T>();
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            // Database configuration
             services.AddDbContext<RestaurantDbContext>(options =>
                 options.UseSqlServer(
-                    "Server=(localdb)\\mssqllocaldb;Database=RestaurantDb;Trusted_Connection=True;MultipleActiveResultSets=true",
-                    b => b.MigrationsAssembly("Restaurant")));
-
-            // Register repositories
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+                    "Server=(localdb)\\mssqllocaldb;Database=RestaurantDB;Trusted_Connection=True;MultipleActiveResultSets=true",
+                    sqlOptions => sqlOptions.MigrationsAssembly(typeof(App).Assembly.FullName)));
 
             // Register services
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<Frame>();
+            services.AddSingleton<INavigationService, NavigationService>();
 
-            // Register ViewModels
-            services.AddSingleton<MainViewModel>();
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<RegisterViewModel>();
+            // Register view models
+            services.AddTransient<AuthViewModel>();
 
-            // Register Views
-            services.AddTransient<MainWindow>();
-            services.AddTransient<LoginView>();
-            services.AddTransient<RegisterView>();
+            // Register views
+            services.AddTransient<AuthView>();
+            services.AddTransient<MainView>();
+
+            // Register main window
+            services.AddSingleton<MainWindow>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            var mainWindow = serviceProvider.GetService<MainWindow>();
-            mainWindow.Show();
-        }
+            try
+            {
+                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+                mainWindow.Show();
 
-        public static ServiceProvider Services => ((App)Current).serviceProvider;
+                // Get the main frame and navigation service
+                var mainFrame = _serviceProvider.GetRequiredService<Frame>();
+                var navigationService = _serviceProvider.GetRequiredService<INavigationService>();
+
+                // Navigate to the auth view
+                var authView = _serviceProvider.GetRequiredService<AuthView>();
+                mainFrame.Navigate(authView);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error starting application: {ex.Message}", "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
+        }
     }
 }

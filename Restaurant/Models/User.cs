@@ -1,25 +1,45 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Restaurant.Models
 {
+    public class User
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(50)]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Phone]
+        [StringLength(20)]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(200)]
+        public string DeliveryAddress { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string PasswordHash { get; set; } = string.Empty;
+
+        [Required]
+        public UserRole Role { get; set; } = UserRole.Customer;
+    }
+
     public enum UserRole
     {
         Customer,
-        Staff,
-        Admin
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-        public string DeliveryAddress { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public UserRole Role { get; set; }
-        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+        Employee
     }
 } 
