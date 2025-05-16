@@ -1,4 +1,6 @@
-using System;
+using Microsoft.Extensions.DependencyInjection;
+using Restaurant.ViewModels;
+using Restaurant.Views;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -6,28 +8,39 @@ namespace Restaurant.Services
 {
     public class NavigationService : INavigationService
     {
-        private readonly Frame _mainFrame;
+        private readonly MainWindow _mainWindow;
+        private readonly IServiceProvider _serviceProvider;
+        private Frame NavigationFrame => _mainWindow.MainFrame;
 
-        public NavigationService(Frame mainFrame)
+        public NavigationService(Window mainWindow, IServiceProvider serviceProvider)
         {
-            _mainFrame = mainFrame ?? throw new ArgumentNullException(nameof(mainFrame));
+            _mainWindow = mainWindow as MainWindow ?? throw new ArgumentException("Window must be MainWindow", nameof(mainWindow));
+            _serviceProvider = serviceProvider;
         }
 
-        public void NavigateTo(Type viewType)
+        public void NavigateToAuth()
         {
-            if (!typeof(Page).IsAssignableFrom(viewType))
-            {
-                throw new ArgumentException($"Type {viewType.Name} is not a Page");
-            }
-
-            var page = Activator.CreateInstance(viewType) as Page;
-            _mainFrame.Navigate(page);
+            var authViewModel = _serviceProvider.GetRequiredService<AuthViewModel>();
+            var authView = new AuthView(authViewModel);
+            NavigationFrame.Navigate(authView);
         }
 
         public void NavigateToMain()
         {
-            // TODO: Replace with your main view type
-            NavigateTo(typeof(Views.MainView));
+            NavigateToMenu(); // After authentication, go directly to menu
+        }
+
+        public void NavigateToMenu()
+        {
+            var menuListViewModel = _serviceProvider.GetRequiredService<MenuListViewModel>();
+            var menuView = new MenuView { DataContext = menuListViewModel };
+            NavigationFrame.Navigate(menuView);
+        }
+
+        public void NavigateTo(System.Type viewType)
+        {
+            // This method is not used anymore, but kept for interface compatibility
+            throw new System.NotImplementedException();
         }
     }
 } 

@@ -16,10 +16,9 @@ namespace Restaurant
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(Frame mainFrame)
+        public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Content = mainFrame;
         }
     }
 }

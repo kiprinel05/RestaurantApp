@@ -13,18 +13,18 @@ namespace Restaurant.Views
             _viewModel = viewModel;
             DataContext = _viewModel;
 
-            // Atașăm event handlers pentru PasswordBox-uri
+            // Attach event handlers for PasswordBoxes
             Loaded += (s, e) =>
             {
-                // Asigurăm-ne că începem cu formularul de login
+                // Ensure we start with login form
                 _viewModel.ShowLogin();
 
-                // Atașăm event handlers pentru parole
+                // Attach password handlers
                 LoginPasswordBox.PasswordChanged += (s, e) => _viewModel.LoginPassword = LoginPasswordBox.Password;
                 RegisterPasswordBox.PasswordChanged += (s, e) => _viewModel.RegisterPassword = RegisterPasswordBox.Password;
                 ConfirmPasswordBox.PasswordChanged += (s, e) => _viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
 
-                // Curățăm parolele când se schimbă vizibilitatea
+                // Clear passwords when visibility changes
                 _viewModel.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(AuthViewModel.IsLoginVisible))

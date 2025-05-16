@@ -6,5 +6,7 @@ namespace Restaurant.Services
     {
         void NavigateTo(Type viewType);
         void NavigateToMain();
+        void NavigateToAuth();
+        void NavigateToMenu();
     }
 } 

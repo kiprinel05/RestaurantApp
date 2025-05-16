@@ -11,8 +11,8 @@ using Restaurant.Data;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20250516153541_InitialMenuStructure")]
-    partial class InitialMenuStructure
+    [Migration("20250516160535_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,6 +261,19 @@ namespace Restaurant.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DeliveryAddress = "Test Address",
+                            Email = "test@test.com",
+                            FirstName = "Test",
+                            LastName = "User",
+                            PasswordHash = "7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=",
+                            PhoneNumber = "0722222222",
+                            Role = 0
+                        });
                 });
 
             modelBuilder.Entity("AllergenProduct", b =>

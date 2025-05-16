@@ -35,5 +35,8 @@ namespace Restaurant.Models
 
         // Lista de imagini (vom stoca path-urile)
         public virtual ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
+
+        public bool IsAvailable { get; set; }
+        public int PrepTime { get; set; } // Time in minutes
     }
 } 

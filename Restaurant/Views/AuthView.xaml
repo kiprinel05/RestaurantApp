@@ -5,61 +5,13 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="clr-namespace:Restaurant.ViewModels"
       mc:Ignorable="d"
-      Title="Authentication" Height="700" Width="500">
+      Title="Authentication">
 
-    <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,5,0,15"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Background" Value="#2D2D30"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#007ACC"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-        </Style>
-        <Style TargetType="PasswordBox">
-            <Setter Property="Margin" Value="0,5,0,15"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Background" Value="#2D2D30"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#007ACC"/>
-            <Setter Property="BorderThickness" Value="0,0,0,2"/>
-        </Style>
-        <Style x:Key="PrimaryButton" TargetType="Button">
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="Background" Value="#007ACC"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Margin" Value="0,10"/>
-            <Setter Property="MinWidth" Value="200"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1C97EA"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#007ACC"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#1C97EA"/>
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Margin" Value="0,5"/>
-        </Style>
-    </Page.Resources>
-
-    <Grid Background="#1E1E1E">
+    <Grid Background="{StaticResource PrimaryBackgroundBrush}">
         <ScrollViewer>
-            <Border Background="#252526" 
-                    CornerRadius="10" 
-                    Margin="20"
-                    Padding="30">
+            <Border Style="{StaticResource ModernCard}"
+                    MaxWidth="500"
+                    Margin="20">
                 <Grid>
                     <!-- Login Form -->
                     <Grid x:Name="LoginForm">
@@ -73,24 +25,20 @@
                             </Style>
                         </Grid.Style>
                         
-                        <StackPanel>
+                        <StackPanel Margin="30">
                             <TextBlock Text="Welcome Back"
-                                     FontSize="24"
-                                     FontWeight="Bold"
-                                     HorizontalAlignment="Center"
-                                     Margin="0,0,0,30"/>
+                                     Style="{StaticResource HeaderText}"/>
 
-                            <TextBlock Text="Email"/>
+                            <TextBlock Text="Email"
+                                     Style="{StaticResource LabelText}"/>
                             <TextBox Text="{Binding LoginEmail, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Text="Password"/>
-                            <PasswordBox x:Name="LoginPasswordBox"
-                                       Margin="0,5,0,15"/>
+                            <TextBlock Text="Password"
+                                     Style="{StaticResource LabelText}"/>
+                            <PasswordBox x:Name="LoginPasswordBox"/>
 
                             <TextBlock Text="{Binding LoginErrorMessage}"
-                                     Foreground="#FF3333"
-                                     TextWrapping="Wrap"
-                                     Margin="0,10"/>
+                                     Style="{StaticResource ErrorText}"/>
 
                             <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                                 <Button Content="Login"
@@ -116,43 +64,55 @@
                             </Style>
                         </Grid.Style>
                         
-                        <StackPanel>
+                        <StackPanel Margin="30">
                             <TextBlock Text="Create Account"
-                                     FontSize="24"
-                                     FontWeight="Bold"
-                                     HorizontalAlignment="Center"
-                                     Margin="0,0,0,30"/>
+                                     Style="{StaticResource HeaderText}"/>
 
-                            <TextBlock Text="First Name"/>
-                            <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Margin="0,0,8,0">
+                                    <TextBlock Text="First Name"
+                                             Style="{StaticResource LabelText}"/>
+                                    <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="Last Name"
+                                             Style="{StaticResource LabelText}"/>
+                                    <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
 
-                            <TextBlock Text="Last Name"/>
-                            <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
-
-                            <TextBlock Text="Email"/>
+                            <TextBlock Text="Email"
+                                     Style="{StaticResource LabelText}"/>
                             <TextBox Text="{Binding RegisterEmail, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Text="Password"/>
-                            <PasswordBox x:Name="RegisterPasswordBox"
-                                       Margin="0,5,0,15"/>
+                            <TextBlock Text="Password"
+                                     Style="{StaticResource LabelText}"/>
+                            <PasswordBox x:Name="RegisterPasswordBox"/>
 
-                            <TextBlock Text="Confirm Password"/>
-                            <PasswordBox x:Name="ConfirmPasswordBox"
-                                       Margin="0,5,0,15"/>
+                            <TextBlock Text="Confirm Password"
+                                     Style="{StaticResource LabelText}"/>
+                            <PasswordBox x:Name="ConfirmPasswordBox"/>
 
-                            <TextBlock Text="Phone Number"/>
+                            <TextBlock Text="Phone Number"
+                                     Style="{StaticResource LabelText}"/>
                             <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <TextBlock Text="Delivery Address"/>
+                            <TextBlock Text="Delivery Address"
+                                     Style="{StaticResource LabelText}"/>
                             <TextBox Text="{Binding DeliveryAddress, UpdateSourceTrigger=PropertyChanged}"
-                                    Height="60"
+                                    Height="80"
                                     TextWrapping="Wrap"
-                                    AcceptsReturn="True"/>
+                                    AcceptsReturn="True"
+                                    VerticalScrollBarVisibility="Auto"/>
 
                             <TextBlock Text="{Binding RegisterErrorMessage}"
-                                     Foreground="#FF3333"
-                                     TextWrapping="Wrap"
-                                     Margin="0,10"/>
+                                     Style="{StaticResource ErrorText}"/>
 
                             <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                                 <Button Content="Register"
