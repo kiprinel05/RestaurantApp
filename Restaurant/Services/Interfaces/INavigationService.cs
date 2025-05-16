@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Controls;
 
 namespace Restaurant.Services
 {
@@ -9,6 +10,12 @@ namespace Restaurant.Services
         void NavigateToMain();
         void NavigateToAuth();
         void NavigateToMenu();
+        void NavigateToEmployeeDashboard();
+        void NavigateToCategoryList();
+        void NavigateToCategoryEdit(int? categoryId);
+        void NavigateToProductList();
+        void NavigateToProductEdit(int? productId);
         void NavigateBack();
+        Page? CurrentPage { get; }
     }
 } 

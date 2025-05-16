@@ -61,6 +61,7 @@ namespace Restaurant
             // Register services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
@@ -68,6 +69,8 @@ namespace Restaurant
             services.AddTransient<EmployeeDashboardViewModel>();
             services.AddTransient<CategoryListViewModel>();
             services.AddTransient<CategoryEditViewModel>();
+            services.AddTransient<ProductEditViewModel>();
+            services.AddTransient<ProductListViewModel>();
 
             // Register MainWindow as singleton
             services.AddSingleton<MainWindow>();
@@ -86,6 +89,8 @@ namespace Restaurant
             services.AddTransient<EmployeeDashboardView>();
             services.AddTransient<CategoryListView>();
             services.AddTransient<CategoryEditView>();
+            services.AddTransient<ProductListView>();
+            services.AddTransient<ProductEditView>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

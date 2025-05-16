@@ -84,6 +84,163 @@
         <Setter Property="Padding" Value="15,10"/>
     </Style>
 
+    <!-- ComboBox Style -->
+    <Style x:Key="FormComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Padding" Value="12,5"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                <Setter Property="Background" Value="#FAFAFA"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="3" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="8" 
+                                        Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ListBox Style -->
+    <Style x:Key="FormListBoxStyle" TargetType="ListBox">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="MinHeight" Value="120"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="3" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="8" 
+                                        Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- GroupBox Style -->
+    <Style x:Key="FormGroupBox" TargetType="GroupBox">
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                             FontSize="18"
+                             FontWeight="Bold"
+                             Foreground="#1A237E"
+                             Margin="0,0,0,5"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- CheckBox Style -->
+    <Style x:Key="FormCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="#333333"/>
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Icon Button Style -->
+    <Style x:Key="FormIconButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="#3F51B5"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#303F9F"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="3" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="8" 
+                                        Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#1A237E"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#C5CAE9"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="1" 
+                                        Direction="330" 
+                                        Color="#20000000" 
+                                        BlurRadius="2" 
+                                        Opacity="0.1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Button Styles -->
     <Style x:Key="FormSubmitButtonStyle" TargetType="Button">
         <Setter Property="Height" Value="45"/>

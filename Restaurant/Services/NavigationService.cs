@@ -3,6 +3,7 @@ using Restaurant.Models;
 using Restaurant.ViewModels;
 using Restaurant.Views;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,7 +14,9 @@ namespace Restaurant.Services
         private readonly MainWindow _mainWindow;
         private readonly IServiceProvider _serviceProvider;
         private readonly IAuthenticationService _authService;
-        private Frame NavigationFrame => _mainWindow.MainFrame;
+        private readonly Stack<Page> _navigationStack = new();
+
+        public Page? CurrentPage => _navigationStack.Count > 0 ? _navigationStack.Peek() : null;
 
         public NavigationService(Window mainWindow, IServiceProvider serviceProvider, IAuthenticationService authService)
         {
@@ -26,7 +29,7 @@ namespace Restaurant.Services
         {
             var authViewModel = _serviceProvider.GetRequiredService<AuthViewModel>();
             var authView = new AuthView(authViewModel);
-            NavigationFrame.Navigate(authView);
+            NavigateTo(authView);
         }
 
         public void NavigateToMain()
@@ -37,7 +40,7 @@ namespace Restaurant.Services
             {
                 var dashboardViewModel = _serviceProvider.GetRequiredService<EmployeeDashboardViewModel>();
                 var dashboardView = new EmployeeDashboardView(dashboardViewModel);
-                NavigationFrame.Navigate(dashboardView);
+                NavigateTo(dashboardView);
             }
             else
             {
@@ -49,45 +52,97 @@ namespace Restaurant.Services
         {
             var menuListViewModel = _serviceProvider.GetRequiredService<MenuListViewModel>();
             var menuView = new MenuView { DataContext = menuListViewModel };
-            NavigationFrame.Navigate(menuView);
+            NavigateTo(menuView);
         }
 
-        public void NavigateTo(Type viewType)
+        public void NavigateToEmployeeDashboard()
         {
-            NavigateTo(viewType, null);
+            if (!_authService.IsUserInRole("Employee"))
+            {
+                MessageBox.Show("Access denied. Employee role required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var view = _serviceProvider.GetRequiredService<EmployeeDashboardView>();
+            NavigateTo(view);
         }
 
-        public void NavigateTo(Type viewType, object? parameter)
+        public void NavigateToCategoryList()
         {
-            if (viewType == typeof(CategoryEditView))
+            if (!_authService.IsUserInRole("Employee"))
             {
-                var categoryService = _serviceProvider.GetRequiredService<ICategoryService>();
-                var viewModel = new CategoryEditViewModel(categoryService, this, parameter as int?);
-                var view = new CategoryEditView { DataContext = viewModel };
-                NavigationFrame.Navigate(view);
+                MessageBox.Show("Access denied. Employee role required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else if (viewType == typeof(CategoryListView))
-            {
-                var viewModel = ActivatorUtilities.CreateInstance<CategoryListViewModel>(
-                    _serviceProvider,
-                    _serviceProvider.GetRequiredService<ICategoryService>(),
-                    this);
 
-                var view = new CategoryListView(viewModel);
-                NavigationFrame.Navigate(view);
-            }
-            else
+            var view = _serviceProvider.GetRequiredService<CategoryListView>();
+            NavigateTo(view);
+        }
+
+        public void NavigateToCategoryEdit(int? categoryId)
+        {
+            if (!_authService.IsUserInRole("Employee"))
             {
-                throw new NotImplementedException($"Navigation to {viewType.Name} is not implemented.");
+                MessageBox.Show("Access denied. Employee role required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            var viewModel = _serviceProvider.GetRequiredService<CategoryEditViewModel>();
+            var view = _serviceProvider.GetRequiredService<CategoryEditView>();
+
+            if (categoryId.HasValue)
+            {
+                viewModel.LoadCategoryAsync(categoryId.Value).ConfigureAwait(false);
+            }
+
+            NavigateTo(view);
+        }
+
+        public void NavigateToProductList()
+        {
+            if (!_authService.IsUserInRole("Employee"))
+            {
+                MessageBox.Show("Access denied. Employee role required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var view = _serviceProvider.GetRequiredService<ProductListView>();
+            NavigateTo(view);
+        }
+
+        public void NavigateToProductEdit(int? productId)
+        {
+            if (!_authService.IsUserInRole("Employee"))
+            {
+                MessageBox.Show("Access denied. Employee role required.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var viewModel = _serviceProvider.GetRequiredService<ProductEditViewModel>();
+            var view = _serviceProvider.GetRequiredService<ProductEditView>();
+
+            if (productId.HasValue)
+            {
+                viewModel.LoadProductAsync(productId.Value).ConfigureAwait(false);
+            }
+
+            NavigateTo(view);
         }
 
         public void NavigateBack()
         {
-            if (NavigationFrame.CanGoBack)
+            if (_navigationStack.Count > 1)
             {
-                NavigationFrame.GoBack();
+                _navigationStack.Pop(); // Remove current page
+                var previousPage = _navigationStack.Peek();
+                (_mainWindow as MainWindow)?.NavigationFrame.Navigate(previousPage);
             }
+        }
+
+        private void NavigateTo(Page view)
+        {
+            _navigationStack.Push(view);
+            (_mainWindow as MainWindow)?.NavigationFrame.Navigate(view);
         }
     }
 } 

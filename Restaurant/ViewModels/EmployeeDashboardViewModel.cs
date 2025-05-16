@@ -43,12 +43,12 @@ namespace Restaurant.ViewModels
 
         private void ManageCategories()
         {
-            _navigationService.NavigateTo(typeof(CategoryListView));
+            _navigationService.NavigateToCategoryList();
         }
 
         private void ManageProducts()
         {
-            // Will implement navigation to products management
+            _navigationService.NavigateToProductList();
         }
 
         private void ManageMenus()
