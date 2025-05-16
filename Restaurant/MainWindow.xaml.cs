@@ -19,6 +19,14 @@ namespace Restaurant
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+            MainFrame.NavigationFailed += MainFrame_NavigationFailed;
+        }
+
+        private void MainFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            MessageBox.Show($"Navigation failed: {e.Exception.Message}", "Navigation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            e.Handled = true;
         }
     }
 }

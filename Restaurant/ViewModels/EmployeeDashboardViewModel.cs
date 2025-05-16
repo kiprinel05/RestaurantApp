@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Restaurant.Services;
+using Restaurant.Views;
 using System.Windows.Input;
 
 namespace Restaurant.ViewModels
@@ -42,7 +43,7 @@ namespace Restaurant.ViewModels
 
         private void ManageCategories()
         {
-            // Will implement navigation to categories management
+            _navigationService.NavigateTo(typeof(CategoryListView));
         }
 
         private void ManageProducts()

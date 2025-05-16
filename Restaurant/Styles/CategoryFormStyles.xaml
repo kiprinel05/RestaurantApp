@@ -1,0 +1,203 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Text Block Styles -->
+    <Style x:Key="FormLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="#1A237E"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="1" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="2" 
+                                Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FormErrorStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="#D32F2F"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Background" Value="#FFEBEE"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Margin" Value="0,0,0,15"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#40D32F2F" 
+                                BlurRadius="4" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Input Controls -->
+    <Style x:Key="FormTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Padding" Value="15,5"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                <Setter Property="Background" Value="#FAFAFA"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush" Value="#3F51B5"/>
+                <Setter Property="Background" Value="#F5F5F5"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="3" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="8" 
+                                        Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="FormMultilineTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource FormTextBoxStyle}">
+        <Setter Property="Height" Value="120"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="Padding" Value="15,10"/>
+    </Style>
+
+    <!-- Button Styles -->
+    <Style x:Key="FormSubmitButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="Margin" Value="0,0,15,0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="#3F51B5"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="3" 
+                                Direction="330" 
+                                Color="#403F51B5" 
+                                BlurRadius="8" 
+                                Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#303F9F"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="5" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="12" 
+                                        Opacity="0.4"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#1A237E"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="2" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="4" 
+                                        Opacity="0.2"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#C5CAE9"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="1" 
+                                        Direction="330" 
+                                        Color="#20000000" 
+                                        BlurRadius="2" 
+                                        Opacity="0.1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="FormCancelButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="#3F51B5"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="#3F51B5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="2" 
+                                Direction="330" 
+                                Color="#20000000" 
+                                BlurRadius="5" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#E8EAF6"/>
+                <Setter Property="BorderBrush" Value="#303F9F"/>
+                <Setter Property="Foreground" Value="#303F9F"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="3" 
+                                        Direction="330" 
+                                        Color="#403F51B5" 
+                                        BlurRadius="8" 
+                                        Opacity="0.3"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#C5CAE9"/>
+                <Setter Property="BorderBrush" Value="#1A237E"/>
+                <Setter Property="Foreground" Value="#1A237E"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#F5F5F5"/>
+                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                <Setter Property="Foreground" Value="#9E9E9E"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="1" 
+                                        Direction="330" 
+                                        Color="#20000000" 
+                                        BlurRadius="2" 
+                                        Opacity="0.1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary> 

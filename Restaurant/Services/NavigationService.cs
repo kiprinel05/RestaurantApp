@@ -54,8 +54,40 @@ namespace Restaurant.Services
 
         public void NavigateTo(Type viewType)
         {
-            // This method is not used anymore, but kept for interface compatibility
-            throw new NotImplementedException();
+            NavigateTo(viewType, null);
+        }
+
+        public void NavigateTo(Type viewType, object? parameter)
+        {
+            if (viewType == typeof(CategoryEditView))
+            {
+                var categoryService = _serviceProvider.GetRequiredService<ICategoryService>();
+                var viewModel = new CategoryEditViewModel(categoryService, this, parameter as int?);
+                var view = new CategoryEditView { DataContext = viewModel };
+                NavigationFrame.Navigate(view);
+            }
+            else if (viewType == typeof(CategoryListView))
+            {
+                var viewModel = ActivatorUtilities.CreateInstance<CategoryListViewModel>(
+                    _serviceProvider,
+                    _serviceProvider.GetRequiredService<ICategoryService>(),
+                    this);
+
+                var view = new CategoryListView(viewModel);
+                NavigationFrame.Navigate(view);
+            }
+            else
+            {
+                throw new NotImplementedException($"Navigation to {viewType.Name} is not implemented.");
+            }
+        }
+
+        public void NavigateBack()
+        {
+            if (NavigationFrame.CanGoBack)
+            {
+                NavigationFrame.GoBack();
+            }
         }
     }
 } 

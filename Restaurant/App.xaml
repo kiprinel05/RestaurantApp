@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="/Styles/Cards.xaml"/>
                 <ResourceDictionary Source="/Styles/Auth.xaml"/>
                 <ResourceDictionary Source="/Styles/DashboardStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/CategoryFormStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
