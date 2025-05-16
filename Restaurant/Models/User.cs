@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Restaurant.Models
 {
@@ -35,6 +36,9 @@ namespace Restaurant.Models
 
         [Required]
         public UserRole Role { get; set; } = UserRole.Customer;
+
+        // Navigation Property
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 
     public enum UserRole

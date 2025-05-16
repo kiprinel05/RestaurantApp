@@ -19,6 +19,8 @@ namespace Restaurant.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuProduct> MenuProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,6 +69,39 @@ namespace Restaurant.Data
                 .WithMany(c => c.Menus)
                 .HasForeignKey(m => m.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure one-to-many relationship between User and Orders
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure one-to-many relationship between Order and OrderItems
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure one-to-many relationship between Product and OrderItems
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure one-to-many relationship between Menu and OrderItems
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Menu)
+                .WithMany()
+                .HasForeignKey(oi => oi.MenuId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Add unique constraint for order code
+            modelBuilder.Entity<Order>()
+                .HasIndex(o => o.OrderCode)
+                .IsUnique();
 
             // Seed test user
             var testUser = new User
