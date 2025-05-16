@@ -19,6 +19,7 @@ namespace Restaurant.ViewModels
         public ICommand ShowLoginCommand { get; }
         public ICommand LoginCommand { get; }
         public ICommand RegisterCommand { get; }
+        public ICommand ContinueAsGuestCommand { get; }
 
         [ObservableProperty]
         private bool isLoginVisible = true;
@@ -68,6 +69,7 @@ namespace Restaurant.ViewModels
             ShowLoginCommand = new RelayCommand(ShowLogin);
             LoginCommand = new AsyncRelayCommand(LoginAsync);
             RegisterCommand = new AsyncRelayCommand(RegisterAsync);
+            ContinueAsGuestCommand = new RelayCommand(ContinueAsGuest);
         }
 
         public void ShowLogin()
@@ -146,6 +148,11 @@ namespace Restaurant.ViewModels
             {
                 RegisterErrorMessage = $"An error occurred: {ex.Message}";
             }
+        }
+
+        private void ContinueAsGuest()
+        {
+            _navigationService.NavigateToMenu();
         }
 
         private void ClearErrors()

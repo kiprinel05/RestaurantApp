@@ -57,6 +57,10 @@
                             <Button Content="Create Account"
                                     Style="{StaticResource SecondaryButton}"
                                     Click="OnShowRegisterClick"/>
+                            <Button Content="Continue as Guest"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Command="{Binding ContinueAsGuestCommand}"
+                                    Margin="0,8,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
