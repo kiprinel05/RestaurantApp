@@ -141,7 +141,7 @@ namespace Restaurant.ViewModels
                     return;
                 }
 
-                MessageBox.Show("Registration successful! Please login.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Registration successful !", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 ShowLogin();
             }
             catch (System.Exception ex)

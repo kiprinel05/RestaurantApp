@@ -53,7 +53,6 @@ namespace Restaurant.ViewModels
                     Quantity = mp.Quantity
                 }));
 
-            // Un meniu este disponibil doar dacă toate produsele sale sunt disponibile
             IsAvailable = menu.MenuProducts.All(mp => mp.Product.TotalQuantity > 0);
         }
     }

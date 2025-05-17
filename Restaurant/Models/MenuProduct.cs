@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Restaurant.Models
 {
@@ -16,6 +17,19 @@ namespace Restaurant.Models
         public virtual Product Product { get; set; } = null!;
 
         [Required]
-        public int Quantity { get; set; }  // cantitatea specifica pentru acest produs in acest meniu
+        public int Quantity { get; set; }  // cantitatea de bucati din acest produs in meniu
+
+        [Required]
+        public int MenuSpecificPortionQuantity { get; set; }  // cantitatea in grame specifica pentru acest produs in acest meniu
+
+        [NotMapped]
+        public bool IsAvailable
+        {
+            get
+            {
+                return Product != null && Product.IsAvailable && 
+                       Product.TotalQuantity >= (MenuSpecificPortionQuantity * Quantity);
+            }
+        }
     }
 } 

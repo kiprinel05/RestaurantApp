@@ -21,87 +21,104 @@ namespace Restaurant.Data
         public DbSet<MenuProduct> MenuProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<AppSettings> AppSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Add unique constraint for email
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            // Add unique constraint for category name
+            // unique constraint for category name
             modelBuilder.Entity<Category>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            // Add unique constraint for allergen name
+            // unique constraint for allergen name
             modelBuilder.Entity<Allergen>()
                 .HasIndex(a => a.Name)
                 .IsUnique();
 
-            // Add unique constraint for product name
+            // unique constraint for product name
             modelBuilder.Entity<Product>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
-            // Add unique constraint for menu name
+            // unique constraint for menu name
             modelBuilder.Entity<Menu>()
                 .HasIndex(m => m.Name)
                 .IsUnique();
 
-            // Configure many-to-many relationship between Product and Allergen
+            // many-to-many relationship - Product and Allergen
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Allergens)
                 .WithMany(a => a.Products);
 
-            // Configure one-to-many relationship between Category and Products
+            // one-to-many relationship - Category and Products
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure one-to-many relationship between Category and Menus
+            // one-to-many relationship - Category and Menus
             modelBuilder.Entity<Menu>()
                 .HasOne(m => m.Category)
                 .WithMany(c => c.Menus)
                 .HasForeignKey(m => m.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure one-to-many relationship between User and Orders
+            // one-to-many relationship - User and Orders
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure one-to-many relationship between Order and OrderItems
+            // one-to-many relationship - Order and OrderItems
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.OrderItems)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure one-to-many relationship between Product and OrderItems
+            // one-to-many relationship - Product and OrderItems
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
                 .WithMany()
                 .HasForeignKey(oi => oi.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure one-to-many relationship between Menu and OrderItems
+            // one-to-many relationship - Menu and OrderItems
             modelBuilder.Entity<OrderItem>()
                 .HasOne(oi => oi.Menu)
                 .WithMany()
                 .HasForeignKey(oi => oi.MenuId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Add unique constraint for order code
+            // unique constraint for order code
             modelBuilder.Entity<Order>()
                 .HasIndex(o => o.OrderCode)
                 .IsUnique();
+
+            // Seed AppSettings
+            modelBuilder.Entity<AppSettings>().HasData(
+                new AppSettings
+                {
+                    Id = 1,
+                    MenuDiscountPercentage = 10.00M, // 10% reducere pentru meniuri
+                    OrderDiscountThreshold = 200.00M, // reducere pentru comenzi peste 200 lei
+                    OrderCountForDiscount = 3, // reducere dupa 3 comenzi
+                    OrderTimeWindowHours = 24, // ultimele 24 de ore
+                    FreeDeliveryThreshold = 150.00M, // livrare moca peste 150 lei
+                    DeliveryCost = 15.00M, // cost livrare 15 lei
+                    LowStockThreshold = 10, // alerta stoc < 10 portii
+                    OrderDiscountPercentage = 15.00M, // 15% reducere pentru comenzi
+                    EstimatedDeliveryTimeMinutes = 45 // 45 minute timp estimat livrare
+                }
+            );
 
             // Seed test users
             var testUsers = new[]
@@ -153,7 +170,9 @@ namespace Restaurant.Data
                     Price = 45.00M,
                     CategoryId = 1,
                     IsAvailable = true,
-                    PrepTime = 20
+                    PrepTime = 20,
+                    PortionQuantity = 450, // 450g per portie
+                    TotalQuantity = 4500 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -163,7 +182,9 @@ namespace Restaurant.Data
                     Price = 35.00M,
                     CategoryId = 2,
                     IsAvailable = true,
-                    PrepTime = 15
+                    PrepTime = 15,
+                    PortionQuantity = 350, // 350g per portie
+                    TotalQuantity = 3500 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -173,7 +194,9 @@ namespace Restaurant.Data
                     Price = 25.00M,
                     CategoryId = 3,
                     IsAvailable = true,
-                    PrepTime = 10
+                    PrepTime = 10,
+                    PortionQuantity = 200, // 200g per portie
+                    TotalQuantity = 2000 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -183,7 +206,9 @@ namespace Restaurant.Data
                     Price = 50.00M,
                     CategoryId = 1,
                     IsAvailable = true,
-                    PrepTime = 20
+                    PrepTime = 20,
+                    PortionQuantity = 450, // 450g per portie
+                    TotalQuantity = 4500 // 10 portii disponibile
                 }
             };
 
