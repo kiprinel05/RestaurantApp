@@ -17,21 +17,21 @@ namespace Restaurant.Models
         public decimal OrderDiscountThreshold { get; set; } // y lei - pragul pentru reducere la comenzi
 
         [Required]
-        public int OrderCountForDiscount { get; set; } // z comenzi - numărul de comenzi pentru reducere
+        public int OrderCountForDiscount { get; set; } // z comenzi - numarul de comenzi pentru reducere
 
         [Required]
         public int OrderTimeWindowHours { get; set; } // t ore - perioada de timp pentru comenzi
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal FreeDeliveryThreshold { get; set; } // a lei - pragul pentru livrare gratuită
+        public decimal FreeDeliveryThreshold { get; set; } // a lei - pragul pentru livrare gratuita
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal DeliveryCost { get; set; } // b lei - costul livrării
+        public decimal DeliveryCost { get; set; } // b lei - costul livrarii
 
         [Required]
-        public int LowStockThreshold { get; set; } // c - pragul pentru notificări stoc redus
+        public int LowStockThreshold { get; set; } // c - pragul pentru notificari stoc redus
 
         [Required]
         [Column(TypeName = "decimal(5,2)")]

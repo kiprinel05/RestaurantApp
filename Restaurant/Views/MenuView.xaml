@@ -82,7 +82,7 @@
                      Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
-        <!-- Conținut principal -->
+        <!-- continut principal -->
         <ScrollViewer Grid.Row="1" 
                       VerticalScrollBarVisibility="Auto"
                       Margin="16,0">
@@ -115,7 +115,7 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <!-- Indicator de încărcare -->
+        <!-- indicator de incarcare -->
         <Grid Grid.Row="1" 
               Background="#80000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">

@@ -19,7 +19,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Titlu și preț -->
+            <!-- titlu si pret -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -37,14 +37,14 @@
                           Foreground="#2ECC71"/>
             </Grid>
 
-            <!-- Descriere -->
+            <!-- descriere -->
             <TextBlock Grid.Row="1"
                        Text="{Binding Description}"
                        TextWrapping="Wrap"
                        Margin="0,8"
                        Foreground="#666666"/>
 
-            <!-- Lista de produse -->
+            <!-- lista de produse -->
             <StackPanel Grid.Row="2">
                 <TextBlock Text="Conține:"
                           FontWeight="SemiBold"
@@ -65,7 +65,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!-- Indicator disponibilitate -->
+                <!-- disponibilitate -->
                 <Border Background="{Binding IsAvailable, Converter={StaticResource BoolToColorConverter}}"
                         CornerRadius="4"
                         Padding="6,2"

@@ -17,14 +17,14 @@ namespace Restaurant.Models
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal BasePrice { get; set; }  // Prețul calculat din suma produselor
+        public decimal BasePrice { get; set; }  // pretul calculat din suma produselor
 
         [NotMapped]
-        public decimal Price  // Prețul final cu reducere
+        public decimal Price  // pretul final cu reducere
         {
             get
             {
-                // Vom implementa logica de calcul în service
+                // logica de calcul in service
                 return BasePrice;
             }
         }
@@ -33,7 +33,7 @@ namespace Restaurant.Models
         { 
             get
             {
-                // Un meniu este disponibil doar dacă toate produsele sale sunt disponibile
+                // un meniu este disponibil daca toate produsele sale sunt disponibile
                 return MenuProducts.All(mp => mp.Product.IsAvailable);
             }
         }
@@ -43,10 +43,10 @@ namespace Restaurant.Models
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        // Relatia many-to-many cu produsele si cantitatile lor specifice pentru acest meniu
+        // many-to-many cu produsele si cantitatile lor specifice pentru acest meniu
         public virtual ICollection<MenuProduct> MenuProducts { get; set; } = new List<MenuProduct>();
 
-        // Timpul total de preparare în minute
+        // timpul total de preparare in minute
         public int TotalPrepTime
         {
             get
