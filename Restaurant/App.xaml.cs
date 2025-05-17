@@ -54,7 +54,7 @@ namespace Restaurant
         private void ConfigureServices(ServiceCollection services)
         {
             // Database configuration
-            services.AddDbContext<RestaurantDbContext>(options =>
+            services.AddDbContextFactory<RestaurantDbContext>(options =>
                 options.UseSqlServer(
                     "Server=(localdb)\\mssqllocaldb;Database=RestaurantT3DB;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
@@ -62,6 +62,7 @@ namespace Restaurant
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IMenuService, MenuService>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
@@ -71,6 +72,15 @@ namespace Restaurant
             services.AddTransient<CategoryEditViewModel>();
             services.AddTransient<ProductEditViewModel>();
             services.AddTransient<ProductListViewModel>();
+
+            // Register views with their ViewModels
+            services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));
+            services.AddTransient(sp => new MenuView(sp.GetRequiredService<MenuListViewModel>()));
+            services.AddTransient(sp => new EmployeeDashboardView(sp.GetRequiredService<EmployeeDashboardViewModel>()));
+            services.AddTransient(sp => new CategoryListView(sp.GetRequiredService<CategoryListViewModel>()));
+            services.AddTransient(sp => new CategoryEditView(sp.GetRequiredService<CategoryEditViewModel>()));
+            services.AddTransient(sp => new ProductListView(sp.GetRequiredService<ProductListViewModel>()));
+            services.AddTransient(sp => new ProductEditView(sp.GetRequiredService<ProductEditViewModel>()));
 
             // Register MainWindow as singleton
             services.AddSingleton<MainWindow>();
@@ -82,15 +92,6 @@ namespace Restaurant
                     sp.GetRequiredService<Window>(),
                     sp,
                     sp.GetRequiredService<IAuthenticationService>()));
-
-            // Register views
-            services.AddTransient<AuthView>();
-            services.AddTransient<MenuView>();
-            services.AddTransient<EmployeeDashboardView>();
-            services.AddTransient<CategoryListView>();
-            services.AddTransient<CategoryEditView>();
-            services.AddTransient<ProductListView>();
-            services.AddTransient<ProductEditView>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

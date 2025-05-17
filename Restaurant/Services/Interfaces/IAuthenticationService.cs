@@ -10,5 +10,6 @@ namespace Restaurant.Services
         Task<bool> IsEmailAvailableAsync(string email);
         User? GetCurrentUser();
         void Logout();
+        bool IsUserInRole(string role);
     }
 } 

@@ -48,7 +48,7 @@ namespace Restaurant.ViewModels
             }
         }
 
-        private async Task LoadCategoryAsync(int categoryId)
+        public async Task LoadCategoryAsync(int categoryId)
         {
             try
             {

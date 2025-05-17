@@ -44,7 +44,7 @@ namespace Restaurant.ViewModels
             _ = LoadCategoriesAsync();
         }
 
-        private async Task LoadCategoriesAsync()
+        public async Task LoadCategoriesAsync()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Restaurant.ViewModels
                     Categories.Add(category);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessage = $"Error loading categories: {ex.Message}";
             }
@@ -94,7 +94,7 @@ namespace Restaurant.ViewModels
                 if (result != MessageBoxResult.Yes) return;
 
                 await _categoryService.DeleteCategoryAsync(category.Id);
-                Categories.Remove(category);
+                await LoadCategoriesAsync();
             }
             catch (InvalidOperationException ex)
             {

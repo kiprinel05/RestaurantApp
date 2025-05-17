@@ -42,7 +42,7 @@ namespace Restaurant.Services
         {
             var existingCategory = await _context.Categories.FindAsync(category.Id);
             if (existingCategory == null)
-                throw new KeyNotFoundException($"Category with ID {category.Id} not found.");
+                throw new KeyNotFoundException($"Category with ID {category.Id} not found");
 
             _context.Entry(existingCategory).CurrentValues.SetValues(category);
             await _context.SaveChangesAsync();
@@ -57,10 +57,10 @@ namespace Restaurant.Services
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (category == null)
-                throw new KeyNotFoundException($"Category with ID {id} not found.");
+                throw new KeyNotFoundException($"Category with ID {id} not found");
 
             if (category.Products.Any() || category.Menus.Any())
-                throw new InvalidOperationException("Cannot delete category that has products or menus.");
+                throw new InvalidOperationException("Cannot delete category that has products or menus");
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();

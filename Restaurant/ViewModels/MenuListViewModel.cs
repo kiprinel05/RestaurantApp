@@ -1,16 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using Restaurant.Data;
 using Restaurant.Models;
+using Restaurant.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Restaurant.ViewModels
 {
     public partial class MenuListViewModel : ObservableObject
     {
-        private readonly RestaurantDbContext _context;
+        private readonly IMenuService _menuService;
 
         [ObservableProperty]
         private ObservableCollection<CategoryViewModel> categories = new();
@@ -21,9 +20,9 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private bool isLoading;
 
-        public MenuListViewModel(RestaurantDbContext context)
+        public MenuListViewModel(IMenuService menuService)
         {
-            _context = context;
+            _menuService = menuService;
             LoadMenuCommand.Execute(null);
         }
 
@@ -36,16 +35,7 @@ namespace Restaurant.ViewModels
             {
                 IsLoading = true;
 
-                var dbCategories = await _context.Categories
-                    .Include(c => c.Products)
-                        .ThenInclude(p => p.Allergens)
-                    .Include(c => c.Products)
-                        .ThenInclude(p => p.Images)
-                    .Include(c => c.Menus)
-                        .ThenInclude(m => m.MenuProducts)
-                            .ThenInclude(mp => mp.Product)
-                    .ToListAsync();
-
+                var dbCategories = await _menuService.GetAllCategoriesWithDetailsAsync();
                 Categories = new ObservableCollection<CategoryViewModel>(
                     dbCategories.Select(c => new CategoryViewModel(c)));
             }
@@ -71,35 +61,9 @@ namespace Restaurant.ViewModels
                 IsLoading = true;
 
                 var searchTerm = SearchText.ToLower();
-
-                var matchingProducts = await _context.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Allergens)
-                    .Include(p => p.Images)
-                    .Where(p => p.Name.ToLower().Contains(searchTerm) ||
-                               p.Description.ToLower().Contains(searchTerm) ||
-                               p.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm)))
-                    .ToListAsync();
-
-                var matchingMenus = await _context.Menus
-                    .Include(m => m.Category)
-                    .Include(m => m.MenuProducts)
-                        .ThenInclude(mp => mp.Product)
-                    .Where(m => m.Name.ToLower().Contains(searchTerm) ||
-                               m.Description.ToLower().Contains(searchTerm))
-                    .ToListAsync();
-
-                // Obținem toate categoriile unice care conțin fie produse, fie meniuri care se potrivesc
-                var categoriesWithProducts = matchingProducts.GroupBy(p => p.Category);
-                var categoriesWithMenus = matchingMenus.GroupBy(m => m.Category);
-                
-                var allCategories = categoriesWithProducts.Select(g => g.Key)
-                    .Union(categoriesWithMenus.Select(g => g.Key))
-                    .ToList();
-
-                // Creăm ViewModels pentru categoriile găsite
+                var categories = await _menuService.SearchMenuAsync(searchTerm);
                 Categories = new ObservableCollection<CategoryViewModel>(
-                    allCategories.Select(c => new CategoryViewModel(c)));
+                    categories.Select(c => new CategoryViewModel(c)));
             }
             finally
             {

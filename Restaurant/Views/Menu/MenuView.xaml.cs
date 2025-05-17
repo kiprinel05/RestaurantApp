@@ -3,11 +3,12 @@ using Restaurant.ViewModels;
 
 namespace Restaurant.Views
 {
-    public partial class MenuView : UserControl
+    public partial class MenuView : Page
     {
-        public MenuView()
+        public MenuView(MenuListViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 } 

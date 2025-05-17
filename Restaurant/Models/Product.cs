@@ -30,10 +30,10 @@ namespace Restaurant.Models
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        // Relatia many-to-many cu alergenii
+        // many-to-many cu alergenii
         public virtual ICollection<Allergen> Allergens { get; set; } = new List<Allergen>();
 
-        // Lista de imagini (vom stoca path-urile)
+        // lista de imagini
         public virtual ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
 
         public bool IsAvailable { get; set; }

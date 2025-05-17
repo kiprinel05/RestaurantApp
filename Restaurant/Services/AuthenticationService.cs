@@ -69,6 +69,19 @@ namespace Restaurant.Services
             _currentUser = null;
         }
 
+        public bool IsUserInRole(string role)
+        {
+            var currentUser = GetCurrentUser();
+            if (currentUser == null) return false;
+            
+            return role switch
+            {
+                "Employee" => currentUser.Role == UserRole.Employee,
+                "Customer" => currentUser.Role == UserRole.Customer,
+                _ => false
+            };
+        }
+
         private string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();

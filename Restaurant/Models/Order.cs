@@ -42,7 +42,7 @@ namespace Restaurant.Models
 
         // Navigation Properties
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public required User User { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

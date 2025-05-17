@@ -25,11 +25,30 @@ namespace Restaurant.Services
             _authService = authService;
         }
 
+        public void NavigateTo(Type viewType)
+        {
+            var view = _serviceProvider.GetRequiredService(viewType) as Page;
+            if (view != null)
+            {
+                NavigateTo(view);
+            }
+        }
+
+        public void NavigateTo(Type viewType, object parameter)
+        {
+            var view = _serviceProvider.GetRequiredService(viewType) as Page;
+            if (view != null && view.DataContext is INavigationAware navigationAware)
+            {
+                navigationAware.OnNavigatedTo(parameter);
+                NavigateTo(view);
+            }
+        }
+
         public void NavigateToAuth()
         {
-            var authViewModel = _serviceProvider.GetRequiredService<AuthViewModel>();
-            var authView = new AuthView(authViewModel);
-            NavigateTo(authView);
+            var viewModel = _serviceProvider.GetRequiredService<AuthViewModel>();
+            var view = _serviceProvider.GetRequiredService<AuthView>();
+            NavigateTo(view);
         }
 
         public void NavigateToMain()
@@ -38,9 +57,9 @@ namespace Restaurant.Services
             
             if (currentUser?.Role == UserRole.Employee)
             {
-                var dashboardViewModel = _serviceProvider.GetRequiredService<EmployeeDashboardViewModel>();
-                var dashboardView = new EmployeeDashboardView(dashboardViewModel);
-                NavigateTo(dashboardView);
+                var viewModel = _serviceProvider.GetRequiredService<EmployeeDashboardViewModel>();
+                var view = _serviceProvider.GetRequiredService<EmployeeDashboardView>();
+                NavigateTo(view);
             }
             else
             {
@@ -50,9 +69,9 @@ namespace Restaurant.Services
 
         public void NavigateToMenu()
         {
-            var menuListViewModel = _serviceProvider.GetRequiredService<MenuListViewModel>();
-            var menuView = new MenuView { DataContext = menuListViewModel };
-            NavigateTo(menuView);
+            var viewModel = _serviceProvider.GetRequiredService<MenuListViewModel>();
+            var view = _serviceProvider.GetRequiredService<MenuView>();
+            NavigateTo(view);
         }
 
         public void NavigateToEmployeeDashboard()
@@ -63,6 +82,7 @@ namespace Restaurant.Services
                 return;
             }
 
+            var viewModel = _serviceProvider.GetRequiredService<EmployeeDashboardViewModel>();
             var view = _serviceProvider.GetRequiredService<EmployeeDashboardView>();
             NavigateTo(view);
         }
@@ -75,6 +95,7 @@ namespace Restaurant.Services
                 return;
             }
 
+            var viewModel = _serviceProvider.GetRequiredService<CategoryListViewModel>();
             var view = _serviceProvider.GetRequiredService<CategoryListView>();
             NavigateTo(view);
         }
@@ -106,6 +127,7 @@ namespace Restaurant.Services
                 return;
             }
 
+            var viewModel = _serviceProvider.GetRequiredService<ProductListViewModel>();
             var view = _serviceProvider.GetRequiredService<ProductListView>();
             NavigateTo(view);
         }
@@ -135,14 +157,19 @@ namespace Restaurant.Services
             {
                 _navigationStack.Pop(); // Remove current page
                 var previousPage = _navigationStack.Peek();
-                (_mainWindow as MainWindow)?.NavigationFrame.Navigate(previousPage);
+                _mainWindow.MainFrame.Navigate(previousPage);
             }
         }
 
         private void NavigateTo(Page view)
         {
             _navigationStack.Push(view);
-            (_mainWindow as MainWindow)?.NavigationFrame.Navigate(view);
+            _mainWindow.MainFrame.Navigate(view);
         }
+    }
+
+    public interface INavigationAware
+    {
+        void OnNavigatedTo(object parameter);
     }
 } 
