@@ -21,6 +21,7 @@ namespace Restaurant.Data
         public DbSet<MenuProduct> MenuProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<AppSettings> AppSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,6 +104,23 @@ namespace Restaurant.Data
                 .HasIndex(o => o.OrderCode)
                 .IsUnique();
 
+            // Seed AppSettings
+            modelBuilder.Entity<AppSettings>().HasData(
+                new AppSettings
+                {
+                    Id = 1,
+                    MenuDiscountPercentage = 10.00M, // 10% reducere pentru meniuri
+                    OrderDiscountThreshold = 200.00M, // Reducere pentru comenzi peste 200 lei
+                    OrderCountForDiscount = 3, // Reducere după 3 comenzi
+                    OrderTimeWindowHours = 24, // În ultimele 24 de ore
+                    FreeDeliveryThreshold = 150.00M, // Livrare gratuită peste 150 lei
+                    DeliveryCost = 15.00M, // Cost livrare 15 lei
+                    LowStockThreshold = 10, // Alertă stoc < 10 porții
+                    OrderDiscountPercentage = 15.00M, // 15% reducere pentru comenzi
+                    EstimatedDeliveryTimeMinutes = 45 // 45 minute timp estimat livrare
+                }
+            );
+
             // Seed test users
             var testUsers = new[]
             {
@@ -153,7 +171,9 @@ namespace Restaurant.Data
                     Price = 45.00M,
                     CategoryId = 1,
                     IsAvailable = true,
-                    PrepTime = 20
+                    PrepTime = 20,
+                    PortionQuantity = 450, // 450g per portie
+                    TotalQuantity = 4500 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -163,7 +183,9 @@ namespace Restaurant.Data
                     Price = 35.00M,
                     CategoryId = 2,
                     IsAvailable = true,
-                    PrepTime = 15
+                    PrepTime = 15,
+                    PortionQuantity = 350, // 350g per portie
+                    TotalQuantity = 3500 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -173,7 +195,9 @@ namespace Restaurant.Data
                     Price = 25.00M,
                     CategoryId = 3,
                     IsAvailable = true,
-                    PrepTime = 10
+                    PrepTime = 10,
+                    PortionQuantity = 200, // 200g per portie
+                    TotalQuantity = 2000 // 10 portii disponibile
                 },
                 new Product 
                 { 
@@ -183,7 +207,9 @@ namespace Restaurant.Data
                     Price = 50.00M,
                     CategoryId = 1,
                     IsAvailable = true,
-                    PrepTime = 20
+                    PrepTime = 20,
+                    PortionQuantity = 450, // 450g per portie
+                    TotalQuantity = 4500 // 10 portii disponibile
                 }
             };
 

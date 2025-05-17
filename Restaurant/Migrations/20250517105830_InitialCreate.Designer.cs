@@ -12,8 +12,8 @@ using Restaurant.Data;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20250516180443_AddOrderSystem")]
-    partial class AddOrderSystem
+    [Migration("20250517105830_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -427,12 +427,23 @@ namespace Restaurant.Migrations
                         {
                             Id = 1,
                             DeliveryAddress = "Test Address",
-                            Email = "test@test.com",
+                            Email = "customer@test.com",
                             FirstName = "Test",
-                            LastName = "User",
+                            LastName = "Customer",
                             PasswordHash = "7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=",
                             PhoneNumber = "0722222222",
                             Role = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DeliveryAddress = "Restaurant Address",
+                            Email = "employee@test.com",
+                            FirstName = "Test",
+                            LastName = "Employee",
+                            PasswordHash = "7NcYcNGWMxapfjrDQIyYNa2M8PPBvHA1J8MCZVNPda4=",
+                            PhoneNumber = "0733333333",
+                            Role = 1
                         });
                 });
 

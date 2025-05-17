@@ -63,6 +63,61 @@ namespace Restaurant.Migrations
                     b.ToTable("Allergens");
                 });
 
+            modelBuilder.Entity("Restaurant.Models.AppSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("DeliveryCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EstimatedDeliveryTimeMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FreeDeliveryThreshold")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("LowStockThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MenuDiscountPercentage")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("OrderCountForDiscount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("OrderDiscountPercentage")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("OrderDiscountThreshold")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderTimeWindowHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DeliveryCost = 15.00m,
+                            EstimatedDeliveryTimeMinutes = 45,
+                            FreeDeliveryThreshold = 150.00m,
+                            LowStockThreshold = 10,
+                            MenuDiscountPercentage = 10.00m,
+                            OrderCountForDiscount = 3,
+                            OrderDiscountPercentage = 15.00m,
+                            OrderDiscountThreshold = 200.00m,
+                            OrderTimeWindowHours = 24
+                        });
+                });
+
             modelBuilder.Entity("Restaurant.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -117,6 +172,9 @@ namespace Restaurant.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("BasePrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -129,9 +187,6 @@ namespace Restaurant.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -152,6 +207,9 @@ namespace Restaurant.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuSpecificPortionQuantity")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -305,10 +363,10 @@ namespace Restaurant.Migrations
                             Description = "Classic pizza with tomato sauce, mozzarella, and basil",
                             IsAvailable = true,
                             Name = "Margherita Pizza",
-                            PortionQuantity = 0,
+                            PortionQuantity = 450,
                             PrepTime = 20,
                             Price = 45.00m,
-                            TotalQuantity = 0
+                            TotalQuantity = 4500
                         },
                         new
                         {
@@ -317,10 +375,10 @@ namespace Restaurant.Migrations
                             Description = "Spaghetti with eggs, pecorino cheese, guanciale, and black pepper",
                             IsAvailable = true,
                             Name = "Carbonara",
-                            PortionQuantity = 0,
+                            PortionQuantity = 350,
                             PrepTime = 15,
                             Price = 35.00m,
-                            TotalQuantity = 0
+                            TotalQuantity = 3500
                         },
                         new
                         {
@@ -329,10 +387,10 @@ namespace Restaurant.Migrations
                             Description = "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone cream",
                             IsAvailable = true,
                             Name = "Tiramisu",
-                            PortionQuantity = 0,
+                            PortionQuantity = 200,
                             PrepTime = 10,
                             Price = 25.00m,
-                            TotalQuantity = 0
+                            TotalQuantity = 2000
                         },
                         new
                         {
@@ -341,10 +399,10 @@ namespace Restaurant.Migrations
                             Description = "Pizza with four different types of cheese",
                             IsAvailable = true,
                             Name = "Quattro Formaggi",
-                            PortionQuantity = 0,
+                            PortionQuantity = 450,
                             PrepTime = 20,
                             Price = 50.00m,
-                            TotalQuantity = 0
+                            TotalQuantity = 4500
                         });
                 });
 
