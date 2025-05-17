@@ -19,6 +19,7 @@
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
             <converters:AvailabilityConverter x:Key="AvailabilityConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
