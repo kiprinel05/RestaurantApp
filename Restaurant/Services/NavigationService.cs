@@ -164,6 +164,18 @@ namespace Restaurant.Services
             NavigateTo(view);
         }
 
+        public void NavigateToMenuList()
+        {
+            var view = _serviceProvider.GetRequiredService<Restaurant.Views.Menu.MenuListView>();
+            NavigateTo(view);
+        }
+
+        public void NavigateToMenuAdd()
+        {
+            var view = _serviceProvider.GetRequiredService<Restaurant.Views.Menu.MenuAddView>();
+            NavigateTo(view);
+        }
+
         public void NavigateBack()
         {
             if (_navigationStack.Count > 1)

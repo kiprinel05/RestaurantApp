@@ -82,5 +82,27 @@ namespace Restaurant.Services
                 .Union(categoriesWithMenus.Select(g => g.Key))
                 .ToList();
         }
+
+        public async Task<List<Menu>> GetAllMenusAsync()
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var menus = await context.Menus
+                .Include(m => m.Category)
+                .Include(m => m.MenuProducts)
+                    .ThenInclude(mp => mp.Product)
+                .ToListAsync();
+            return menus;
+        }
+
+        public async Task DeleteMenuAsync(int id)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var menu = await context.Menus.FindAsync(id);
+            if (menu != null)
+            {
+                context.Menus.Remove(menu);
+                await context.SaveChangesAsync();
+            }
+        }
     }
 } 

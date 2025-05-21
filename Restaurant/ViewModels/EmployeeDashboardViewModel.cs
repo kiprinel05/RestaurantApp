@@ -53,7 +53,7 @@ namespace Restaurant.ViewModels
 
         private void ManageMenus()
         {
-            // Will implement navigation to menus management
+            _navigationService.NavigateToMenuList();
         }
 
         private void ViewOrders()

@@ -4,15 +4,17 @@ using Restaurant.Models;
 using Restaurant.Services;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Restaurant.ViewModels
 {
     public partial class MenuListViewModel : ObservableObject
     {
         private readonly IMenuService _menuService;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
-        private ObservableCollection<CategoryViewModel> categories = new();
+        private ObservableCollection<Menu> menus = new();
 
         [ObservableProperty]
         private string searchText = string.Empty;
@@ -20,60 +22,28 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private bool isLoading;
 
-        public MenuListViewModel(IMenuService menuService)
+        public ICommand AddMenuCommand { get; }
+        public ICommand RemoveMenuCommand { get; }
+
+        public MenuListViewModel(IMenuService menuService, INavigationService navigationService)
         {
             _menuService = menuService;
-            LoadMenuCommand.Execute(null);
+            _navigationService = navigationService;
+            AddMenuCommand = new RelayCommand(() => _navigationService.NavigateToMenuAdd());
+            RemoveMenuCommand = new RelayCommand<int>(async id => await RemoveMenuAsync(id));
+            LoadMenusAsync();
         }
 
-        [RelayCommand]
-        private async Task LoadMenu()
+        private async Task LoadMenusAsync()
         {
-            if (IsLoading) return;
-            
-            try
-            {
-                IsLoading = true;
-
-                var dbCategories = await _menuService.GetAllCategoriesWithDetailsAsync();
-                Categories = new ObservableCollection<CategoryViewModel>(
-                    dbCategories.Select(c => new CategoryViewModel(c, _menuService)));
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            var menuList = await _menuService.GetAllMenusAsync();
+            Menus = new ObservableCollection<Menu>(menuList);
         }
 
-        [RelayCommand]
-        private async Task Search()
+        private async Task RemoveMenuAsync(int id)
         {
-            if (string.IsNullOrWhiteSpace(SearchText))
-            {
-                await LoadMenu();
-                return;
-            }
-
-            if (IsLoading) return;
-
-            try
-            {
-                IsLoading = true;
-
-                var searchTerm = SearchText.ToLower();
-                var categories = await _menuService.SearchMenuAsync(searchTerm);
-                Categories = new ObservableCollection<CategoryViewModel>(
-                    categories.Select(c => new CategoryViewModel(c, _menuService)));
-            }
-            finally
-            {
-                IsLoading = false;
-            }
-        }
-
-        partial void OnSearchTextChanged(string value)
-        {
-            SearchCommand.Execute(null);
+            await _menuService.DeleteMenuAsync(id);
+            await LoadMenusAsync();
         }
     }
 } 

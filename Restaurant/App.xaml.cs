@@ -76,6 +76,7 @@ namespace Restaurant
             services.AddTransient<ProductEditViewModel>();
             services.AddTransient<ProductListViewModel>();
             services.AddTransient<ProductAddViewModel>();
+            services.AddTransient<MenuAddViewModel>();
 
             // Register views with their ViewModels
             services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));
@@ -92,6 +93,16 @@ namespace Restaurant
             services.AddTransient(sp => {
                 var view = new ProductAddView();
                 view.DataContext = sp.GetRequiredService<ProductAddViewModel>();
+                return view;
+            });
+            services.AddTransient(sp => {
+                var view = new Restaurant.Views.Menu.MenuListView();
+                view.DataContext = sp.GetRequiredService<MenuListViewModel>();
+                return view;
+            });
+            services.AddTransient(sp => {
+                var view = new Restaurant.Views.Menu.MenuAddView();
+                view.DataContext = sp.GetRequiredService<MenuAddViewModel>();
                 return view;
             });
 

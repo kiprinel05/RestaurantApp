@@ -8,5 +8,7 @@ namespace Restaurant.Services
     {
         Task<List<Category>> GetAllCategoriesWithDetailsAsync();
         Task<List<Category>> SearchMenuAsync(string searchTerm);
+        Task<List<Menu>> GetAllMenusAsync();
+        Task DeleteMenuAsync(int id);
     }
 } 

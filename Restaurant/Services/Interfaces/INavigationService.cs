@@ -16,6 +16,8 @@ namespace Restaurant.Services
         void NavigateToProductList();
         void NavigateToProductEdit(int? productId);
         void NavigateToProductAdd();
+        void NavigateToMenuList();
+        void NavigateToMenuAdd();
         void NavigateBack();
         Page? CurrentPage { get; }
     }
