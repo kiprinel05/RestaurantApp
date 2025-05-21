@@ -34,12 +34,12 @@ namespace Restaurant.ViewModels
             _productService = productService;
             _navigationService = navigationService;
 
-            AddProductCommand = new RelayCommand(AddProduct);
-            EditProductCommand = new RelayCommand<Product>(EditProduct);
-            DeleteProductCommand = new AsyncRelayCommand<Product>(DeleteProductAsync);
             RefreshCommand = new AsyncRelayCommand(LoadProductsAsync);
+            AddProductCommand = new RelayCommand(() => _navigationService.NavigateToProductAdd());
+            EditProductCommand = new RelayCommand<int>(id => _navigationService.NavigateToProductEdit(id));
+            DeleteProductCommand = new AsyncRelayCommand<int>(async id => await DeleteProductAsync(id));
 
-            LoadProductsAsync().ConfigureAwait(false);
+            LoadProductsAsync();
         }
 
         private async Task LoadProductsAsync()
@@ -62,29 +62,14 @@ namespace Restaurant.ViewModels
             }
         }
 
-        private void AddProduct()
+        private async Task DeleteProductAsync(int id)
         {
-            _navigationService.NavigateToProductEdit(null);
-        }
-
-        private void EditProduct(Product? product)
-        {
-            if (product != null)
-            {
-                _navigationService.NavigateToProductEdit(product.Id);
-            }
-        }
-
-        private async Task DeleteProductAsync(Product? product)
-        {
-            if (product == null) return;
-
             try
             {
                 IsLoading = true;
                 ErrorMessage = string.Empty;
 
-                await _productService.DeleteProductAsync(product.Id);
+                await _productService.DeleteProductAsync(id);
                 await LoadProductsAsync();
             }
             catch (System.Exception ex)

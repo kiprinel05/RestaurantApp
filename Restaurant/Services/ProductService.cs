@@ -11,19 +11,20 @@ namespace Restaurant.Services
 {
     public class ProductService : IProductService
     {
-        private readonly RestaurantDbContext _context;
+        private readonly IDbContextFactory<RestaurantDbContext> _contextFactory;
         private readonly string _imageDirectory;
 
-        public ProductService(RestaurantDbContext context)
+        public ProductService(IDbContextFactory<RestaurantDbContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
             _imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "Products");
             Directory.CreateDirectory(_imageDirectory);
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Allergens)
                 .Include(p => p.Images)
@@ -32,7 +33,8 @@ namespace Restaurant.Services
 
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            return await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Allergens)
                 .Include(p => p.Images)
@@ -41,19 +43,21 @@ namespace Restaurant.Services
 
         public async Task<Product> CreateProductAsync(Product product)
         {
-            if (await _context.Products.AnyAsync(p => p.Name == product.Name))
+            using var context = _contextFactory.CreateDbContext();
+            if (await context.Products.AnyAsync(p => p.Name == product.Name))
             {
                 throw new InvalidOperationException("A product with this name already exists.");
             }
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            context.Products.Add(product);
+            await context.SaveChangesAsync();
             return product;
         }
 
         public async Task<Product> UpdateProductAsync(Product product)
         {
-            var existingProduct = await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            var existingProduct = await context.Products
                 .Include(p => p.Allergens)
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == product.Id);
@@ -63,7 +67,7 @@ namespace Restaurant.Services
                 throw new InvalidOperationException("Product not found.");
             }
 
-            if (await _context.Products.AnyAsync(p => p.Name == product.Name && p.Id != product.Id))
+            if (await context.Products.AnyAsync(p => p.Name == product.Name && p.Id != product.Id))
             {
                 throw new InvalidOperationException("A product with this name already exists.");
             }
@@ -78,13 +82,14 @@ namespace Restaurant.Services
             existingProduct.IsAvailable = product.IsAvailable;
             existingProduct.PrepTime = product.PrepTime;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return existingProduct;
         }
 
         public async Task DeleteProductAsync(int id)
         {
-            var product = await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -103,13 +108,14 @@ namespace Restaurant.Services
                 }
             }
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            context.Products.Remove(product);
+            await context.SaveChangesAsync();
         }
 
         public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Allergens)
                 .Include(p => p.Images)
@@ -119,18 +125,21 @@ namespace Restaurant.Services
 
         public async Task<bool> IsNameUniqueAsync(string name, int? excludeId = null)
         {
-            return !await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            return !await context.Products
                 .AnyAsync(p => p.Name == name && (!excludeId.HasValue || p.Id != excludeId.Value));
         }
 
         public async Task<List<Allergen>> GetAllergensAsync()
         {
-            return await _context.Allergens.ToListAsync();
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Allergens.ToListAsync();
         }
 
         public async Task UpdateProductAllergensAsync(int productId, List<int> allergenIds)
         {
-            var product = await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
                 .Include(p => p.Allergens)
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
@@ -139,7 +148,7 @@ namespace Restaurant.Services
                 throw new InvalidOperationException("Product not found.");
             }
 
-            var allergens = await _context.Allergens
+            var allergens = await context.Allergens
                 .Where(a => allergenIds.Contains(a.Id))
                 .ToListAsync();
 
@@ -149,12 +158,13 @@ namespace Restaurant.Services
                 product.Allergens.Add(allergen);
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         public async Task<string> SaveProductImageAsync(int productId, string base64Image, string fileName)
         {
-            var product = await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
@@ -181,14 +191,15 @@ namespace Restaurant.Services
             };
 
             product.Images.Add(productImage);
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return relativePath;
         }
 
         public async Task DeleteProductImageAsync(int productId, string imagePath)
         {
-            var product = await _context.Products
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
@@ -212,8 +223,73 @@ namespace Restaurant.Services
 
             // Remove from database
             product.Images.Remove(image);
-            _context.ProductImages.Remove(image);
-            await _context.SaveChangesAsync();
+            context.ProductImages.Remove(image);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<string> AddProductImageAsync(int productId, string sourceFilePath)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found.");
+            }
+
+            // Generate unique filename
+            var extension = Path.GetExtension(sourceFilePath);
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+            var relativePath = Path.Combine("Images", "Products", uniqueFileName);
+            var fullPath = Path.Combine(_imageDirectory, uniqueFileName);
+
+            // Copy image to products directory
+            File.Copy(sourceFilePath, fullPath, true);
+
+            // Save image path to database
+            var productImage = new ProductImage
+            {
+                ImagePath = relativePath,
+                ProductId = productId
+            };
+
+            product.Images.Add(productImage);
+            await context.SaveChangesAsync();
+
+            return relativePath;
+        }
+
+        public async Task RemoveProductImageAsync(int productId, string imagePath)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var product = await context.Products
+                .Include(p => p.Images)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null)
+            {
+                throw new InvalidOperationException("Product not found.");
+            }
+
+            var image = product.Images.FirstOrDefault(i => i.ImagePath == imagePath);
+            if (image == null)
+            {
+                throw new InvalidOperationException("Image not found.");
+            }
+
+            // Delete file from disk
+            var fullPath = Path.Combine(_imageDirectory, Path.GetFileName(imagePath));
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+
+            // Remove from database
+            product.Images.Remove(image);
+            context.ProductImages.Remove(image);
+            await context.SaveChangesAsync();
         }
     }
 } 

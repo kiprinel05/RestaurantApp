@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Data;
 using Restaurant.Services;
+using Restaurant.Services.Interfaces;
 using Restaurant.ViewModels;
 using Restaurant.Views;
+using Restaurant.Views.Product;
 using System;
 using System.Windows;
 
@@ -63,6 +65,7 @@ namespace Restaurant
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IAllergenService, AllergenService>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
@@ -72,6 +75,7 @@ namespace Restaurant
             services.AddTransient<CategoryEditViewModel>();
             services.AddTransient<ProductEditViewModel>();
             services.AddTransient<ProductListViewModel>();
+            services.AddTransient<ProductAddViewModel>();
 
             // Register views with their ViewModels
             services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));
@@ -80,7 +84,16 @@ namespace Restaurant
             services.AddTransient(sp => new CategoryListView(sp.GetRequiredService<CategoryListViewModel>()));
             services.AddTransient(sp => new CategoryEditView(sp.GetRequiredService<CategoryEditViewModel>()));
             services.AddTransient(sp => new ProductListView(sp.GetRequiredService<ProductListViewModel>()));
-            services.AddTransient(sp => new ProductEditView(sp.GetRequiredService<ProductEditViewModel>()));
+            services.AddTransient(sp => {
+                var view = new ProductEditView();
+                view.DataContext = sp.GetRequiredService<ProductEditViewModel>();
+                return view;
+            });
+            services.AddTransient(sp => {
+                var view = new ProductAddView();
+                view.DataContext = sp.GetRequiredService<ProductAddViewModel>();
+                return view;
+            });
 
             // Register MainWindow as singleton
             services.AddSingleton<MainWindow>();

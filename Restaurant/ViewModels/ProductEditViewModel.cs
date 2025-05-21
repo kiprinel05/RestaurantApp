@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Restaurant.ViewModels
 {
-    public partial class ProductEditViewModel : ObservableObject
+    public partial class ProductEditViewModel : ObservableObject, INavigationAware
     {
         private readonly IProductService _productService;
         private readonly INavigationService _navigationService;
@@ -87,17 +87,16 @@ namespace Restaurant.ViewModels
             RemoveImageCommand = new AsyncRelayCommand<string>(RemoveImageAsync);
             AddAllergenCommand = new RelayCommand<Allergen>(AddAllergen);
             RemoveAllergenCommand = new RelayCommand<Allergen>(RemoveAllergen);
-
-            LoadDataAsync().ConfigureAwait(false);
         }
 
-        private async Task LoadDataAsync()
+        public async void OnNavigatedTo(object? parameter)
         {
             try
             {
                 IsLoading = true;
                 ErrorMessage = string.Empty;
 
+                // Load categories and allergens
                 var categoriesTask = _categoryService.GetAllCategoriesAsync();
                 var allergensTask = _productService.GetAllergensAsync();
 
@@ -110,6 +109,30 @@ namespace Restaurant.ViewModels
                 {
                     SelectedCategoryId = Categories.First().Id;
                 }
+
+                // If we have a product ID, load the product
+                if (parameter is int productId)
+                {
+                    _existingProduct = await _productService.GetProductByIdAsync(productId);
+                    if (_existingProduct == null)
+                    {
+                        ErrorMessage = "Product not found.";
+                        return;
+                    }
+
+                    Title = "Edit Product";
+                    Name = _existingProduct.Name;
+                    Description = _existingProduct.Description;
+                    Price = _existingProduct.Price;
+                    PortionQuantity = _existingProduct.PortionQuantity;
+                    TotalQuantity = _existingProduct.TotalQuantity;
+                    IsAvailable = _existingProduct.IsAvailable;
+                    PrepTime = _existingProduct.PrepTime;
+                    SelectedCategoryId = _existingProduct.CategoryId;
+
+                    SelectedAllergens = new ObservableCollection<Allergen>(_existingProduct.Allergens);
+                    ProductImages = new ObservableCollection<string>(_existingProduct.Images.Select(i => i.ImagePath));
+                }
             }
             catch (Exception ex)
             {
@@ -121,46 +144,9 @@ namespace Restaurant.ViewModels
             }
         }
 
-        public async Task LoadProductAsync(int? productId)
+        public void OnNavigatedFrom()
         {
-            if (!productId.HasValue)
-            {
-                return;
-            }
-
-            try
-            {
-                IsLoading = true;
-                ErrorMessage = string.Empty;
-
-                _existingProduct = await _productService.GetProductByIdAsync(productId.Value);
-                if (_existingProduct == null)
-                {
-                    ErrorMessage = "Product not found.";
-                    return;
-                }
-
-                Title = "Edit Product";
-                Name = _existingProduct.Name;
-                Description = _existingProduct.Description;
-                Price = _existingProduct.Price;
-                PortionQuantity = _existingProduct.PortionQuantity;
-                TotalQuantity = _existingProduct.TotalQuantity;
-                IsAvailable = _existingProduct.IsAvailable;
-                PrepTime = _existingProduct.PrepTime;
-                SelectedCategoryId = _existingProduct.CategoryId;
-
-                SelectedAllergens = new ObservableCollection<Allergen>(_existingProduct.Allergens);
-                ProductImages = new ObservableCollection<string>(_existingProduct.Images.Select(i => i.ImagePath));
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = $"Failed to load product: {ex.Message}";
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            // Cleanup if needed
         }
 
         private async Task SaveAsync()
@@ -195,6 +181,7 @@ namespace Restaurant.ViewModels
                 if (_existingProduct == null)
                 {
                     await _productService.CreateProductAsync(product);
+                    _existingProduct = product;
                 }
                 else
                 {
@@ -249,16 +236,11 @@ namespace Restaurant.ViewModels
                     IsLoading = true;
                     ErrorMessage = string.Empty;
 
-                    var imageBytes = await File.ReadAllBytesAsync(dialog.FileName);
-                    var base64Image = Convert.ToBase64String(imageBytes);
-                    var fileName = Path.GetFileName(dialog.FileName);
-
-                    var imagePath = await _productService.SaveProductImageAsync(
-                        _existingProduct.Id,
-                        base64Image,
-                        fileName);
-
-                    ProductImages.Add(imagePath);
+                    var imagePath = await _productService.AddProductImageAsync(_existingProduct.Id, dialog.FileName);
+                    if (!string.IsNullOrEmpty(imagePath))
+                    {
+                        ProductImages.Add(imagePath);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -283,7 +265,7 @@ namespace Restaurant.ViewModels
                 IsLoading = true;
                 ErrorMessage = string.Empty;
 
-                await _productService.DeleteProductImageAsync(_existingProduct.Id, imagePath);
+                await _productService.RemoveProductImageAsync(_existingProduct.Id, imagePath);
                 ProductImages.Remove(imagePath);
             }
             catch (Exception ex)
@@ -298,7 +280,7 @@ namespace Restaurant.ViewModels
 
         private void AddAllergen(Allergen? allergen)
         {
-            if (allergen == null || SelectedAllergens.Any(a => a.Id == allergen.Id))
+            if (allergen == null || SelectedAllergens.Contains(allergen))
             {
                 return;
             }
@@ -313,11 +295,7 @@ namespace Restaurant.ViewModels
                 return;
             }
 
-            var existingAllergen = SelectedAllergens.FirstOrDefault(a => a.Id == allergen.Id);
-            if (existingAllergen != null)
-            {
-                SelectedAllergens.Remove(existingAllergen);
-            }
+            SelectedAllergens.Remove(allergen);
         }
     }
 } 

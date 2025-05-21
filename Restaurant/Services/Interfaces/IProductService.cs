@@ -17,5 +17,7 @@ namespace Restaurant.Services
         Task UpdateProductAllergensAsync(int productId, List<int> allergenIds);
         Task<string> SaveProductImageAsync(int productId, string base64Image, string fileName);
         Task DeleteProductImageAsync(int productId, string imagePath);
+        Task<string> AddProductImageAsync(int productId, string sourceFilePath);
+        Task RemoveProductImageAsync(int productId, string imagePath);
     }
 } 

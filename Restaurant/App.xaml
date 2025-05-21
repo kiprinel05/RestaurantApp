@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="/Styles/Auth.xaml"/>
                 <ResourceDictionary Source="/Styles/DashboardStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/CategoryFormStyles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Styles/products_add_styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>

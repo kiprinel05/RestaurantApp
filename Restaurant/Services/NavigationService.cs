@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Models;
 using Restaurant.ViewModels;
 using Restaurant.Views;
+using Restaurant.Views.Product;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -145,9 +146,21 @@ namespace Restaurant.Services
 
             if (productId.HasValue)
             {
-                viewModel.LoadProductAsync(productId.Value).ConfigureAwait(false);
+                viewModel.OnNavigatedTo(productId.Value);
+            }
+            else
+            {
+                viewModel.OnNavigatedTo(null);
             }
 
+            NavigateTo(view);
+        }
+
+        public void NavigateToProductAdd()
+        {
+            var view = new ProductAddView();
+            var viewModel = _serviceProvider.GetRequiredService<ProductAddViewModel>();
+            view.DataContext = viewModel;
             NavigateTo(view);
         }
 
