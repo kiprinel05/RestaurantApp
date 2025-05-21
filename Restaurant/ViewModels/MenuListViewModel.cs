@@ -37,7 +37,7 @@ namespace Restaurant.ViewModels
 
                 var dbCategories = await _menuService.GetAllCategoriesWithDetailsAsync();
                 Categories = new ObservableCollection<CategoryViewModel>(
-                    dbCategories.Select(c => new CategoryViewModel(c)));
+                    dbCategories.Select(c => new CategoryViewModel(c, _menuService)));
             }
             finally
             {
@@ -63,7 +63,7 @@ namespace Restaurant.ViewModels
                 var searchTerm = SearchText.ToLower();
                 var categories = await _menuService.SearchMenuAsync(searchTerm);
                 Categories = new ObservableCollection<CategoryViewModel>(
-                    categories.Select(c => new CategoryViewModel(c)));
+                    categories.Select(c => new CategoryViewModel(c, _menuService)));
             }
             finally
             {

@@ -53,6 +53,28 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="FilterToggleButtonStyle" TargetType="ToggleButton">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FF3D3D3D"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid Background="{StaticResource PrimaryBackgroundBrush}">
@@ -67,6 +89,7 @@
               Margin="0,0,0,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
@@ -76,28 +99,35 @@
                        Margin="24,16"
                        Foreground="{StaticResource PrimaryTextBrush}"/>
 
-            <TextBox Grid.Column="1"
+            <ToggleButton Grid.Column="1"
+                         Content="Caută după alergeni"
+                         IsChecked="{Binding SearchByAllergen}"
+                         Style="{StaticResource FilterToggleButtonStyle}"
+                         Margin="0,16"/>
+
+            <TextBox Grid.Column="2"
                      Margin="16"
                      Style="{StaticResource SearchTextBoxStyle}"
                      Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
-        <!-- continut principal -->
+        <!-- Main Content -->
         <ScrollViewer Grid.Row="1" 
-                      VerticalScrollBarVisibility="Auto"
-                      Margin="16,0">
+                     VerticalScrollBarVisibility="Auto"
+                     Margin="16,0">
             <ItemsControl ItemsSource="{Binding Categories}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,0,0,32">
                             <TextBlock Text="{Binding Name}"
-                                       FontSize="22"
-                                       FontWeight="SemiBold"
-                                       Margin="8,0,0,16"
-                                       Foreground="{StaticResource PrimaryTextBrush}"/>
+                                     FontSize="22"
+                                     FontWeight="SemiBold"
+                                     Margin="8,0,0,16"
+                                     Foreground="{StaticResource PrimaryTextBrush}"/>
 
+                            <!-- Products -->
                             <ItemsControl ItemsSource="{Binding Products}"
-                                          Margin="0,8,0,0">
+                                        Margin="0,8,0,0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel/>
@@ -109,13 +139,28 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
+                            <!-- Menus -->
+                            <ItemsControl ItemsSource="{Binding Menus}"
+                                        Margin="0,16,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <controls:MenuCard Width="280"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
 
-        <!-- indicator de incarcare -->
+        <!-- Loading Indicator -->
         <Grid Grid.Row="1" 
               Background="#80000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">

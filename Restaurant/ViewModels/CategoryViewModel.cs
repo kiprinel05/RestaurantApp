@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Restaurant.Models;
 using System.Collections.ObjectModel;
+using Restaurant.Services;
 
 namespace Restaurant.ViewModels
 {
@@ -25,7 +26,7 @@ namespace Restaurant.ViewModels
         {
         }
 
-        public CategoryViewModel(Category category)
+        public CategoryViewModel(Category category, IMenuService menuService)
         {
             Id = category.Id;
             Name = category.Name;
@@ -35,7 +36,7 @@ namespace Restaurant.ViewModels
                 category.Products.Select(p => new ProductViewModel(p)));
             
             Menus = new ObservableCollection<MenuViewModel>(
-                category.Menus.Select(m => new MenuViewModel(m)));
+                category.Menus.Select(m => new MenuViewModel(menuService)));
         }
     }
 } 

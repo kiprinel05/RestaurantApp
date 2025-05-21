@@ -4,78 +4,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:Restaurant.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="400">
-    
-    <Border Background="White" 
-            CornerRadius="8" 
-            BorderBrush="#EEEEEE" 
-            BorderThickness="1"
+             d:DesignHeight="400" d:DesignWidth="280">
+
+    <UserControl.Resources>
+        <converters:AvailabilityConverter x:Key="AvailabilityConverter"/>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource SecondaryBackgroundBrush}"
+            CornerRadius="8"
             Margin="8">
-        <Grid Margin="16">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- titlu si pret -->
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <!-- Menu Image -->
+            <Border Grid.Row="0"
+                    CornerRadius="8,8,0,0"
+                    Background="{StaticResource PrimaryBackgroundBrush}">
+                <Image Source="{Binding ImagePath}"
+                       Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- Menu Name and Price -->
+            <Grid Grid.Row="1" Margin="16,16,16,8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
                 <TextBlock Text="{Binding Name}"
-                          FontSize="20"
-                          FontWeight="SemiBold"/>
+                         FontSize="18"
+                         FontWeight="SemiBold"
+                         Foreground="{StaticResource PrimaryTextBrush}"/>
 
-                <TextBlock Grid.Column="1"
-                          Text="{Binding Price, StringFormat={}{0:C}}"
-                          FontSize="20"
-                          FontWeight="Bold"
-                          Foreground="#2ECC71"/>
+                <TextBlock Grid.Row="1"
+                         Text="{Binding Price, StringFormat='{}{0:C}'}"
+                         FontSize="16"
+                         Margin="0,4,0,0"
+                         Foreground="{StaticResource PrimaryTextBrush}"/>
             </Grid>
 
-            <!-- descriere -->
-            <TextBlock Grid.Row="1"
-                       Text="{Binding Description}"
-                       TextWrapping="Wrap"
-                       Margin="0,8"
-                       Foreground="#666666"/>
+            <!-- Menu Items -->
+            <ItemsControl Grid.Row="2"
+                         ItemsSource="{Binding MenuProducts}"
+                         Margin="16,0,16,8">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ProductName}"
+                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                 Margin="0,2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-            <!-- lista de produse -->
-            <StackPanel Grid.Row="2">
-                <TextBlock Text="Conține:"
-                          FontWeight="SemiBold"
-                          Margin="0,0,0,4"/>
+            <!-- Allergens -->
+            <ItemsControl Grid.Row="3"
+                         ItemsSource="{Binding Allergens}"
+                         Margin="16,0,16,16">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PrimaryBackgroundBrush}"
+                                CornerRadius="4"
+                                Margin="0,0,4,4"
+                                Padding="8,4">
+                            <TextBlock Text="{Binding Name}"
+                                     Foreground="{StaticResource SecondaryTextBrush}"
+                                     FontSize="12"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding MenuItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" 
-                                      Margin="0,2">
-                                <TextBlock Text="{Binding ProductName}"
-                                         Foreground="#666666"/>
-                                <TextBlock Text="{Binding QuantityDisplay}"
-                                         Margin="8,0,0,0"
-                                         Foreground="#999999"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-
-                <!-- disponibilitate -->
-                <Border Background="{Binding IsAvailable, Converter={StaticResource BoolToColorConverter}}"
-                        CornerRadius="4"
-                        Padding="6,2"
-                        HorizontalAlignment="Left"
-                        Margin="0,8,0,0">
-                    <TextBlock Text="{Binding IsAvailable, Converter={StaticResource AvailabilityConverter}}"
-                             FontSize="10"
-                             Foreground="White"/>
-                </Border>
-            </StackPanel>
+            <!-- Availability Overlay -->
+            <Border Grid.Row="0"
+                    Grid.RowSpan="4"
+                    Background="#80000000"
+                    CornerRadius="8"
+                    Visibility="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                <TextBlock Text="Indisponibil"
+                         Foreground="White"
+                         FontSize="24"
+                         FontWeight="Bold"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+            </Border>
         </Grid>
     </Border>
 </UserControl> 

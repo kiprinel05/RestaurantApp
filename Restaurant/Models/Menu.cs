@@ -54,5 +54,8 @@ namespace Restaurant.Models
                 return MenuProducts.Sum(mp => mp.Product.PrepTime);
             }
         }
+
+        [StringLength(500)]
+        public string ImagePath { get; set; } = string.Empty;
     }
 } 

@@ -1,3 +1,4 @@
+using Restaurant.Models;
 using System.Windows.Controls;
 
 namespace Restaurant.Views.Controls
