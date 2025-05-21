@@ -5,12 +5,11 @@ using Restaurant.Services;
 using Restaurant.Views;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Restaurant.ViewModels
 {
-    public partial class CategoryListViewModel : ObservableObject
+    public partial class CategoryListViewModel : ObservableObject, Restaurant.Services.INavigationAware
     {
         private readonly ICategoryService _categoryService;
         private readonly INavigationService _navigationService;
@@ -76,7 +75,7 @@ namespace Restaurant.ViewModels
         private async Task EditCategoryAsync(Category? category)
         {
             if (category == null) return;
-            _navigationService.NavigateTo(typeof(CategoryEditView), category.Id);
+            _navigationService.NavigateToCategoryEdit(category.Id);
         }
 
         private async Task DeleteCategoryAsync(Category? category)
@@ -85,29 +84,35 @@ namespace Restaurant.ViewModels
 
             try
             {
-                var result = MessageBox.Show(
+                var result = System.Windows.MessageBox.Show(
                     $"Are you sure you want to delete category '{category.Name}'?",
                     "Confirm Delete",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Warning);
 
-                if (result != MessageBoxResult.Yes) return;
+                if (result != System.Windows.MessageBoxResult.Yes) return;
 
                 await _categoryService.DeleteCategoryAsync(category.Id);
                 await LoadCategoriesAsync();
             }
-            catch (InvalidOperationException ex)
+            catch (System.InvalidOperationException ex)
             {
-                MessageBox.Show(
+                System.Windows.MessageBox.Show(
                     ex.Message,
                     "Cannot Delete Category",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
             }
             catch (System.Exception ex)
             {
                 ErrorMessage = $"Error deleting category: {ex.Message}";
             }
+        }
+
+        // INavigationAware implementation
+        public void OnNavigatedTo(object parameter)
+        {
+            _ = LoadCategoriesAsync();
         }
     }
 } 

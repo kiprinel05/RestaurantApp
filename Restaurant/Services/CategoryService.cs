@@ -8,16 +8,17 @@ namespace Restaurant.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly RestaurantDbContext _context;
+        private readonly IDbContextFactory<RestaurantDbContext> _contextFactory;
 
-        public CategoryService(RestaurantDbContext context)
+        public CategoryService(IDbContextFactory<RestaurantDbContext> contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            return await _context.Categories
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Categories
                 .Include(c => c.Products)
                 .Include(c => c.Menus)
                 .ToListAsync();
@@ -25,7 +26,8 @@ namespace Restaurant.Services
 
         public async Task<Category?> GetCategoryByIdAsync(int id)
         {
-            return await _context.Categories
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Categories
                 .Include(c => c.Products)
                 .Include(c => c.Menus)
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -33,25 +35,28 @@ namespace Restaurant.Services
 
         public async Task<Category> AddCategoryAsync(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            using var context = _contextFactory.CreateDbContext();
+            context.Categories.Add(category);
+            await context.SaveChangesAsync();
             return category;
         }
 
         public async Task<Category> UpdateCategoryAsync(Category category)
         {
-            var existingCategory = await _context.Categories.FindAsync(category.Id);
+            using var context = _contextFactory.CreateDbContext();
+            var existingCategory = await context.Categories.FindAsync(category.Id);
             if (existingCategory == null)
                 throw new KeyNotFoundException($"Category with ID {category.Id} not found");
 
-            _context.Entry(existingCategory).CurrentValues.SetValues(category);
-            await _context.SaveChangesAsync();
+            context.Entry(existingCategory).CurrentValues.SetValues(category);
+            await context.SaveChangesAsync();
             return category;
         }
 
         public async Task DeleteCategoryAsync(int id)
         {
-            var category = await _context.Categories
+            using var context = _contextFactory.CreateDbContext();
+            var category = await context.Categories
                 .Include(c => c.Products)
                 .Include(c => c.Menus)
                 .FirstOrDefaultAsync(c => c.Id == id);
@@ -62,13 +67,14 @@ namespace Restaurant.Services
             if (category.Products.Any() || category.Menus.Any())
                 throw new InvalidOperationException("Cannot delete category that has products or menus");
 
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            context.Categories.Remove(category);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> IsCategoryNameUniqueAsync(string name, int? excludeId = null)
         {
-            var query = _context.Categories.AsQueryable();
+            using var context = _contextFactory.CreateDbContext();
+            var query = context.Categories.AsQueryable();
             if (excludeId.HasValue)
                 query = query.Where(c => c.Id != excludeId.Value);
 

@@ -19,7 +19,7 @@ namespace Restaurant.Services
         public async Task<List<Category>> GetAllCategoriesWithDetailsAsync()
         {
             using var context = _contextFactory.CreateDbContext();
-            return await context.Categories
+            var categories = await context.Categories
                 .Include(c => c.Products)
                     .ThenInclude(p => p.Allergens)
                 .Include(c => c.Products)
@@ -28,6 +28,20 @@ namespace Restaurant.Services
                     .ThenInclude(m => m.MenuProducts)
                         .ThenInclude(mp => mp.Product)
                 .ToListAsync();
+
+            // Ensure all menus have valid image paths
+            foreach (var category in categories)
+            {
+                foreach (var menu in category.Menus)
+                {
+                    if (string.IsNullOrEmpty(menu.ImagePath))
+                    {
+                        menu.ImagePath = "/Images/default-menu.jpg";
+                    }
+                }
+            }
+
+            return categories;
         }
 
         public async Task<List<Category>> SearchMenuAsync(string searchTerm)
@@ -50,6 +64,15 @@ namespace Restaurant.Services
                 .Where(m => m.Name.ToLower().Contains(searchTerm) ||
                            m.Description.ToLower().Contains(searchTerm))
                 .ToListAsync();
+
+            // Ensure all menus have valid image paths
+            foreach (var menu in matchingMenus)
+            {
+                if (string.IsNullOrEmpty(menu.ImagePath))
+                {
+                    menu.ImagePath = "/Images/default-menu.jpg";
+                }
+            }
 
             // Combine unique categories that contain either matching products or menus
             var categoriesWithProducts = matchingProducts.GroupBy(p => p.Category);

@@ -7,11 +7,11 @@ using System.Windows.Input;
 
 namespace Restaurant.ViewModels
 {
-    public partial class CategoryEditViewModel : ObservableObject
+    public partial class CategoryEditViewModel : ObservableObject, Restaurant.Services.INavigationAware
     {
         private readonly ICategoryService _categoryService;
         private readonly INavigationService _navigationService;
-        private readonly int? _categoryId;
+        private int? _categoryId;
 
         [ObservableProperty]
         private string name = string.Empty;
@@ -32,20 +32,13 @@ namespace Restaurant.ViewModels
 
         public CategoryEditViewModel(
             ICategoryService categoryService,
-            INavigationService navigationService,
-            int? categoryId = null)
+            INavigationService navigationService)
         {
             _categoryService = categoryService;
             _navigationService = navigationService;
-            _categoryId = categoryId;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync);
             CancelCommand = new RelayCommand(() => _navigationService.NavigateBack());
-
-            if (categoryId.HasValue)
-            {
-                _ = LoadCategoryAsync(categoryId.Value);
-            }
         }
 
         public async Task LoadCategoryAsync(int categoryId)
@@ -58,6 +51,7 @@ namespace Restaurant.ViewModels
                 var category = await _categoryService.GetCategoryByIdAsync(categoryId);
                 if (category != null)
                 {
+                    _categoryId = category.Id;
                     Name = category.Name;
                     Description = category.Description;
                 }
@@ -118,6 +112,22 @@ namespace Restaurant.ViewModels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        // INavigationAware implementation
+        public void OnNavigatedTo(object parameter)
+        {
+            if (parameter is int categoryId)
+            {
+                _ = LoadCategoryAsync(categoryId);
+            }
+            else
+            {
+                // New category
+                _categoryId = null;
+                Name = string.Empty;
+                Description = string.Empty;
             }
         }
     }

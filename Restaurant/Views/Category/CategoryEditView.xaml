@@ -9,7 +9,7 @@
       d:DataContext="{d:DesignInstance Type=vm:CategoryEditViewModel}"
       Background="{StaticResource PrimaryBackgroundBrush}">
 
-    <Grid Margin="20">
+    <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,46 +18,73 @@
 
         <!-- Header -->
         <TextBlock Text="{Binding Title}"
-                 Style="{StaticResource HeaderText}"
+                 FontSize="28"
+                 FontWeight="Bold"
+                 Foreground="{StaticResource PrimaryTextBrush}"
                  HorizontalAlignment="Center"
-                 Margin="0,0,0,20"/>
+                 Margin="0,32,0,32"/>
 
         <!-- Form -->
-        <StackPanel Grid.Row="1" MaxWidth="600">
-            <!-- Error Message -->
-            <TextBlock Text="{Binding ErrorMessage}"
-                     Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                     Style="{StaticResource FormErrorStyle}"
-                     Margin="0,0,0,20"/>
+        <Border Grid.Row="1"
+                Background="{StaticResource SecondaryBackgroundBrush}"
+                CornerRadius="12"
+                Padding="56"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                MinWidth="500"
+                MaxWidth="900">
+            <StackPanel>
+                <!-- Error Message -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                         Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         Style="{StaticResource FormErrorStyle}"
+                         Margin="0,0,0,20"/>
 
-            <!-- Name -->
-            <TextBlock Text="Name"
-                     Style="{StaticResource FormLabelStyle}"
-                     Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource FormTextBoxStyle}"
-                   Margin="0,0,0,15"/>
+                <!-- Name -->
+                <TextBlock Text="Name"
+                         Style="{StaticResource FormLabelStyle}"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Margin="0,0,0,5"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,15"
+                       HorizontalAlignment="Stretch"
+                       MinWidth="350"
+                       MaxWidth="700"/>
 
-            <!-- Description -->
-            <TextBlock Text="Description"
-                     Style="{StaticResource FormLabelStyle}"
-                     Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource FormMultilineTextBoxStyle}"
-                   Margin="0,0,0,20"/>
-        </StackPanel>
+                <!-- Description -->
+                <TextBlock Text="Description"
+                         Style="{StaticResource FormLabelStyle}"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Margin="0,0,0,5"/>
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormMultilineTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,20"
+                       HorizontalAlignment="Stretch"
+                       MinWidth="350"
+                       MaxWidth="700"/>
+            </StackPanel>
+        </Border>
 
         <!-- Buttons -->
         <StackPanel Grid.Row="2"
                   Orientation="Horizontal"
                   HorizontalAlignment="Center"
-                  Margin="0,20,0,0">
+                  Margin="0,32,0,0">
             <Button Content="Save"
                     Command="{Binding SaveCommand}"
-                    Style="{StaticResource FormSubmitButtonStyle}"/>
+                    Style="{StaticResource PrimaryButton}"/>
             <Button Content="Cancel"
                     Command="{Binding CancelCommand}"
-                    Style="{StaticResource FormCancelButtonStyle}"/>
+                    Style="{StaticResource SecondaryButton}"/>
         </StackPanel>
 
         <!-- Loading Overlay -->
