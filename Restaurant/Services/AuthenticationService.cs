@@ -82,6 +82,8 @@ namespace Restaurant.Services
             };
         }
 
+        public bool IsAuthenticated => _currentUser != null && _currentUser.Role != UserRole.Guest;
+
         private string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();

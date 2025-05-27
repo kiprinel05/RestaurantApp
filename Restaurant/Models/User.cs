@@ -44,6 +44,7 @@ namespace Restaurant.Models
     public enum UserRole
     {
         Customer,
-        Employee
+        Employee,
+        Guest
     }
 } 

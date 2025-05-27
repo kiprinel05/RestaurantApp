@@ -109,11 +109,13 @@
                             Style="{StaticResource NavigationButtonStyle}"
                             Content="My Orders"
                             Margin="0,0,20,0"
-                            Click="MyOrdersButton_Click"/>
+                            Click="MyOrdersButton_Click"
+                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <Button x:Name="CartButton"
                             Style="{StaticResource NavigationButtonStyle}"
                             Content="Cart"
-                            Click="CartButton_Click"/>
+                            Click="CartButton_Click"
+                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
 
                 <!-- Search Bar -->

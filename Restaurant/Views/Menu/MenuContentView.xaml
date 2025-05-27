@@ -75,7 +75,8 @@
                                                     
                                                     <Button Grid.Column="1"
                                                             Content="Add to Cart"
-                                                            Style="{StaticResource AddToCartButtonStyle}"/>
+                                                            Style="{StaticResource AddToCartButtonStyle}"
+                                                            Visibility="{Binding DataContext.IsAuthenticated, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Grid>
@@ -133,7 +134,8 @@
                                                     
                                                     <Button Grid.Column="1"
                                                             Content="Add to Cart"
-                                                            Style="{StaticResource AddToCartButtonStyle}"/>
+                                                            Style="{StaticResource AddToCartButtonStyle}"
+                                                            Visibility="{Binding DataContext.IsAuthenticated, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Grid>

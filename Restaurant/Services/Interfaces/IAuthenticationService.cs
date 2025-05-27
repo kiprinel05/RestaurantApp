@@ -11,5 +11,6 @@ namespace Restaurant.Services
         User? GetCurrentUser();
         void Logout();
         bool IsUserInRole(string role);
+        bool IsAuthenticated { get; }
     }
 } 

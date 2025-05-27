@@ -118,5 +118,15 @@ namespace Restaurant.ViewModels
                 CurrentContent = _serviceProvider.GetRequiredService<CartView>();
             }
         }
+
+        public bool IsAuthenticated
+        {
+            get
+            {
+                if (_serviceProvider == null) return false;
+                var authService = _serviceProvider.GetService(typeof(IAuthenticationService)) as IAuthenticationService;
+                return authService?.IsAuthenticated ?? false;
+            }
+        }
     }
 } 

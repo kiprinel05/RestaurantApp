@@ -152,6 +152,22 @@ namespace Restaurant.ViewModels
 
         private void ContinueAsGuest()
         {
+            // Creează un user Guest și setează-l ca user curent
+            var guestUser = new Restaurant.Models.User
+            {
+                FirstName = "Guest",
+                LastName = string.Empty,
+                Email = string.Empty,
+                PasswordHash = string.Empty,
+                PhoneNumber = string.Empty,
+                DeliveryAddress = string.Empty,
+                Role = Restaurant.Models.UserRole.Guest
+            };
+            var authServiceField = typeof(Restaurant.Services.AuthenticationService).GetField("_currentUser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (authServiceField != null && _authService is Restaurant.Services.AuthenticationService concreteAuthService)
+            {
+                authServiceField.SetValue(concreteAuthService, guestUser);
+            }
             _navigationService.NavigateToMenu();
         }
 
