@@ -127,7 +127,7 @@ namespace Restaurant.ViewModels
                 // Discount by order count in interval
                 var orders = await _orderService.GetOrdersForUserAsync(user.Id);
                 var interval = TimeSpan.FromDays(settings.DiscountSettings.DiscountOrderIntervalDays);
-                var recentOrders = orders.Where(o => o.OrderDate >= DateTime.Now - interval).ToList();
+                var recentOrders = orders.Where(o => o.OrderDate >= DateTime.Now - interval && o.Status != OrderStatus.Cancelled).ToList();
                 if (recentOrders.Count >= settings.DiscountSettings.DiscountOrderCount)
                 {
                     Discount = SubTotal * ((decimal)settings.DiscountSettings.DiscountPercent / 100m);

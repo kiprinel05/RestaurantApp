@@ -99,6 +99,30 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Text="{Binding SubTotal, StringFormat='Subtotal: {0:C}'}"
+                                               Foreground="#BBB"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"/>
+                                    <TextBlock Text="{Binding Discount, StringFormat='Discount: -{0:C}'}"
+                                               Foreground="#4CAF50"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"
+                                               Visibility="{Binding Discount, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                    <TextBlock Text="{Binding DeliveryFee, StringFormat='Transport: +{0:C}'}"
+                                               Foreground="#E57373"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"
+                                               Visibility="{Binding DeliveryFee, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                    <TextBlock Text="{Binding Total, StringFormat='Total: {0:C}'}"
+                                               Foreground="#FFF"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Margin="0,8,0,0"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
