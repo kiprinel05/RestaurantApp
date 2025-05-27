@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Models;
 using System.Collections.ObjectModel;
 using Restaurant.Services;
@@ -22,12 +23,15 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private ObservableCollection<MenuViewModel> menus = new();
 
+        private readonly IServiceProvider _serviceProvider;
+
         public CategoryViewModel()
         {
         }
 
-        public CategoryViewModel(Category category, IMenuService menuService)
+        public CategoryViewModel(Category category, IMenuService menuService, IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             Id = category.Id;
             Name = category.Name;
             Description = category.Description;
@@ -36,7 +40,7 @@ namespace Restaurant.ViewModels
                 category.Products.Select(p => new ProductViewModel(p)));
             
             Menus = new ObservableCollection<MenuViewModel>(
-                category.Menus.Select(m => new MenuViewModel(menuService)));
+                category.Menus.Select(m => new MenuViewModel(menuService, serviceProvider)));
         }
     }
 } 

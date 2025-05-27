@@ -1,0 +1,183 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Navigation Button Style -->
+    <Style x:Key="NavigationButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Search TextBox Style -->
+    <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer x:Name="PART_ContentHost" 
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Page Title Style -->
+    <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+    </Style>
+
+    <!-- Category Title Style -->
+    <Style x:Key="CategoryTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+    </Style>
+
+    <!-- Category Description Style -->
+    <Style x:Key="CategoryDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Product Card Style -->
+    <Style x:Key="ProductCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="15" 
+                                ShadowDepth="1" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Menu Card Style -->
+    <Style x:Key="MenuCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="15" 
+                                ShadowDepth="1" 
+                                Opacity="0.2"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Product Name Style -->
+    <Style x:Key="ProductNameStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+    </Style>
+
+    <!-- Product Description Style -->
+    <Style x:Key="ProductDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+        <Setter Property="MaxHeight" Value="60"/>
+    </Style>
+
+    <!-- Product Price Style -->
+    <Style x:Key="ProductPriceStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+    </Style>
+
+    <!-- Menu Name Style -->
+    <Style x:Key="MenuNameStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+    </Style>
+
+    <!-- Menu Description Style -->
+    <Style x:Key="MenuDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+        <Setter Property="MaxHeight" Value="80"/>
+    </Style>
+
+    <!-- Menu Price Style -->
+    <Style x:Key="MenuPriceStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+    </Style>
+
+    <!-- Add to Cart Button Style -->
+    <Style x:Key="AddToCartButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="15,8"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                            <Setter Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary> 

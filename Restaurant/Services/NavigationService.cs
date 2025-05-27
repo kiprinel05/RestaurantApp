@@ -70,8 +70,9 @@ namespace Restaurant.Services
 
         public void NavigateToMenu()
         {
-            var viewModel = _serviceProvider.GetRequiredService<MenuListViewModel>();
-            var view = _serviceProvider.GetRequiredService<MenuView>();
+            var viewModel = _serviceProvider.GetRequiredService<MenuViewModel>();
+            var view = _serviceProvider.GetRequiredService<Restaurant.Views.Menu.MenuView>();
+            view.DataContext = viewModel;
             NavigateTo(view);
         }
 

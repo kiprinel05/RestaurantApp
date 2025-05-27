@@ -69,6 +69,9 @@ namespace Restaurant
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
+            services.AddTransient<MenuViewModel>(sp => new MenuViewModel(
+                sp.GetRequiredService<IMenuService>(),
+                sp));
             services.AddTransient<MenuListViewModel>();
             services.AddTransient<EmployeeDashboardViewModel>();
             services.AddTransient<CategoryListViewModel>();
@@ -80,7 +83,10 @@ namespace Restaurant
 
             // Register views with their ViewModels
             services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));
-            services.AddTransient(sp => new MenuView(sp.GetRequiredService<MenuListViewModel>()));
+            services.AddTransient<Restaurant.Views.Menu.MenuView>();
+            services.AddTransient<Restaurant.Views.Menu.MenuContentView>();
+            services.AddTransient<Restaurant.Views.Menu.OrdersView>();
+            services.AddTransient<Restaurant.Views.Menu.CartView>();
             services.AddTransient(sp => new EmployeeDashboardView(sp.GetRequiredService<EmployeeDashboardViewModel>()));
             services.AddTransient(sp => new CategoryListView(sp.GetRequiredService<CategoryListViewModel>()));
             services.AddTransient(sp => new CategoryEditView(sp.GetRequiredService<CategoryEditViewModel>()));

@@ -1,15 +1,19 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Models;
 using Restaurant.Services;
+using Restaurant.Views.Menu;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Restaurant.ViewModels
 {
     public partial class MenuViewModel : ObservableObject
     {
         private readonly IMenuService _menuService;
+        private readonly IServiceProvider? _serviceProvider;
         private List<Category> _allCategories = new();
 
         [ObservableProperty]
@@ -19,23 +23,22 @@ namespace Restaurant.ViewModels
         private string searchQuery = string.Empty;
 
         [ObservableProperty]
-        private bool searchByAllergen;
+        private string contentTitle = "Menu";
+
+        [ObservableProperty]
+        private object currentContent;
 
         [ObservableProperty]
         private ObservableCollection<Category> categories = new();
 
-        public MenuViewModel(IMenuService menuService)
+        public MenuViewModel(IMenuService menuService, IServiceProvider? serviceProvider = null)
         {
             _menuService = menuService;
+            _serviceProvider = serviceProvider;
             LoadMenuAsync();
         }
 
         partial void OnSearchQueryChanged(string value)
-        {
-            FilterMenu();
-        }
-
-        partial void OnSearchByAllergenChanged(bool value)
         {
             FilterMenu();
         }
@@ -63,49 +66,56 @@ namespace Restaurant.ViewModels
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
                 var searchTerm = SearchQuery.ToLower();
-                if (SearchByAllergen)
-                {
-                    // Filter by allergen
-                    filteredCategories = filteredCategories
-                        .Select(c => new Category
-                        {
-                            Id = c.Id,
-                            Name = c.Name,
-                            Description = c.Description,
-                            Products = c.Products.Where(p => 
-                                p.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm))).ToList(),
-                            Menus = c.Menus.Where(m => 
-                                m.MenuProducts.Any(mp => 
-                                    mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm)))).ToList()
-                        })
-                        .Where(c => c.Products.Any() || c.Menus.Any())
-                        .ToList();
-                }
-                else
-                {
-                    // Filter by name/description
-                    filteredCategories = filteredCategories
-                        .Select(c => new Category
-                        {
-                            Id = c.Id,
-                            Name = c.Name,
-                            Description = c.Description,
-                            Products = c.Products.Where(p => 
-                                p.Name.ToLower().Contains(searchTerm) || 
-                                p.Description.ToLower().Contains(searchTerm)).ToList(),
-                            Menus = c.Menus.Where(m => 
-                                m.Name.ToLower().Contains(searchTerm) || 
-                                m.Description.ToLower().Contains(searchTerm)).ToList()
-                        })
-                        .Where(c => c.Products.Any() || c.Menus.Any())
-                        .ToList();
-                }
+                filteredCategories = filteredCategories
+                    .Select(c => new Category
+                    {
+                        Id = c.Id,
+                        Name = c.Name,
+                        Description = c.Description,
+                        Products = c.Products.Where(p => 
+                            p.Name.ToLower().Contains(searchTerm) || 
+                            p.Description.ToLower().Contains(searchTerm)).ToList(),
+                        Menus = c.Menus.Where(m => 
+                            m.Name.ToLower().Contains(searchTerm) || 
+                            m.Description.ToLower().Contains(searchTerm)).ToList()
+                    })
+                    .Where(c => c.Products.Any() || c.Menus.Any())
+                    .ToList();
             }
 
             Categories.Clear();
             foreach (var category in filteredCategories)
             {
                 Categories.Add(category);
+            }
+        }
+
+        public void NavigateToMenu()
+        {
+            ContentTitle = "Menu";
+            if (_serviceProvider != null)
+            {
+                var menuContentView = _serviceProvider.GetRequiredService<MenuContentView>();
+                menuContentView.DataContext = Categories;
+                CurrentContent = menuContentView;
+            }
+        }
+
+        public void NavigateToOrders()
+        {
+            ContentTitle = "My Orders";
+            if (_serviceProvider != null)
+            {
+                CurrentContent = _serviceProvider.GetRequiredService<OrdersView>();
+            }
+        }
+
+        public void NavigateToCart()
+        {
+            ContentTitle = "Shopping Cart";
+            if (_serviceProvider != null)
+            {
+                CurrentContent = _serviceProvider.GetRequiredService<CartView>();
             }
         }
     }
