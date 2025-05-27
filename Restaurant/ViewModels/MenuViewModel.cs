@@ -76,12 +76,19 @@ namespace Restaurant.ViewModels
                         Id = c.Id,
                         Name = c.Name,
                         Description = c.Description,
-                        Products = c.Products.Where(p => 
-                            p.Name.ToLower().Contains(searchTerm) || 
-                            p.Description.ToLower().Contains(searchTerm)).ToList(),
-                        Menus = c.Menus.Where(m => 
-                            m.Name.ToLower().Contains(searchTerm) || 
-                            m.Description.ToLower().Contains(searchTerm)).ToList()
+                        Products = c.Products.Where(p =>
+                            p.Name.ToLower().Contains(searchTerm) ||
+                            p.Description.ToLower().Contains(searchTerm) ||
+                            (p.Allergens != null && p.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm)))
+                        ).ToList(),
+                        Menus = c.Menus.Where(m =>
+                            m.Name.ToLower().Contains(searchTerm) ||
+                            m.Description.ToLower().Contains(searchTerm) ||
+                            (m.MenuProducts != null && m.MenuProducts.Any(mp =>
+                                mp.Product != null && mp.Product.Allergens != null &&
+                                mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm))
+                            ))
+                        ).ToList()
                     })
                     .Where(c => c.Products.Any() || c.Menus.Any())
                     .ToList();
