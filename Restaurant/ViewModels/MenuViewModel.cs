@@ -70,28 +70,64 @@ namespace Restaurant.ViewModels
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
                 var searchTerm = SearchQuery.ToLower();
-                filteredCategories = filteredCategories
-                    .Select(c => new Category
-                    {
-                        Id = c.Id,
-                        Name = c.Name,
-                        Description = c.Description,
-                        Products = c.Products.Where(p =>
-                            p.Name.ToLower().Contains(searchTerm) ||
-                            p.Description.ToLower().Contains(searchTerm) ||
-                            (p.Allergens != null && p.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm)))
-                        ).ToList(),
-                        Menus = c.Menus.Where(m =>
-                            m.Name.ToLower().Contains(searchTerm) ||
-                            m.Description.ToLower().Contains(searchTerm) ||
-                            (m.MenuProducts != null && m.MenuProducts.Any(mp =>
-                                mp.Product != null && mp.Product.Allergens != null &&
-                                mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm))
-                            ))
-                        ).ToList()
-                    })
-                    .Where(c => c.Products.Any() || c.Menus.Any())
-                    .ToList();
+                bool exclude = false;
+                string allergenKeyword = null;
+                if (searchTerm.Contains("nu contine "))
+                {
+                    exclude = true;
+                    allergenKeyword = searchTerm.Split(new[] { "nu contine " }, System.StringSplitOptions.None)[1].Trim();
+                }
+                else if (searchTerm.Contains("contine "))
+                {
+                    allergenKeyword = searchTerm.Split(new[] { "contine " }, System.StringSplitOptions.None)[1].Trim();
+                }
+                if (!string.IsNullOrWhiteSpace(allergenKeyword))
+                {
+                    filteredCategories = filteredCategories
+                        .Select(c => new Category
+                        {
+                            Id = c.Id,
+                            Name = c.Name,
+                            Description = c.Description,
+                            Products = c.Products.Where(p =>
+                                exclude
+                                    ? p.Allergens == null || !p.Allergens.Any(a => a.Name.ToLower().Contains(allergenKeyword))
+                                    : p.Allergens != null && p.Allergens.Any(a => a.Name.ToLower().Contains(allergenKeyword))
+                            ).ToList(),
+                            Menus = c.Menus.Where(m =>
+                                exclude
+                                    ? m.MenuProducts == null || !m.MenuProducts.Any(mp => mp.Product != null && mp.Product.Allergens != null && mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(allergenKeyword)))
+                                    : m.MenuProducts != null && m.MenuProducts.Any(mp => mp.Product != null && mp.Product.Allergens != null && mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(allergenKeyword)))
+                            ).ToList()
+                        })
+                        .Where(c => c.Products.Any() || c.Menus.Any())
+                        .ToList();
+                }
+                else
+                {
+                    filteredCategories = filteredCategories
+                        .Select(c => new Category
+                        {
+                            Id = c.Id,
+                            Name = c.Name,
+                            Description = c.Description,
+                            Products = c.Products.Where(p =>
+                                p.Name.ToLower().Contains(searchTerm) ||
+                                p.Description.ToLower().Contains(searchTerm) ||
+                                (p.Allergens != null && p.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm)))
+                            ).ToList(),
+                            Menus = c.Menus.Where(m =>
+                                m.Name.ToLower().Contains(searchTerm) ||
+                                m.Description.ToLower().Contains(searchTerm) ||
+                                (m.MenuProducts != null && m.MenuProducts.Any(mp =>
+                                    mp.Product != null && mp.Product.Allergens != null &&
+                                    mp.Product.Allergens.Any(a => a.Name.ToLower().Contains(searchTerm))
+                                ))
+                            ).ToList()
+                        })
+                        .Where(c => c.Products.Any() || c.Menus.Any())
+                        .ToList();
+                }
             }
 
             Categories.Clear();
