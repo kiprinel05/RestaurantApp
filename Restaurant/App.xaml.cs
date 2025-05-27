@@ -68,6 +68,7 @@ namespace Restaurant
             services.AddScoped<IAllergenService, AllergenService>();
             services.AddSingleton<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddSingleton<AppSettingsProvider>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
@@ -77,7 +78,8 @@ namespace Restaurant
             services.AddTransient<CartViewModel>(sp => new CartViewModel(
                 sp.GetRequiredService<ICartService>(),
                 sp.GetRequiredService<IOrderService>(),
-                sp.GetRequiredService<IAuthenticationService>()));
+                sp.GetRequiredService<IAuthenticationService>(),
+                sp.GetRequiredService<AppSettingsProvider>()));
             services.AddTransient<MenuListViewModel>();
             services.AddTransient<EmployeeDashboardViewModel>();
             services.AddTransient<CategoryListViewModel>();
