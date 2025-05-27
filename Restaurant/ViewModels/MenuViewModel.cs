@@ -3,10 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Models;
 using Restaurant.Services;
 using Restaurant.Views.Menu;
+using Restaurant.Views.Cart;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Restaurant.ViewModels
 {
@@ -14,6 +16,7 @@ namespace Restaurant.ViewModels
     {
         private readonly IMenuService _menuService;
         private readonly IServiceProvider? _serviceProvider;
+        private readonly ICartService _cartService;
         private List<Category> _allCategories = new();
 
         [ObservableProperty]
@@ -35,6 +38,7 @@ namespace Restaurant.ViewModels
         {
             _menuService = menuService;
             _serviceProvider = serviceProvider;
+            _cartService = serviceProvider?.GetRequiredService<ICartService>();
             LoadMenuAsync();
         }
 
@@ -96,7 +100,7 @@ namespace Restaurant.ViewModels
             if (_serviceProvider != null)
             {
                 var menuContentView = _serviceProvider.GetRequiredService<MenuContentView>();
-                menuContentView.DataContext = Categories;
+                menuContentView.DataContext = this;
                 CurrentContent = menuContentView;
             }
         }
@@ -128,5 +132,14 @@ namespace Restaurant.ViewModels
                 return authService?.IsAuthenticated ?? false;
             }
         }
+
+        public RelayCommand<object> AddToCartCommand => new RelayCommand<object>(item =>
+        {
+            if (_cartService == null || item == null) return;
+            if (item is Product product)
+                _cartService.AddToCart(product);
+            else if (item is Menu menu)
+                _cartService.AddToCart(menu);
+        });
     }
 } 

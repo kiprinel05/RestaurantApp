@@ -1,12 +1,14 @@
 using System.Windows.Controls;
+using Restaurant.ViewModels;
 
-namespace Restaurant.Views.Menu
+namespace Restaurant.Views.Cart
 {
     public partial class CartView : UserControl
     {
-        public CartView()
+        public CartView(CartViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 } 

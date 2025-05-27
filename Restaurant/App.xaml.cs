@@ -66,12 +66,15 @@ namespace Restaurant
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IAllergenService, AllergenService>();
+            services.AddSingleton<ICartService, CartService>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
             services.AddTransient<MenuViewModel>(sp => new MenuViewModel(
                 sp.GetRequiredService<IMenuService>(),
                 sp));
+            services.AddTransient<CartViewModel>(sp => new CartViewModel(
+                sp.GetRequiredService<ICartService>()));
             services.AddTransient<MenuListViewModel>();
             services.AddTransient<EmployeeDashboardViewModel>();
             services.AddTransient<CategoryListViewModel>();
@@ -86,7 +89,8 @@ namespace Restaurant
             services.AddTransient<Restaurant.Views.Menu.MenuView>();
             services.AddTransient<Restaurant.Views.Menu.MenuContentView>();
             services.AddTransient<Restaurant.Views.Menu.OrdersView>();
-            services.AddTransient<Restaurant.Views.Menu.CartView>();
+            services.AddTransient<Restaurant.Views.Cart.CartView>(sp => 
+                new Restaurant.Views.Cart.CartView(sp.GetRequiredService<CartViewModel>()));
             services.AddTransient(sp => new EmployeeDashboardView(sp.GetRequiredService<EmployeeDashboardViewModel>()));
             services.AddTransient(sp => new CategoryListView(sp.GetRequiredService<CategoryListViewModel>()));
             services.AddTransient(sp => new CategoryEditView(sp.GetRequiredService<CategoryEditViewModel>()));
