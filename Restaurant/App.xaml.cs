@@ -67,6 +67,7 @@ namespace Restaurant
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IAllergenService, AllergenService>();
             services.AddSingleton<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
             
             // Register ViewModels
             services.AddTransient<AuthViewModel>();
@@ -74,7 +75,9 @@ namespace Restaurant
                 sp.GetRequiredService<IMenuService>(),
                 sp));
             services.AddTransient<CartViewModel>(sp => new CartViewModel(
-                sp.GetRequiredService<ICartService>()));
+                sp.GetRequiredService<ICartService>(),
+                sp.GetRequiredService<IOrderService>(),
+                sp.GetRequiredService<IAuthenticationService>()));
             services.AddTransient<MenuListViewModel>();
             services.AddTransient<EmployeeDashboardViewModel>();
             services.AddTransient<CategoryListViewModel>();
@@ -83,12 +86,14 @@ namespace Restaurant
             services.AddTransient<ProductListViewModel>();
             services.AddTransient<ProductAddViewModel>();
             services.AddTransient<MenuAddViewModel>();
+            services.AddTransient<OrdersViewModel>();
 
             // Register views with their ViewModels
             services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));
             services.AddTransient<Restaurant.Views.Menu.MenuView>();
             services.AddTransient<Restaurant.Views.Menu.MenuContentView>();
-            services.AddTransient<Restaurant.Views.Menu.OrdersView>();
+            services.AddTransient<Restaurant.Views.Menu.OrdersView>(sp =>
+                new Restaurant.Views.Menu.OrdersView { DataContext = sp.GetRequiredService<OrdersViewModel>() });
             services.AddTransient<Restaurant.Views.Cart.CartView>(sp => 
                 new Restaurant.Views.Cart.CartView(sp.GetRequiredService<CartViewModel>()));
             services.AddTransient(sp => new EmployeeDashboardView(sp.GetRequiredService<EmployeeDashboardViewModel>()));

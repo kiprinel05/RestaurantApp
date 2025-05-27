@@ -147,6 +147,10 @@
               Background="#222"
               Margin="0,0,0,0"
               Height="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding Total, StringFormat='Total: {0:C}'}"
                      Foreground="#FFF"
                      FontWeight="Bold"
@@ -154,6 +158,19 @@
                      VerticalAlignment="Center"
                      HorizontalAlignment="Right"
                      Margin="0,0,40,0"/>
+            <Button Grid.Column="1"
+                    Content="Trimite comanda"
+                    Command="{Binding PlaceOrderCommand}"
+                    IsEnabled="{Binding CanPlaceOrder}"
+                    Width="180" Height="40"
+                    Margin="0,0,30,0"
+                    VerticalAlignment="Center"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="16"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
         </Grid>
     </Grid>
 </UserControl> 

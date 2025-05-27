@@ -3,21 +3,29 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Restaurant.Models;
 using Restaurant.Services;
+using Restaurant.Services.Interfaces;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Restaurant.ViewModels
 {
     public class CartViewModel : ViewModelBase
     {
         private readonly ICartService _cartService;
+        private readonly IOrderService _orderService;
+        private readonly IAuthenticationService _authService;
         private ObservableCollection<CartItem> _cartItems;
         private decimal _total;
+        private bool _isPlacingOrder;
 
-        public CartViewModel(ICartService cartService)
+        public CartViewModel(ICartService cartService, IOrderService orderService, IAuthenticationService authService)
         {
             _cartService = cartService;
+            _orderService = orderService;
+            _authService = authService;
             _cartItems = new ObservableCollection<CartItem>(_cartService.GetCartItems());
             _total = _cartService.GetTotal();
+            PlaceOrderCommand = new AsyncRelayCommand(PlaceOrderAsync, CanPlaceOrder);
         }
 
         public ObservableCollection<CartItem> CartItems
@@ -27,6 +35,7 @@ namespace Restaurant.ViewModels
             {
                 _cartItems = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CanPlaceOrder));
             }
         }
 
@@ -39,6 +48,15 @@ namespace Restaurant.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool IsPlacingOrder
+        {
+            get => _isPlacingOrder;
+            set { _isPlacingOrder = value; OnPropertyChanged(); }
+        }
+
+        public ICommand PlaceOrderCommand { get; }
+        public bool CanPlaceOrder() => CartItems.Count > 0 && !IsPlacingOrder;
 
         public ICommand UpdateQuantityCommand => new RelayCommand<(int cartItemId, int delta)>(
             param =>
@@ -67,6 +85,38 @@ namespace Restaurant.ViewModels
         {
             CartItems = new ObservableCollection<CartItem>(_cartService.GetCartItems());
             Total = _cartService.GetTotal();
+            (PlaceOrderCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        }
+
+        private async Task PlaceOrderAsync()
+        {
+            if (CartItems.Count == 0) return;
+            IsPlacingOrder = true;
+            var user = _authService.GetCurrentUser();
+            var order = new Order
+            {
+                UserId = user.Id,
+                User = user,
+                OrderDate = DateTime.Now,
+                Status = OrderStatus.Registered,
+                SubTotal = Total,
+                DeliveryFee = 0,
+                Discount = 0,
+                Total = Total,
+                OrderItems = CartItems.Select(item => new OrderItem
+                {
+                    Quantity = item.Quantity,
+                    UnitPrice = item.Price,
+                    TotalPrice = item.TotalPrice,
+                    ProductId = item.ProductId,
+                    MenuId = item.MenuId
+                }).ToList()
+            };
+            await _orderService.PlaceOrderAsync(order);
+            _cartService.ClearCart();
+            RefreshCart();
+            IsPlacingOrder = false;
+            // Optionally: show a message to the user
         }
     }
 } 

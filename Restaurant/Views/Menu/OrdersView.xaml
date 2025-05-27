@@ -6,10 +6,104 @@
              xmlns:local="clr-namespace:Restaurant.Views.Menu"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Orders View - Coming Soon"
-                   Style="{StaticResource TitleTextStyle}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
-    </Grid>
+    <UserControl.Resources>
+        <local:OrderCancelableConverter x:Key="OrderCancelableConverter" />
+        <local:StatusToColorConverter x:Key="StatusToColorConverter" />
+        <local:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+        <Style x:Key="OrderCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#232323"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,30"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="#4CAF50"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+        <Style x:Key="OrderStatusBadgeStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="10,2"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CancelOrderButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFE57373"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+        <Style x:Key="OrderItemTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#DDD"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="30">
+            <TextBlock Text="My Orders" FontSize="36" FontWeight="Bold" Foreground="#4CAF50" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+            <ItemsControl ItemsSource="{Binding Orders}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource OrderCardStyle}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                                    <TextBlock Text="Order #" FontWeight="Bold" FontSize="16" Foreground="#AAA"/>
+                                    <TextBlock Text="{Binding OrderCode}" FontWeight="Bold" FontSize="18" Foreground="#FFF" Margin="4,0,20,0"/>
+                                    <Border CornerRadius="8" Padding="10,2" Margin="0,0,10,0" VerticalAlignment="Center">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource StatusToColorConverter}">
+                                                <Binding Path="Status"/>
+                                            </MultiBinding>
+                                        </Border.Background>
+                                        <TextBlock Text="{Binding Status}" Style="{StaticResource OrderStatusBadgeStyle}" Background="Transparent"/>
+                                    </Border>
+                                    <TextBlock Text="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" FontSize="14" Foreground="#BBB" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                                    <Button Content="Anuleaza" Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" IsEnabled="{Binding Status, Converter={StaticResource OrderCancelableConverter}}" Style="{StaticResource CancelOrderButtonStyle}"/>
+                                </StackPanel>
+                                <Separator Margin="0,8,0,8"/>
+                                <StackPanel>
+                                    <TextBlock Text="Produse comandate:" FontWeight="SemiBold" FontSize="15" Foreground="#4CAF50" Margin="0,0,0,8"/>
+                                    <ItemsControl ItemsSource="{Binding OrderItems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="{Binding Product.Name}" Style="{StaticResource OrderItemTextStyle}" Visibility="{Binding Product, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                                    <TextBlock Text="{Binding Menu.Name}" Style="{StaticResource OrderItemTextStyle}" Visibility="{Binding Menu, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                                    <TextBlock Text=" x " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding Quantity}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text=" @ " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding UnitPrice, StringFormat={}{0:C}}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text=" = " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:C}}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl> 
