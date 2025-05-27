@@ -25,7 +25,7 @@ namespace Restaurant.Services
             var hashedPassword = HashPassword(password);
             if (user.PasswordHash != hashedPassword) return null;
 
-            _currentUser = user; // Store the current user
+            _currentUser = user;
             return user;
         }
 

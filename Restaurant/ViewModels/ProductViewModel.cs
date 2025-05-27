@@ -57,5 +57,10 @@ namespace Restaurant.ViewModels
             ImagePaths = new ObservableCollection<string>(
                 product.Images.Select(i => i.ImagePath));
         }
+
+        public string ImagePathForWpf =>
+            (ImagePaths != null && ImagePaths.Count > 0 && !string.IsNullOrEmpty(ImagePaths[0]))
+                ? ImagePaths[0].TrimStart('/')
+                : null;
     }
 } 

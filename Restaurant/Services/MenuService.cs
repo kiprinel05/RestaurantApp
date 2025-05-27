@@ -16,6 +16,31 @@ namespace Restaurant.Services
             _contextFactory = contextFactory;
         }
 
+        private string GetProductImagePath(Product product)
+        {
+            if (!string.IsNullOrEmpty(product.ImagePath))
+            {
+                return product.ImagePath;
+            }
+
+            // Get the category name and format it for the folder name
+            var categoryFolder = product.Category?.Name?.Replace(" ", "_") ?? "Other";
+            var imageName = product.Name.ToLower().Replace(" ", "_");
+            return $"/Images/{categoryFolder}/{imageName}.png";
+        }
+
+        private string GetMenuImagePath(Menu menu)
+        {
+            if (!string.IsNullOrEmpty(menu.ImagePath))
+            {
+                return menu.ImagePath;
+            }
+
+            // For menus, we'll use a default image from the category folder
+            var categoryFolder = menu.Category?.Name?.Replace(" ", "_") ?? "Other";
+            return $"/Images/{categoryFolder}/default-menu.jpg";
+        }
+
         public async Task<List<Category>> GetAllCategoriesWithDetailsAsync()
         {
             using var context = _contextFactory.CreateDbContext();
@@ -29,15 +54,17 @@ namespace Restaurant.Services
                         .ThenInclude(mp => mp.Product)
                 .ToListAsync();
 
-            // Ensure all menus have valid image paths
+            // Set image paths for all products and menus
             foreach (var category in categories)
             {
                 foreach (var menu in category.Menus)
                 {
-                    if (string.IsNullOrEmpty(menu.ImagePath))
-                    {
-                        menu.ImagePath = "/Images/default-menu.jpg";
-                    }
+                    menu.ImagePath = GetMenuImagePath(menu);
+                }
+
+                foreach (var product in category.Products)
+                {
+                    product.ImagePath = GetProductImagePath(product);
                 }
             }
 
@@ -65,13 +92,15 @@ namespace Restaurant.Services
                            m.Description.ToLower().Contains(searchTerm))
                 .ToListAsync();
 
-            // Ensure all menus have valid image paths
+            // Set image paths for matching products and menus
             foreach (var menu in matchingMenus)
             {
-                if (string.IsNullOrEmpty(menu.ImagePath))
-                {
-                    menu.ImagePath = "/Images/default-menu.jpg";
-                }
+                menu.ImagePath = GetMenuImagePath(menu);
+            }
+
+            foreach (var product in matchingProducts)
+            {
+                product.ImagePath = GetProductImagePath(product);
             }
 
             // Combine unique categories that contain either matching products or menus
@@ -91,6 +120,13 @@ namespace Restaurant.Services
                 .Include(m => m.MenuProducts)
                     .ThenInclude(mp => mp.Product)
                 .ToListAsync();
+
+            // Set image paths for all menus
+            foreach (var menu in menus)
+            {
+                menu.ImagePath = GetMenuImagePath(menu);
+            }
+
             return menus;
         }
 

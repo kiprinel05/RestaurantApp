@@ -9,6 +9,100 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Appetizers\bruschete_rosii.png" />
+    <None Remove="Images\Appetizers\salata_boeuf.png" />
+    <None Remove="Images\Appetizers\salata_pui.png" />
+    <None Remove="Images\Appetizers\salata_varza.png" />
+    <None Remove="Images\Beverages\apa.png" />
+    <None Remove="Images\Beverages\cola.png" />
+    <None Remove="Images\Beverages\fanta.png" />
+    <None Remove="Images\Desserts\ecler.png" />
+    <None Remove="Images\Desserts\profiterol.png" />
+    <None Remove="Images\Desserts\tiramisu.png" />
+    <None Remove="Images\Main Courses\cotlet_porc.png" />
+    <None Remove="Images\Main Courses\pastrav_gratar.png" />
+    <None Remove="Images\Main Courses\peste_pane.png" />
+    <None Remove="Images\Main Courses\pui_gratar.png" />
+    <None Remove="Images\Side Dishes\cartofi_prajiti.png" />
+    <None Remove="Images\Side Dishes\orez_legume.png" />
+    <None Remove="Images\Side Dishes\piure_cartof.png" />
+    <None Remove="Images\Soups\ciorba_burta.png" />
+    <None Remove="Images\Soups\ciorba_legume.png" />
+    <None Remove="Images\Soups\ciorba_perisoare.png" />
+    <None Remove="Images\Soups\supa_ciuperci.png" />
+    <None Remove="Images\Soups\supa_pui.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Appetizers\bruschete_rosii.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Appetizers\salata_boeuf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Appetizers\salata_pui.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Appetizers\salata_varza.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Beverages\apa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Beverages\cola.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Beverages\fanta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Desserts\ecler.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Desserts\profiterol.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Desserts\tiramisu.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Main Courses\cotlet_porc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Main Courses\pastrav_gratar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Main Courses\peste_pane.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Main Courses\pui_gratar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Side Dishes\cartofi_prajiti.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Side Dishes\orez_legume.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Side Dishes\piure_cartof.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Soups\ciorba_burta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Soups\ciorba_legume.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Soups\ciorba_perisoare.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Soups\supa_ciuperci.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Soups\supa_pui.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">

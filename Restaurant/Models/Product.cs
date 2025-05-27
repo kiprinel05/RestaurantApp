@@ -25,6 +25,9 @@ namespace Restaurant.Models
         [StringLength(500)]
         public string Description { get; set; } = string.Empty;
 
+        [StringLength(500)]
+        public string ImagePath { get; set; } = string.Empty;
+
         // Foreign key pentru categorie
         [Required]
         public int CategoryId { get; set; }

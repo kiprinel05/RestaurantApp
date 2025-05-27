@@ -22,6 +22,7 @@
             <converters:AvailabilityConverter x:Key="AvailabilityConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converters:ImagePathConverter x:Key="ImagePathConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
