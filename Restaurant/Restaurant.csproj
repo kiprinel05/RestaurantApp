@@ -23,6 +23,10 @@
     <None Remove="Images\Main Courses\pastrav_gratar.png" />
     <None Remove="Images\Main Courses\peste_pane.png" />
     <None Remove="Images\Main Courses\pui_gratar.png" />
+    <None Remove="Images\Menus\meniu_copil.png" />
+    <None Remove="Images\Menus\platou_aperitive.png" />
+    <None Remove="Images\Menus\platou_peste.png" />
+    <None Remove="Images\Menus\platou_taranesc.png" />
     <None Remove="Images\Side Dishes\cartofi_prajiti.png" />
     <None Remove="Images\Side Dishes\orez_legume.png" />
     <None Remove="Images\Side Dishes\piure_cartof.png" />
@@ -74,6 +78,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Main Courses\pui_gratar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Menus\meniu_copil.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Menus\platou_aperitive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Menus\platou_peste.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Menus\platou_taranesc.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Side Dishes\cartofi_prajiti.png">
