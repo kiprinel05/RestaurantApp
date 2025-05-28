@@ -66,5 +66,30 @@ namespace Restaurant.Services
                 .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
         }
+
+        public async Task<List<Order>> GetActiveOrdersAsync(int userId)
+        {
+            using var context = _context;
+            return await context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(i => i.Product)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(i => i.Menu)
+                .Where(o => o.Status != OrderStatus.Delivered && o.Status != OrderStatus.Cancelled && o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+        }
+
+        public async Task<Order> GetOrderByIdAsync(int id)
+        {
+            return await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Menu)
+                .FirstOrDefaultAsync(o => o.Id == id);
+        }
     }
 } 

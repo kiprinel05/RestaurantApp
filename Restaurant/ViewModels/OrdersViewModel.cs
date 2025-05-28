@@ -51,7 +51,13 @@ namespace Restaurant.ViewModels
             {
                 IsLoading = true;
                 ErrorMessage = string.Empty;
-                var orders = await _orderService.GetAllOrdersForAdminAsync();
+                var currentUser = _authService.GetCurrentUser();
+                if (currentUser == null)
+                {
+                    ErrorMessage = "Nu sunteți autentificat.";
+                    return;
+                }
+                var orders = await _orderService.GetActiveOrdersAsync(currentUser.Id);
                 if (ShowActiveOrders)
                 {
                     Orders = new ObservableCollection<OrderCardViewModel>(
