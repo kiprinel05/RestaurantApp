@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Restaurant.Services;
 using Restaurant.Views;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Restaurant.ViewModels
@@ -11,16 +12,20 @@ namespace Restaurant.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authService;
 
-        public ICommand ManageCategoriesCommand { get; }
-        public ICommand ManageProductsCommand { get; }
-        public ICommand ManageMenusCommand { get; }
-        public ICommand ViewOrdersCommand { get; }
-        public ICommand ViewActiveOrdersCommand { get; }
-        public ICommand ViewLowStockCommand { get; }
-        public ICommand LogoutCommand { get; }
-
         [ObservableProperty]
         private string welcomeMessage;
+
+        [ObservableProperty]
+        private UserControl currentView;
+
+        public ICommand NavigateToCategoriesCommand { get; }
+        public ICommand NavigateToProductsCommand { get; }
+        public ICommand NavigateToMenusCommand { get; }
+        public ICommand NavigateToAllergensCommand { get; }
+        public ICommand NavigateToAllOrdersCommand { get; }
+        public ICommand NavigateToActiveOrdersCommand { get; }
+        public ICommand NavigateToLowStockCommand { get; }
+        public ICommand LogoutCommand { get; }
 
         public EmployeeDashboardViewModel(INavigationService navigationService, IAuthenticationService authService)
         {
@@ -28,47 +33,56 @@ namespace Restaurant.ViewModels
             _authService = authService;
 
             // Initialize commands
-            ManageCategoriesCommand = new RelayCommand(ManageCategories);
-            ManageProductsCommand = new RelayCommand(ManageProducts);
-            ManageMenusCommand = new RelayCommand(ManageMenus);
-            ViewOrdersCommand = new RelayCommand(ViewOrders);
-            ViewActiveOrdersCommand = new RelayCommand(ViewActiveOrders);
-            ViewLowStockCommand = new RelayCommand(ViewLowStock);
+            NavigateToCategoriesCommand = new RelayCommand(NavigateToCategories);
+            NavigateToProductsCommand = new RelayCommand(NavigateToProducts);
+            NavigateToMenusCommand = new RelayCommand(NavigateToMenus);
+            NavigateToAllergensCommand = new RelayCommand(NavigateToAllergens);
+            NavigateToAllOrdersCommand = new RelayCommand(NavigateToAllOrders);
+            NavigateToActiveOrdersCommand = new RelayCommand(NavigateToActiveOrders);
+            NavigateToLowStockCommand = new RelayCommand(NavigateToLowStock);
             LogoutCommand = new RelayCommand(Logout);
 
             // Set welcome message
             var currentUser = _authService.GetCurrentUser();
-            WelcomeMessage = $"Welcome, {currentUser?.FirstName} {currentUser?.LastName}!";
+            WelcomeMessage = $"Bine ai venit, {currentUser?.FirstName} {currentUser?.LastName}!";
+
+            // Set default view (to be implemented)
+            CurrentView = new UserControl(); // Placeholder
         }
 
-        private void ManageCategories()
+        private void NavigateToCategories()
         {
-            _navigationService.NavigateToCategoryList();
+            // To be implemented
         }
 
-        private void ManageProducts()
+        private void NavigateToProducts()
         {
-            _navigationService.NavigateToProductList();
+            // To be implemented
         }
 
-        private void ManageMenus()
+        private void NavigateToMenus()
         {
-            _navigationService.NavigateToMenuList();
+            // To be implemented
         }
 
-        private void ViewOrders()
+        private void NavigateToAllergens()
         {
-            // Will implement navigation to orders view
+            // To be implemented
         }
 
-        private void ViewActiveOrders()
+        private void NavigateToAllOrders()
         {
-            // Will implement navigation to active orders view
+            // To be implemented
         }
 
-        private void ViewLowStock()
+        private void NavigateToActiveOrders()
         {
-            // Will implement navigation to low stock items view
+            // To be implemented
+        }
+
+        private void NavigateToLowStock()
+        {
+            // To be implemented
         }
 
         private void Logout()
