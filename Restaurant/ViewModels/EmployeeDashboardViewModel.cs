@@ -65,7 +65,8 @@ namespace Restaurant.ViewModels
 
         private void NavigateToProducts()
         {
-            // To be implemented
+            var viewModel = _serviceProvider.GetRequiredService<ProductListViewModel>();
+            CurrentView = new ProductsView(viewModel);
         }
 
         private void NavigateToMenus()
