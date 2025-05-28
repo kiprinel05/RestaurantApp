@@ -82,6 +82,7 @@ namespace Restaurant
                 sp.GetRequiredService<AppSettingsProvider>()));
             services.AddTransient<MenuListViewModel>();
             services.AddTransient<EmployeeDashboardViewModel>();
+            services.AddTransient<CategoriesViewModel>();
             services.AddTransient<CategoryListViewModel>();
             services.AddTransient<CategoryEditViewModel>();
             services.AddTransient<ProductEditViewModel>();
@@ -99,6 +100,7 @@ namespace Restaurant
             services.AddTransient<Restaurant.Views.Cart.CartView>(sp => 
                 new Restaurant.Views.Cart.CartView(sp.GetRequiredService<CartViewModel>()));
             services.AddTransient(sp => new EmployeeDashboardView(sp.GetRequiredService<EmployeeDashboardViewModel>()));
+            services.AddTransient<Restaurant.Views.Employee.CategoriesView>();
             services.AddTransient(sp => new CategoryListView(sp.GetRequiredService<CategoryListViewModel>()));
             services.AddTransient(sp => new CategoryEditView(sp.GetRequiredService<CategoryEditViewModel>()));
             services.AddTransient(sp => new ProductListView(sp.GetRequiredService<ProductListViewModel>()));

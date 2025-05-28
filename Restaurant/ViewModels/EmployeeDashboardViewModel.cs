@@ -2,8 +2,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Restaurant.Services;
 using Restaurant.Views;
+using Restaurant.Views.Employee;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Restaurant.ViewModels
 {
@@ -11,6 +13,7 @@ namespace Restaurant.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly IAuthenticationService _authService;
+        private readonly IServiceProvider _serviceProvider;
 
         [ObservableProperty]
         private string welcomeMessage;
@@ -27,10 +30,14 @@ namespace Restaurant.ViewModels
         public ICommand NavigateToLowStockCommand { get; }
         public ICommand LogoutCommand { get; }
 
-        public EmployeeDashboardViewModel(INavigationService navigationService, IAuthenticationService authService)
+        public EmployeeDashboardViewModel(
+            INavigationService navigationService, 
+            IAuthenticationService authService,
+            IServiceProvider serviceProvider)
         {
             _navigationService = navigationService;
             _authService = authService;
+            _serviceProvider = serviceProvider;
 
             // Initialize commands
             NavigateToCategoriesCommand = new RelayCommand(NavigateToCategories);
@@ -46,13 +53,14 @@ namespace Restaurant.ViewModels
             var currentUser = _authService.GetCurrentUser();
             WelcomeMessage = $"Bine ai venit, {currentUser?.FirstName} {currentUser?.LastName}!";
 
-            // Set default view (to be implemented)
-            CurrentView = new UserControl(); // Placeholder
+            // Set default view (Categories)
+            NavigateToCategories();
         }
 
         private void NavigateToCategories()
         {
-            // To be implemented
+            var viewModel = _serviceProvider.GetRequiredService<CategoriesViewModel>();
+            CurrentView = new CategoriesView(viewModel);
         }
 
         private void NavigateToProducts()
