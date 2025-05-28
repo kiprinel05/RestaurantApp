@@ -18,13 +18,10 @@ namespace Restaurant.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
-
-        // Foreign Keys
         public int OrderId { get; set; }
         public int? ProductId { get; set; }
         public int? MenuId { get; set; }
 
-        // Navigation Properties
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
 

@@ -37,10 +37,8 @@ namespace Restaurant.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Total { get; set; }
 
-        // Foreign Key
         public int UserId { get; set; }
 
-        // Navigation Properties
         [ForeignKey("UserId")]
         public required User User { get; set; }
 

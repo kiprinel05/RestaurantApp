@@ -24,7 +24,6 @@ namespace Restaurant.Models
         {
             get
             {
-                // logica de calcul in service
                 return BasePrice;
             }
         }
@@ -33,20 +32,16 @@ namespace Restaurant.Models
         { 
             get
             {
-                // un meniu este disponibil daca toate produsele sale sunt disponibile
                 return MenuProducts.All(mp => mp.Product.IsAvailable);
             }
         }
 
-        // Foreign key pentru categorie
         [Required]
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        // many-to-many cu produsele si cantitatile lor specifice pentru acest meniu
         public virtual ICollection<MenuProduct> MenuProducts { get; set; } = new List<MenuProduct>();
 
-        // timpul total de preparare in minute
         public int TotalPrepTime
         {
             get

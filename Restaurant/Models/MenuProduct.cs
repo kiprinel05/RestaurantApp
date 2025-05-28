@@ -17,10 +17,10 @@ namespace Restaurant.Models
         public virtual Product Product { get; set; } = null!;
 
         [Required]
-        public int Quantity { get; set; }  // cantitatea de bucati din acest produs in meniu
+        public int Quantity { get; set; }
 
         [Required]
-        public int MenuSpecificPortionQuantity { get; set; }  // cantitatea in grame specifica pentru acest produs in acest meniu
+        public int MenuSpecificPortionQuantity { get; set; }
 
         [NotMapped]
         public bool IsAvailable

@@ -64,7 +64,7 @@ namespace Restaurant.Services
             }
             else
             {
-                NavigateToMenu(); // For customers and guests
+                NavigateToMenu();
             }
         }
 
@@ -181,7 +181,7 @@ namespace Restaurant.Services
         {
             if (_navigationStack.Count > 1)
             {
-                _navigationStack.Pop(); // Remove current page
+                _navigationStack.Pop();
                 var previousPage = _navigationStack.Peek();
                 _mainWindow.MainFrame.Navigate(previousPage);
             }

@@ -119,14 +119,12 @@ namespace Restaurant.ViewModels
             DeliveryFee = 0;
             var settings = _settingsProvider.GetSettings();
             var user = _authService.GetCurrentUser();
-            // Discount by value
             if (SubTotal >= (decimal)settings.DiscountSettings.DiscountThreshold)
             {
                 Discount = SubTotal * ((decimal)settings.DiscountSettings.DiscountPercent / 100m);
             }
             else
             {
-                // Discount by order count in interval
                 var orders = await _orderService.GetOrdersForUserAsync(user.Id);
                 var interval = TimeSpan.FromDays(settings.DiscountSettings.DiscountOrderIntervalDays);
                 var recentOrders = orders.Where(o => o.OrderDate >= DateTime.Now - interval && o.Status != OrderStatus.Cancelled).ToList();
@@ -135,7 +133,6 @@ namespace Restaurant.ViewModels
                     Discount = SubTotal * ((decimal)settings.DiscountSettings.DiscountPercent / 100m);
                 }
             }
-            // Delivery fee
             if (SubTotal - Discount < (decimal)settings.DeliverySettings.DeliveryThreshold)
             {
                 DeliveryFee = (decimal)settings.DeliverySettings.DeliveryFee;
@@ -172,7 +169,6 @@ namespace Restaurant.ViewModels
             _cartService.ClearCart();
             await RefreshCartAsync();
             IsPlacingOrder = false;
-            // Optionally: show a message to the user
         }
     }
 } 

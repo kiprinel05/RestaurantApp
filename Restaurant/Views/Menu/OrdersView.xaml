@@ -151,7 +151,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <TextBlock Text="Active Orders" FontSize="36" FontWeight="Bold" Foreground="#4CAF50" HorizontalAlignment="Center" Margin="0,30,0,30"/>
             <ItemsControl ItemsSource="{Binding ActiveOrders}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

@@ -27,7 +27,7 @@
                 <ItemsControl ItemsSource="{Binding CartItems}" Margin="40,10,40,10">
                     <!-- ... -->
                 </ItemsControl>
-                <TextBlock Text="Coșul este gol"
+                <TextBlock Text="Cosul este gol"
                            Foreground="#BBB"
                            FontSize="22"
                            FontWeight="SemiBold"

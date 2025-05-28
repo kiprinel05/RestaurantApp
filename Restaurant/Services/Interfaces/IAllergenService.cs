@@ -7,6 +7,5 @@ namespace Restaurant.Services.Interfaces
     public interface IAllergenService
     {
         Task<List<Allergen>> GetAllAllergensAsync();
-        // Poți adăuga aici și alte metode dacă ai nevoie
     }
 } 

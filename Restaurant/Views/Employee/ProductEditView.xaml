@@ -55,7 +55,7 @@
                        Margin="0,0,0,15"/>
 
                 <!-- Price -->
-                <TextBlock Text="Preț" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBlock Text="Pret" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
                 <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"
                        Style="{StaticResource FormTextBoxStyle}"
                        Background="#23272E"
@@ -76,7 +76,7 @@
                           Margin="0,0,0,15"/>
 
                 <!-- Quantity -->
-                <TextBlock Text="Cantitate totală" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBlock Text="Cantitate totala" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
                 <TextBox Text="{Binding TotalQuantity, UpdateSourceTrigger=PropertyChanged}"
                        Style="{StaticResource FormTextBoxStyle}"
                        Background="#23272E"
@@ -107,10 +107,10 @@
 
                 <!-- Buttons -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,24,0,0">
-                    <Button Content="Salvează"
+                    <Button Content="Salveaza"
                             Command="{Binding SaveCommand}"
                             Style="{StaticResource PrimaryButton}"/>
-                    <Button Content="Renunță"
+                    <Button Content="Renunta"
                             Command="{Binding CancelCommand}"
                             Style="{StaticResource SecondaryButton}"
                             Margin="16,0,0,0"/>

@@ -14,7 +14,6 @@ namespace Restaurant.Models
         [StringLength(200)]
         public string Description { get; set; } = string.Empty;
 
-        // Navigation property
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 } 

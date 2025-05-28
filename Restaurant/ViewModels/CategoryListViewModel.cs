@@ -39,7 +39,6 @@ namespace Restaurant.ViewModels
             RefreshCommand = new AsyncRelayCommand(LoadCategoriesAsync);
             BackCommand = new RelayCommand(() => _navigationService.NavigateToMain());
 
-            // Load categories when ViewModel is created
             _ = LoadCategoriesAsync();
         }
 
@@ -109,7 +108,6 @@ namespace Restaurant.ViewModels
             }
         }
 
-        // INavigationAware implementation
         public void OnNavigatedTo(object parameter)
         {
             _ = LoadCategoriesAsync();

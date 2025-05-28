@@ -143,7 +143,6 @@
             </Grid>
         </ScrollViewer>
 
-        <!-- Footer with Total, Discount, Delivery -->
         <Grid Grid.Row="2"
               Background="#222"
               Margin="0,0,0,0"

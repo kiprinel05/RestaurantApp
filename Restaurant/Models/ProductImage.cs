@@ -11,7 +11,6 @@ namespace Restaurant.Models
         [StringLength(500)]
         public string ImagePath { get; set; } = string.Empty;
 
-        // Foreign key pentru produs
         [Required]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; } = null!;

@@ -79,7 +79,6 @@ namespace Restaurant.ViewModels
                 IsLoading = true;
                 ErrorMessage = string.Empty;
 
-                // Check if name is unique
                 var isUnique = await _categoryService.IsCategoryNameUniqueAsync(Name, _categoryId);
                 if (!isUnique)
                 {
@@ -115,7 +114,6 @@ namespace Restaurant.ViewModels
             }
         }
 
-        // INavigationAware implementation
         public void OnNavigatedTo(object parameter)
         {
             if (parameter is int categoryId)
@@ -124,7 +122,6 @@ namespace Restaurant.ViewModels
             }
             else
             {
-                // New category
                 _categoryId = null;
                 Name = string.Empty;
                 Description = string.Empty;

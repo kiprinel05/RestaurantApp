@@ -10,11 +10,11 @@ namespace Restaurant.Models
 
         [Required]
         [Column(TypeName = "decimal(5,2)")]
-        public decimal MenuDiscountPercentage { get; set; } // x% - reducerea pentru meniuri
+        public decimal MenuDiscountPercentage { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal OrderDiscountThreshold { get; set; } // y lei - pragul pentru reducere la comenzi
+        public decimal OrderDiscountThreshold { get; set; }
 
         [Required]
         public int OrderCountForDiscount { get; set; } // z comenzi - numarul de comenzi pentru reducere

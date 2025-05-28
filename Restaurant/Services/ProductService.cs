@@ -46,7 +46,7 @@ namespace Restaurant.Services
             using var context = _contextFactory.CreateDbContext();
             if (await context.Products.AnyAsync(p => p.Name == product.Name))
             {
-                throw new InvalidOperationException("A product with this name already exists.");
+                throw new InvalidOperationException("A product with this name already exists");
             }
 
             context.Products.Add(product);
@@ -69,10 +69,9 @@ namespace Restaurant.Services
 
             if (await context.Products.AnyAsync(p => p.Name == product.Name && p.Id != product.Id))
             {
-                throw new InvalidOperationException("A product with this name already exists.");
+                throw new InvalidOperationException("A product with this name already exists");
             }
 
-            // Update basic properties
             existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
             existingProduct.Price = product.Price;
@@ -95,10 +94,9 @@ namespace Restaurant.Services
 
             if (product == null)
             {
-                throw new InvalidOperationException("Product not found.");
+                throw new InvalidOperationException("Product not found");
             }
 
-            // Delete associated images from disk
             foreach (var image in product.Images)
             {
                 var imagePath = Path.Combine(_imageDirectory, Path.GetFileName(image.ImagePath));
@@ -145,7 +143,7 @@ namespace Restaurant.Services
 
             if (product == null)
             {
-                throw new InvalidOperationException("Product not found.");
+                throw new InvalidOperationException("Product not found");
             }
 
             var allergens = await context.Allergens
@@ -170,20 +168,17 @@ namespace Restaurant.Services
 
             if (product == null)
             {
-                throw new InvalidOperationException("Product not found.");
+                throw new InvalidOperationException("Product not found");
             }
 
-            // Generate unique filename
             var extension = Path.GetExtension(fileName);
             var uniqueFileName = $"{Guid.NewGuid()}{extension}";
             var relativePath = Path.Combine("Images", "Products", uniqueFileName);
             var fullPath = Path.Combine(_imageDirectory, uniqueFileName);
 
-            // Save image to disk
             var imageBytes = Convert.FromBase64String(base64Image);
             await File.WriteAllBytesAsync(fullPath, imageBytes);
 
-            // Save image path to database
             var productImage = new ProductImage
             {
                 ImagePath = relativePath,
@@ -205,23 +200,21 @@ namespace Restaurant.Services
 
             if (product == null)
             {
-                throw new InvalidOperationException("Product not found.");
+                throw new InvalidOperationException("Product not found");
             }
 
             var image = product.Images.FirstOrDefault(i => i.ImagePath == imagePath);
             if (image == null)
             {
-                throw new InvalidOperationException("Image not found.");
+                throw new InvalidOperationException("Image not found");
             }
 
-            // Delete file from disk
             var fullPath = Path.Combine(_imageDirectory, Path.GetFileName(imagePath));
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
             }
 
-            // Remove from database
             product.Images.Remove(image);
             context.ProductImages.Remove(image);
             await context.SaveChangesAsync();
@@ -236,19 +229,16 @@ namespace Restaurant.Services
 
             if (product == null)
             {
-                throw new InvalidOperationException("Product not found.");
+                throw new InvalidOperationException("Product not found");
             }
 
-            // Generate unique filename
             var extension = Path.GetExtension(sourceFilePath);
             var uniqueFileName = $"{Guid.NewGuid()}{extension}";
             var relativePath = Path.Combine("Images", "Products", uniqueFileName);
             var fullPath = Path.Combine(_imageDirectory, uniqueFileName);
 
-            // Copy image to products directory
             File.Copy(sourceFilePath, fullPath, true);
 
-            // Save image path to database
             var productImage = new ProductImage
             {
                 ImagePath = relativePath,
@@ -279,14 +269,12 @@ namespace Restaurant.Services
                 throw new InvalidOperationException("Image not found.");
             }
 
-            // Delete file from disk
             var fullPath = Path.Combine(_imageDirectory, Path.GetFileName(imagePath));
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
             }
 
-            // Remove from database
             product.Images.Remove(image);
             context.ProductImages.Remove(image);
             await context.SaveChangesAsync();

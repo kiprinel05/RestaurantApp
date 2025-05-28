@@ -118,8 +118,8 @@ namespace Restaurant.ViewModels
             if (category == null) return;
 
             var result = MessageBox.Show(
-                "Sigur doriți să ștergeți această categorie?",
-                "Confirmare ștergere",
+                "Sigur doriti sa stergeti aceasta categorie?",
+                "Confirmare stergere",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning);
 
@@ -133,7 +133,7 @@ namespace Restaurant.ViewModels
                 catch (System.Exception ex)
                 {
                     MessageBox.Show(
-                        $"Eroare la ștergerea categoriei: {ex.Message}",
+                        $"Eroare la stergerea categoriei: {ex.Message}",
                         "Eroare",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);

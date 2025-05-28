@@ -81,7 +81,7 @@
                              Style="{StaticResource DashboardSectionHeader}"
                              Margin="0,20,0,15"/>
 
-                    <Button Content="Preparate Aproape Epuizate"
+                    <Button Content="Preparate Epuizate"
                             Command="{Binding NavigateToLowStockCommand}"
                             Style="{StaticResource DashboardButton}"/>
                 </StackPanel>

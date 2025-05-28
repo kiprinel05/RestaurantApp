@@ -22,7 +22,7 @@
                      Style="{StaticResource HeaderText}"/>
 
             <Button Grid.Column="1"
-                    Content="Adaugă Produs"
+                    Content="Adauga Produs"
                     Command="{Binding AddProductCommand}"
                     Style="{StaticResource PrimaryButton}"/>
         </Grid>
@@ -71,7 +71,7 @@
                                                    Foreground="{Binding IsAvailable, Converter={StaticResource BoolToColorConverter}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-                                        <Button Content="Editează"
+                                        <Button Content="Editeaza"
                                                 Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                 CommandParameter="{Binding Id}"
                                                 Style="{StaticResource PrimaryButton}"
@@ -80,7 +80,7 @@
                                                 FontSize="13"
                                                 Padding="8,0"
                                                 Margin="0,0,8,0"/>
-                                        <Button Content="Șterge"
+                                        <Button Content="Sterge"
                                                 Command="{Binding DataContext.DeleteProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                 CommandParameter="{Binding Id}"
                                                 Style="{StaticResource SecondaryButton}"

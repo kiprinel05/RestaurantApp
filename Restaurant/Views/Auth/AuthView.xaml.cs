@@ -14,18 +14,14 @@ namespace Restaurant.Views
             _viewModel = viewModel;
             DataContext = _viewModel;
 
-            // Attach event handlers for PasswordBoxes
             Loaded += (s, e) =>
             {
-                // Ensure we start with login form
                 _viewModel.ShowLogin();
 
-                // Attach password handlers
                 LoginPasswordBox.PasswordChanged += OnLoginPasswordChanged;
                 RegisterPasswordBox.PasswordChanged += OnRegisterPasswordChanged;
                 ConfirmPasswordBox.PasswordChanged += OnConfirmPasswordChanged;
 
-                // Clear passwords when visibility changes
                 _viewModel.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(AuthViewModel.IsLoginVisible))

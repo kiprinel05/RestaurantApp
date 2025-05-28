@@ -96,7 +96,6 @@ namespace Restaurant.ViewModels
                 IsLoading = true;
                 ErrorMessage = string.Empty;
 
-                // Load categories and allergens
                 var categoriesTask = _categoryService.GetAllCategoriesAsync();
                 var allergensTask = _productService.GetAllergensAsync();
 
@@ -110,13 +109,12 @@ namespace Restaurant.ViewModels
                     SelectedCategoryId = Categories.First().Id;
                 }
 
-                // If we have a product ID, load the product
                 if (parameter is int productId)
                 {
                     _existingProduct = await _productService.GetProductByIdAsync(productId);
                     if (_existingProduct == null)
                     {
-                        ErrorMessage = "Product not found.";
+                        ErrorMessage = "Product not found";
                         return;
                     }
 
@@ -146,7 +144,6 @@ namespace Restaurant.ViewModels
 
         public void OnNavigatedFrom()
         {
-            // Cleanup if needed
         }
 
         private async Task SaveAsync()
@@ -158,13 +155,13 @@ namespace Restaurant.ViewModels
 
                 if (string.IsNullOrWhiteSpace(Name))
                 {
-                    ErrorMessage = "Name is required.";
+                    ErrorMessage = "Name is required";
                     return;
                 }
 
                 if (Price <= 0)
                 {
-                    ErrorMessage = "Price must be greater than 0.";
+                    ErrorMessage = "Price must be greater than 0";
                     return;
                 }
 
@@ -219,7 +216,7 @@ namespace Restaurant.ViewModels
         {
             if (_existingProduct == null)
             {
-                ErrorMessage = "Please save the product before adding images.";
+                ErrorMessage = "Please save the product before adding images";
                 return;
             }
 

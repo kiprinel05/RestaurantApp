@@ -7,7 +7,7 @@
              Width="320" Height="Auto" Background="#232323" >
     <Border CornerRadius="12" Background="#232323" Padding="24" BorderBrush="#4CAF50" BorderThickness="2">
         <StackPanel>
-            <TextBlock Text="Selectează statusul comenzii" FontSize="20" FontWeight="Bold" Foreground="#4CAF50" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+            <TextBlock Text="Selecteaza statusul comenzii" FontSize="20" FontWeight="Bold" Foreground="#4CAF50" Margin="0,0,0,20" HorizontalAlignment="Center"/>
             <ItemsControl ItemsSource="{Binding Statuses, ElementName=DialogRoot}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

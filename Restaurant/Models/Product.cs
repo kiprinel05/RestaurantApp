@@ -28,18 +28,15 @@ namespace Restaurant.Models
         [StringLength(500)]
         public string ImagePath { get; set; } = string.Empty;
 
-        // Foreign key pentru categorie
         [Required]
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; } = null!;
 
-        // many-to-many cu alergenii
         public virtual ICollection<Allergen> Allergens { get; set; } = new List<Allergen>();
 
-        // lista de imagini
         public virtual ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
 
         public bool IsAvailable { get; set; }
-        public int PrepTime { get; set; } // Time in minutes
+        public int PrepTime { get; set; } 
     }
 } 

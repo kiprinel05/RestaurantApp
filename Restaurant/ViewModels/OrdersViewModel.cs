@@ -66,7 +66,7 @@ namespace Restaurant.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Eroare la încărcarea comenzilor: {ex.Message}";
+                ErrorMessage = $"Eroare la incarcarea comenzilor: {ex.Message}";
             }
             finally
             {
@@ -76,7 +76,6 @@ namespace Restaurant.ViewModels
 
         private void ViewOrderDetails(int orderId)
         {
-            // Navigare la detalii comandă (de implementat)
         }
 
         private async Task DeleteOrderAsync(int orderId)
@@ -87,12 +86,12 @@ namespace Restaurant.ViewModels
                 ErrorMessage = string.Empty;
                 var user = _authService.GetCurrentUser();
                 await _orderService.CancelOrderAsync(orderId, user.Id);
-                await Task.Delay(200); // scurt delay pentru UX
+                await Task.Delay(200); 
                 LoadOrdersAsync();
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Eroare la ștergerea comenzii: {ex.Message}";
+                ErrorMessage = $"Eroare la stergerea comenzii: {ex.Message}";
             }
             finally
             {

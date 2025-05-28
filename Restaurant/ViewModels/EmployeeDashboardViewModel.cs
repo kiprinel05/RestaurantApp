@@ -41,7 +41,6 @@ namespace Restaurant.ViewModels
             _authService = authService;
             _serviceProvider = serviceProvider;
 
-            // Initialize commands
             NavigateToCategoriesCommand = new RelayCommand(NavigateToCategories);
             NavigateToProductsCommand = new RelayCommand(NavigateToProducts);
             NavigateToMenusCommand = new RelayCommand(NavigateToMenus);
@@ -53,11 +52,10 @@ namespace Restaurant.ViewModels
             NavigateToAddProductCommand = new RelayCommand(NavigateToAddProduct);
             NavigateToEditProductCommand = new RelayCommand<int>(NavigateToEditProduct);
 
-            // Set welcome message
             var currentUser = _authService.GetCurrentUser();
-            WelcomeMessage = $"Bine ai venit, {currentUser?.FirstName} {currentUser?.LastName}!";
+            WelcomeMessage = $"Welcome, {currentUser?.FirstName} {currentUser?.LastName}!";
 
-            // Set default view (Categories)
+            // set default view
             NavigateToCategories();
         }
 
@@ -77,12 +75,12 @@ namespace Restaurant.ViewModels
 
         private void NavigateToMenus()
         {
-            // To be implemented
+            // to be implemented
         }
 
         private void NavigateToAllergens()
         {
-            // To be implemented
+            // to be implemented
         }
 
         private void NavigateToAllOrders()

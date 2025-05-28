@@ -69,7 +69,6 @@ namespace Restaurant.ViewModels
 
         private void SaveMenu()
         {
-            // Implementare salvare meniu
             _navigationService.NavigateToMenuList();
         }
     }

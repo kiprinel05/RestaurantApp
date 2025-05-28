@@ -24,7 +24,6 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private bool isLoginVisible = true;
 
-        // Login properties
         [ObservableProperty]
         private string loginEmail = string.Empty;
 
@@ -34,7 +33,6 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private string loginErrorMessage = string.Empty;
 
-        // Register properties
         [ObservableProperty]
         private string firstName = string.Empty;
 
@@ -152,7 +150,6 @@ namespace Restaurant.ViewModels
 
         private void ContinueAsGuest()
         {
-            // Creează un user Guest și setează-l ca user curent
             var guestUser = new Restaurant.Models.User
             {
                 FirstName = "Guest",

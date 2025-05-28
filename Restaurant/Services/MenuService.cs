@@ -23,7 +23,6 @@ namespace Restaurant.Services
                 return product.ImagePath;
             }
 
-            // Get the category name and format it for the folder name
             var categoryFolder = product.Category?.Name?.Replace(" ", "_") ?? "Other";
             var imageName = product.Name.ToLower().Replace(" ", "_");
             return $"/Images/{categoryFolder}/{imageName}.png";
@@ -36,7 +35,6 @@ namespace Restaurant.Services
                 return menu.ImagePath;
             }
 
-            // For menus, we'll use a default image from the category folder
             var categoryFolder = menu.Category?.Name?.Replace(" ", "_") ?? "Other";
             return $"/Images/{categoryFolder}/default-menu.jpg";
         }
@@ -54,7 +52,6 @@ namespace Restaurant.Services
                         .ThenInclude(mp => mp.Product)
                 .ToListAsync();
 
-            // Set image paths for all products and menus
             foreach (var category in categories)
             {
                 foreach (var menu in category.Menus)
@@ -92,7 +89,6 @@ namespace Restaurant.Services
                            m.Description.ToLower().Contains(searchTerm))
                 .ToListAsync();
 
-            // Set image paths for matching products and menus
             foreach (var menu in matchingMenus)
             {
                 menu.ImagePath = GetMenuImagePath(menu);
@@ -103,7 +99,6 @@ namespace Restaurant.Services
                 product.ImagePath = GetProductImagePath(product);
             }
 
-            // Combine unique categories that contain either matching products or menus
             var categoriesWithProducts = matchingProducts.GroupBy(p => p.Category);
             var categoriesWithMenus = matchingMenus.GroupBy(m => m.Category);
             
@@ -121,7 +116,6 @@ namespace Restaurant.Services
                     .ThenInclude(mp => mp.Product)
                 .ToListAsync();
 
-            // Set image paths for all menus
             foreach (var menu in menus)
             {
                 menu.ImagePath = GetMenuImagePath(menu);
