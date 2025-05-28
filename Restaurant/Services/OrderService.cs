@@ -54,5 +54,17 @@ namespace Restaurant.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<Order>> GetAllOrdersForAdminAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Menu)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
+        }
     }
 } 

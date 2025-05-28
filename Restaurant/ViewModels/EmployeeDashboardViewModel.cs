@@ -29,6 +29,8 @@ namespace Restaurant.ViewModels
         public ICommand NavigateToActiveOrdersCommand { get; }
         public ICommand NavigateToLowStockCommand { get; }
         public ICommand LogoutCommand { get; }
+        public ICommand NavigateToAddProductCommand { get; }
+        public ICommand NavigateToEditProductCommand { get; }
 
         public EmployeeDashboardViewModel(
             INavigationService navigationService, 
@@ -48,6 +50,8 @@ namespace Restaurant.ViewModels
             NavigateToActiveOrdersCommand = new RelayCommand(NavigateToActiveOrders);
             NavigateToLowStockCommand = new RelayCommand(NavigateToLowStock);
             LogoutCommand = new RelayCommand(Logout);
+            NavigateToAddProductCommand = new RelayCommand(NavigateToAddProduct);
+            NavigateToEditProductCommand = new RelayCommand<int>(NavigateToEditProduct);
 
             // Set welcome message
             var currentUser = _authService.GetCurrentUser();
@@ -66,6 +70,8 @@ namespace Restaurant.ViewModels
         private void NavigateToProducts()
         {
             var viewModel = _serviceProvider.GetRequiredService<ProductListViewModel>();
+            viewModel.AddProductCommand = NavigateToAddProductCommand;
+            viewModel.EditProductCommand = NavigateToEditProductCommand;
             CurrentView = new ProductsView(viewModel);
         }
 
@@ -81,7 +87,10 @@ namespace Restaurant.ViewModels
 
         private void NavigateToAllOrders()
         {
-            // To be implemented
+            var viewModel = _serviceProvider.GetRequiredService<OrdersViewModel>();
+            var view = new Restaurant.Views.Menu.OrdersView();
+            view.DataContext = viewModel;
+            CurrentView = view;
         }
 
         private void NavigateToActiveOrders()
@@ -98,6 +107,20 @@ namespace Restaurant.ViewModels
         {
             _authService.Logout();
             _navigationService.NavigateToAuth();
+        }
+
+        private void NavigateToAddProduct()
+        {
+            var viewModel = _serviceProvider.GetRequiredService<ProductEditViewModel>();
+            viewModel.OnNavigatedTo(null);
+            CurrentView = new ProductEditView(viewModel);
+        }
+
+        private void NavigateToEditProduct(int productId)
+        {
+            var viewModel = _serviceProvider.GetRequiredService<ProductEditViewModel>();
+            viewModel.OnNavigatedTo(productId);
+            CurrentView = new ProductEditView(viewModel);
         }
     }
 } 

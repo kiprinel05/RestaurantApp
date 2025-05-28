@@ -1,0 +1,122 @@
+<UserControl x:Class="Restaurant.Views.Employee.ProductEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:helpers="clr-namespace:Restaurant.Views.Employee"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="{Binding Title}"
+                 Style="{StaticResource HeaderText}"
+                 Margin="0,0,0,24"/>
+
+        <!-- Form Card -->
+        <Border Grid.Row="1"
+                Background="{StaticResource SecondaryBackgroundBrush}"
+                CornerRadius="16"
+                Padding="40"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                MinWidth="400"
+                MaxWidth="600">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                <!-- Error Message -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                         Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         Style="{StaticResource FormErrorStyle}"
+                         Margin="0,0,0,20"/>
+
+                <!-- Name -->
+                <TextBlock Text="Nume produs" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,15"/>
+
+                <!-- Description -->
+                <TextBlock Text="Descriere" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormMultilineTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,15"/>
+
+                <!-- Price -->
+                <TextBlock Text="Preț" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,15"/>
+
+                <!-- Category -->
+                <TextBlock Text="Categorie" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <ComboBox ItemsSource="{Binding Categories}"
+                          SelectedValuePath="Id"
+                          DisplayMemberPath="Name"
+                          SelectedValue="{Binding SelectedCategoryId, Mode=TwoWay}"
+                          Style="{StaticResource ComboBoxStyle}"
+                          Background="#23272E"
+                          Foreground="{StaticResource PrimaryTextBrush}"
+                          Margin="0,0,0,15"/>
+
+                <!-- Quantity -->
+                <TextBlock Text="Cantitate totală" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <TextBox Text="{Binding TotalQuantity, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource FormTextBoxStyle}"
+                       Background="#23272E"
+                       Foreground="{StaticResource PrimaryTextBrush}"
+                       CaretBrush="{StaticResource AccentBrush}"
+                       BorderBrush="{StaticResource AccentBrush}"
+                       Margin="0,0,0,15"/>
+
+                <!-- Availability -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                    <CheckBox IsChecked="{Binding IsAvailable}"/>
+                    <TextBlock Text="Disponibil" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{StaticResource PrimaryTextBrush}"/>
+                </StackPanel>
+
+                <!-- Allergens -->
+                <TextBlock Text="Alergeni" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                <ListBox ItemsSource="{Binding Allergens}"
+                         helpers:SelectedItemsHelper.BindableSelectedItems="{Binding SelectedAllergens, Mode=TwoWay}"
+                         DisplayMemberPath="Name"
+                         Style="{StaticResource FormListBoxStyle}"
+                         Height="80"
+                         Margin="0,0,0,20"
+                         Background="#23272E"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         BorderBrush="{StaticResource AccentBrush}"
+                         SelectionMode="Multiple"
+                         />
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,24,0,0">
+                    <Button Content="Salvează"
+                            Command="{Binding SaveCommand}"
+                            Style="{StaticResource PrimaryButton}"/>
+                    <Button Content="Renunță"
+                            Command="{Binding CancelCommand}"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="16,0,0,0"/>
+                </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl> 

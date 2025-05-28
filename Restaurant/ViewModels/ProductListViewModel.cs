@@ -22,8 +22,8 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private string errorMessage = string.Empty;
 
-        public ICommand AddProductCommand { get; }
-        public ICommand EditProductCommand { get; }
+        public ICommand AddProductCommand { get; set; }
+        public ICommand EditProductCommand { get; set; }
         public ICommand DeleteProductCommand { get; }
         public ICommand RefreshCommand { get; }
 

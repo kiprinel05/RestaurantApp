@@ -10,5 +10,6 @@ namespace Restaurant.Services.Interfaces
         Task<List<Order>> GetOrdersForUserAsync(int userId);
         Task<bool> CancelOrderAsync(int orderId, int userId);
         Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status);
+        Task<List<Order>> GetAllOrdersForAdminAsync();
     }
 } 

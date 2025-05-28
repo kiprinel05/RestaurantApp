@@ -79,6 +79,21 @@
                                     </Border>
                                     <TextBlock Text="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" FontSize="14" Foreground="#BBB" Margin="20,0,0,0" VerticalAlignment="Center"/>
                                     <Button Content="Anuleaza" Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Visibility="{Binding Status, Converter={StaticResource OrderCancelVisibilityConverter}}" Style="{StaticResource CancelOrderButtonStyle}"/>
+                                    <Button Content="Edit Status"
+                                            Command="{Binding DataContext.EditOrderStatusCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Id}"
+                                            Background="#2196F3"
+                                            Foreground="White"
+                                            FontWeight="Bold"
+                                            Padding="8,2"
+                                            Margin="10,0,0,0"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            MinWidth="100"
+                                            Height="32"
+                                            SnapsToDevicePixels="True"/>
                                 </StackPanel>
                                 <Separator Margin="0,8,0,8"/>
                                 <StackPanel>
