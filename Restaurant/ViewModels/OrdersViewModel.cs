@@ -130,6 +130,9 @@ namespace Restaurant.ViewModels
         public int Id { get; }
         public string OrderCode { get; }
         public string ClientName { get; }
+        public string Email { get; }
+        public string PhoneNumber { get; }
+        public string DeliveryAddress { get; }
         public DateTime OrderDate { get; }
         public OrderStatus Status { get; }
         public decimal SubTotal { get; }
@@ -143,6 +146,9 @@ namespace Restaurant.ViewModels
             Id = order.Id;
             OrderCode = order.OrderCode;
             ClientName = order.User != null ? $"{order.User.FirstName} {order.User.LastName}" : "-";
+            Email = order.User?.Email ?? "-";
+            PhoneNumber = order.User?.PhoneNumber ?? "-";
+            DeliveryAddress = order.User?.DeliveryAddress ?? "-";
             OrderDate = order.OrderDate;
             Status = order.Status;
             SubTotal = order.SubTotal;

@@ -96,6 +96,13 @@
                                             SnapsToDevicePixels="True"/>
                                 </StackPanel>
                                 <Separator Margin="0,8,0,8"/>
+                                <StackPanel Orientation="Vertical" Margin="0,0,0,8">
+                                    <TextBlock Text="Detalii client:" FontWeight="SemiBold" FontSize="15" Foreground="#4CAF50" Margin="0,0,0,4"/>
+                                    <TextBlock Text="{Binding ClientName}" FontSize="14" Foreground="#FFF"/>
+                                    <TextBlock Text="{Binding Email}" FontSize="14" Foreground="#BBB"/>
+                                    <TextBlock Text="{Binding PhoneNumber}" FontSize="14" Foreground="#BBB"/>
+                                    <TextBlock Text="{Binding DeliveryAddress}" FontSize="14" Foreground="#BBB"/>
+                                </StackPanel>
                                 <StackPanel>
                                     <TextBlock Text="Produse comandate:" FontWeight="SemiBold" FontSize="15" Foreground="#4CAF50" Margin="0,0,0,8"/>
                                     <ItemsControl ItemsSource="{Binding OrderItems}">
