@@ -22,6 +22,10 @@ namespace Restaurant.ViewModels
         [ObservableProperty]
         private ObservableCollection<OrderCardViewModel> orders = new();
         [ObservableProperty]
+        private ObservableCollection<OrderCardViewModel> activeOrders = new();
+        [ObservableProperty]
+        private bool showActiveOrders;
+        [ObservableProperty]
         private bool isLoading;
         [ObservableProperty]
         private string errorMessage = string.Empty;
@@ -48,8 +52,17 @@ namespace Restaurant.ViewModels
                 IsLoading = true;
                 ErrorMessage = string.Empty;
                 var orders = await _orderService.GetAllOrdersForAdminAsync();
-                Orders = new ObservableCollection<OrderCardViewModel>(
-                    orders.Select(o => new OrderCardViewModel(o)));
+                if (ShowActiveOrders)
+                {
+                    Orders = new ObservableCollection<OrderCardViewModel>(
+                        orders.Where(o => o.Status != OrderStatus.Cancelled && o.Status != OrderStatus.Delivered)
+                              .Select(o => new OrderCardViewModel(o)));
+                }
+                else
+                {
+                    Orders = new ObservableCollection<OrderCardViewModel>(
+                        orders.Select(o => new OrderCardViewModel(o)));
+                }
             }
             catch (Exception ex)
             {

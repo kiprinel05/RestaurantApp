@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Restaurant.Data;
 using Restaurant.Services;
 using Restaurant.Services.Interfaces;
@@ -55,6 +57,11 @@ namespace Restaurant
 
         private void ConfigureServices(ServiceCollection services)
         {
+            // Configurare IConfiguration
+            services.AddSingleton<IConfiguration>(sp => new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build());
+
             // Database configuration
             services.AddDbContextFactory<RestaurantDbContext>(options =>
                 options.UseSqlServer(
@@ -90,6 +97,7 @@ namespace Restaurant
             services.AddTransient<ProductAddViewModel>();
             services.AddTransient<MenuAddViewModel>();
             services.AddTransient<OrdersViewModel>();
+            services.AddTransient<LowStockViewModel>();
 
             // Register views with their ViewModels
             services.AddTransient(sp => new AuthView(sp.GetRequiredService<AuthViewModel>()));

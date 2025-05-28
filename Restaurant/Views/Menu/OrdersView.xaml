@@ -151,6 +151,97 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            <TextBlock Text="Active Orders" FontSize="36" FontWeight="Bold" Foreground="#4CAF50" HorizontalAlignment="Center" Margin="0,30,0,30"/>
+            <ItemsControl ItemsSource="{Binding ActiveOrders}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource OrderCardStyle}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                                    <TextBlock Text="Order #" FontWeight="Bold" FontSize="16" Foreground="#AAA"/>
+                                    <TextBlock Text="{Binding OrderCode}" FontWeight="Bold" FontSize="18" Foreground="#FFF" Margin="4,0,20,0"/>
+                                    <Border CornerRadius="8" Padding="10,2" Margin="0,0,10,0" VerticalAlignment="Center">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource StatusToColorConverter}">
+                                                <Binding Path="Status"/>
+                                            </MultiBinding>
+                                        </Border.Background>
+                                        <TextBlock Text="{Binding Status}" Style="{StaticResource OrderStatusBadgeStyle}" Background="Transparent"/>
+                                    </Border>
+                                    <TextBlock Text="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" FontSize="14" Foreground="#BBB" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                                    <Button Content="Anuleaza" Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Visibility="{Binding Status, Converter={StaticResource OrderCancelVisibilityConverter}}" Style="{StaticResource CancelOrderButtonStyle}"/>
+                                    <Button Content="Edit Status"
+                                            Command="{Binding DataContext.EditOrderStatusCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Id}"
+                                            Background="#2196F3"
+                                            Foreground="White"
+                                            FontWeight="Bold"
+                                            Padding="8,2"
+                                            Margin="10,0,0,0"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            MinWidth="100"
+                                            Height="32"
+                                            SnapsToDevicePixels="True"/>
+                                </StackPanel>
+                                <Separator Margin="0,8,0,8"/>
+                                <StackPanel Orientation="Vertical" Margin="0,0,0,8">
+                                    <TextBlock Text="Detalii client:" FontWeight="SemiBold" FontSize="15" Foreground="#4CAF50" Margin="0,0,0,4"/>
+                                    <TextBlock Text="{Binding ClientName}" FontSize="14" Foreground="#FFF"/>
+                                    <TextBlock Text="{Binding Email}" FontSize="14" Foreground="#BBB"/>
+                                    <TextBlock Text="{Binding PhoneNumber}" FontSize="14" Foreground="#BBB"/>
+                                    <TextBlock Text="{Binding DeliveryAddress}" FontSize="14" Foreground="#BBB"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Produse comandate:" FontWeight="SemiBold" FontSize="15" Foreground="#4CAF50" Margin="0,0,0,8"/>
+                                    <ItemsControl ItemsSource="{Binding OrderItems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                    <TextBlock Text="{Binding Product.Name}" Style="{StaticResource OrderItemTextStyle}" Visibility="{Binding Product, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                                    <TextBlock Text="{Binding Menu.Name}" Style="{StaticResource OrderItemTextStyle}" Visibility="{Binding Menu, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                                    <TextBlock Text=" x " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding Quantity}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text=" @ " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding UnitPrice, StringFormat={}{0:C}}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text=" = " Style="{StaticResource OrderItemTextStyle}"/>
+                                                    <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:C}}" Style="{StaticResource OrderItemTextStyle}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                                <StackPanel Margin="0,16,0,0">
+                                    <TextBlock Text="{Binding SubTotal, StringFormat='Subtotal: {0:C}'}"
+                                               Foreground="#BBB"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"/>
+                                    <TextBlock Text="{Binding Discount, StringFormat='Discount: -{0:C}'}"
+                                               Foreground="#4CAF50"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"
+                                               Visibility="{Binding Discount, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                    <TextBlock Text="{Binding DeliveryFee, StringFormat='Transport: +{0:C}'}"
+                                               Foreground="#E57373"
+                                               FontWeight="SemiBold"
+                                               FontSize="15"
+                                               Margin="0,0,0,2"
+                                               Visibility="{Binding DeliveryFee, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                    <TextBlock Text="{Binding Total, StringFormat='Total: {0:C}'}"
+                                               Foreground="#FFF"
+                                               FontWeight="Bold"
+                                               FontSize="18"
+                                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </ScrollViewer>
 </UserControl> 

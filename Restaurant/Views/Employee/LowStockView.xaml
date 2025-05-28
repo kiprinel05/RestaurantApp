@@ -1,0 +1,39 @@
+<UserControl x:Class="Restaurant.Views.Employee.LowStockView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="clr-namespace:Restaurant.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance Type=vm:LowStockViewModel}"
+      Background="{StaticResource PrimaryBackgroundBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Preparate Aproape Epuizate" FontSize="24" FontWeight="Bold" Foreground="#4CAF50" Margin="0,0,0,20"/>
+
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding LowStockItems}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#232323" CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" FontSize="18" FontWeight="SemiBold" Foreground="#FFF"/>
+                            <TextBlock Text="{Binding Quantity, StringFormat='Cantitate: {0}'}" FontSize="16" Foreground="#BBB"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <TextBlock Grid.Row="1" Text="Nu există preparate aproape epuizate." FontSize="18" Foreground="#BBB" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding LowStockItems.Count, Converter={StaticResource CountToVisibilityConverter}}"/>
+    </Grid>
+</UserControl> 

@@ -95,12 +95,18 @@ namespace Restaurant.ViewModels
 
         private void NavigateToActiveOrders()
         {
-            // To be implemented
+            var viewModel = _serviceProvider.GetRequiredService<OrdersViewModel>();
+            viewModel.ShowActiveOrders = true;
+            var view = new Restaurant.Views.Menu.OrdersView();
+            view.DataContext = viewModel;
+            CurrentView = view;
         }
 
         private void NavigateToLowStock()
         {
-            // To be implemented
+            var viewModel = _serviceProvider.GetRequiredService<LowStockViewModel>();
+            CurrentView = new LowStockView();
+            CurrentView.DataContext = viewModel;
         }
 
         private void Logout()
