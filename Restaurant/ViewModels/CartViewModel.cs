@@ -42,7 +42,7 @@ namespace Restaurant.ViewModels
             {
                 _cartItems = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CanPlaceOrder));
+                OnPropertyChanged(nameof(HasItems));
             }
         }
 
@@ -107,6 +107,8 @@ namespace Restaurant.ViewModels
                 _cartService.RemoveFromCart(cartItemId);
                 _ = RefreshCartAsync();
             });
+
+        public bool HasItems => CartItems.Count > 0;
 
         private async Task RefreshCartAsync()
         {

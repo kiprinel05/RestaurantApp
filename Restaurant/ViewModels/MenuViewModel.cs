@@ -18,6 +18,7 @@ namespace Restaurant.ViewModels
         private readonly IServiceProvider? _serviceProvider;
         private readonly ICartService _cartService;
         private List<Category> _allCategories = new();
+        private string _currentPage = "Menu";
 
         [ObservableProperty]
         private bool isLoading;
@@ -33,6 +34,12 @@ namespace Restaurant.ViewModels
 
         [ObservableProperty]
         private ObservableCollection<Category> categories = new();
+
+        public string CurrentPage
+        {
+            get => _currentPage;
+            set => SetProperty(ref _currentPage, value);
+        }
 
         public MenuViewModel(IMenuService menuService, IServiceProvider? serviceProvider = null)
         {
@@ -140,6 +147,7 @@ namespace Restaurant.ViewModels
         public void NavigateToMenu()
         {
             ContentTitle = "Menu";
+            CurrentPage = "Menu";
             if (_serviceProvider != null)
             {
                 var menuContentView = _serviceProvider.GetRequiredService<MenuContentView>();
@@ -151,6 +159,7 @@ namespace Restaurant.ViewModels
         public void NavigateToOrders()
         {
             ContentTitle = "My Orders";
+            CurrentPage = "Orders";
             if (_serviceProvider != null)
             {
                 CurrentContent = _serviceProvider.GetRequiredService<OrdersView>();
@@ -160,6 +169,7 @@ namespace Restaurant.ViewModels
         public void NavigateToCart()
         {
             ContentTitle = "Shopping Cart";
+            CurrentPage = "Cart";
             if (_serviceProvider != null)
             {
                 CurrentContent = _serviceProvider.GetRequiredService<CartView>();

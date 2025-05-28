@@ -101,21 +101,54 @@
                             HorizontalAlignment="Left"
                             Margin="20,0,0,0">
                     <Button x:Name="MenuButton"
-                            Style="{StaticResource NavigationButtonStyle}"
                             Content="Menu"
                             Margin="0,0,20,0"
-                            Click="MenuButton_Click"/>
+                            Click="MenuButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource NavigationButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="Menu">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Foreground" Value="#4CAF50"/>
+                                        <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                     <Button x:Name="MyOrdersButton"
-                            Style="{StaticResource NavigationButtonStyle}"
                             Content="My Orders"
                             Margin="0,0,20,0"
                             Click="MyOrdersButton_Click"
-                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource NavigationButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="Orders">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Foreground" Value="#4CAF50"/>
+                                        <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                     <Button x:Name="CartButton"
-                            Style="{StaticResource NavigationButtonStyle}"
                             Content="Cart"
                             Click="CartButton_Click"
-                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding IsAuthenticated, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource NavigationButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="Cart">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Foreground" Value="#4CAF50"/>
+                                        <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
 
                 <!-- Search Bar -->
@@ -134,6 +167,7 @@
                         <TextBlock Grid.Column="0"
                                  Text="🔍"
                                  FontSize="16"
+                                 Foreground="White"
                                  VerticalAlignment="Center"
                                  Margin="15,0,0,0"/>
                         

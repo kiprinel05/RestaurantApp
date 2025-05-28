@@ -54,8 +54,7 @@ namespace Restaurant.ViewModels
             var result = await _orderService.CancelOrderAsync(order.Id, user.Id);
             if (result)
             {
-                order.Status = OrderStatus.Cancelled;
-                OnPropertyChanged(nameof(Orders));
+                await LoadOrdersAsync();
             }
         }
     }

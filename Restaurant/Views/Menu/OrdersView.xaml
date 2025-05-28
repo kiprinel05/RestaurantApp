@@ -8,6 +8,7 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <local:OrderCancelableConverter x:Key="OrderCancelableConverter" />
+        <local:OrderCancelVisibilityConverter x:Key="OrderCancelVisibilityConverter" />
         <local:StatusToColorConverter x:Key="StatusToColorConverter" />
         <local:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
         <Style x:Key="OrderCardStyle" TargetType="Border">
@@ -77,7 +78,7 @@
                                         <TextBlock Text="{Binding Status}" Style="{StaticResource OrderStatusBadgeStyle}" Background="Transparent"/>
                                     </Border>
                                     <TextBlock Text="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" FontSize="14" Foreground="#BBB" Margin="20,0,0,0" VerticalAlignment="Center"/>
-                                    <Button Content="Anuleaza" Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" IsEnabled="{Binding Status, Converter={StaticResource OrderCancelableConverter}}" Style="{StaticResource CancelOrderButtonStyle}"/>
+                                    <Button Content="Anuleaza" Command="{Binding DataContext.CancelOrderCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" Visibility="{Binding Status, Converter={StaticResource OrderCancelVisibilityConverter}}" Style="{StaticResource CancelOrderButtonStyle}"/>
                                 </StackPanel>
                                 <Separator Margin="0,8,0,8"/>
                                 <StackPanel>

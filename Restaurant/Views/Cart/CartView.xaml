@@ -54,100 +54,101 @@
                  Margin="20"/>
 
         <!-- Cart Items -->
-        <ScrollViewer Grid.Row="1" 
-                     VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding CartItems}"
-                        Margin="40,10,40,10">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,0,0,30">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <ItemsControl ItemsSource="{Binding CartItems}" Margin="40,10,40,10">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <!-- Item Image -->
-                            <Border Grid.Column="0"
-                                    Background="{StaticResource SecondaryBackgroundBrush}"
-                                    CornerRadius="8"
-                                    Height="100">
-                                <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
-                                       Stretch="UniformToFill"/>
-                            </Border>
-
-                            <!-- Item Info -->
-                            <StackPanel Grid.Column="1"
-                                      Margin="20,0"
-                                      VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Name}"
-                                         Style="{StaticResource ProductNameStyle}"/>
-                                <TextBlock Text="{Binding Price, StringFormat='{}{0:C}'}"
-                                         Style="{StaticResource ProductPriceStyle}"
-                                         Margin="0,5,0,0"/>
-                            </StackPanel>
-
-                            <!-- Quantity Controls -->
-                            <StackPanel Grid.Column="2"
-                                      Orientation="Horizontal"
-                                      VerticalAlignment="Center"
-                                      Margin="0,0,10,0">
-                                <Button Content="-"
-                                        Width="32" Height="32"
-                                        Background="#FFE57373"
-                                        Foreground="White"
-                                        FontWeight="Bold"
-                                        FontSize="18"
-                                        BorderThickness="0"
-                                        Margin="0,0,5,0"
-                                        Cursor="Hand"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding DataContext.UpdateQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding Id, ConverterParameter=-1, Converter={x:Static local:TupleParameterConverter.Instance}}"
-                                        Style="{x:Null}"/>
-                                <Border Background="#222" CornerRadius="8" Padding="12,4" Margin="0,0,5,0" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Quantity}"
-                                             Foreground="White"
-                                             FontWeight="Bold"
-                                             FontSize="16"
-                                             TextAlignment="Center"
-                                             VerticalAlignment="Center"/>
+                                <!-- Item Image -->
+                                <Border Grid.Column="0"
+                                        Background="{StaticResource SecondaryBackgroundBrush}"
+                                        CornerRadius="8"
+                                        Height="100">
+                                    <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                           Stretch="UniformToFill"/>
                                 </Border>
-                                <Button Content="+"
-                                        Width="32" Height="32"
-                                        Background="#4CAF50"
-                                        Foreground="White"
-                                        FontWeight="Bold"
-                                        FontSize="18"
-                                        BorderThickness="0"
-                                        Cursor="Hand"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding DataContext.UpdateQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                        CommandParameter="{Binding Id, ConverterParameter=1, Converter={x:Static local:TupleParameterConverter.Instance}}"
-                                        Style="{x:Null}"/>
-                            </StackPanel>
 
-                            <!-- Remove Button -->
-                            <Button Grid.Column="3"
-                                    Content="Remove"
-                                    Style="{StaticResource RemoveButtonStyle}"
-                                    Command="{Binding DataContext.RemoveItemCommand, 
-                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding Id}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                <!-- Item Info -->
+                                <StackPanel Grid.Column="1"
+                                          Margin="20,0"
+                                          VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}"
+                                             Style="{StaticResource ProductNameStyle}"/>
+                                    <TextBlock Text="{Binding Price, StringFormat='{}{0:C}'}"
+                                             Style="{StaticResource ProductPriceStyle}"
+                                             Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- Quantity Controls -->
+                                <StackPanel Grid.Column="2"
+                                          Orientation="Horizontal"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,10,0">
+                                    <Button Content="-"
+                                            Width="32" Height="32"
+                                            Background="#FFE57373"
+                                            Foreground="White"
+                                            FontWeight="Bold"
+                                            FontSize="18"
+                                            BorderThickness="0"
+                                            Margin="0,0,5,0"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.UpdateQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Id, ConverterParameter=-1, Converter={x:Static local:TupleParameterConverter.Instance}}"
+                                            Style="{x:Null}"/>
+                                    <Border Background="#222" CornerRadius="8" Padding="12,4" Margin="0,0,5,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Quantity}"
+                                                 Foreground="White"
+                                                 FontWeight="Bold"
+                                                 FontSize="16"
+                                                 TextAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Button Content="+"
+                                            Width="32" Height="32"
+                                            Background="#4CAF50"
+                                            Foreground="White"
+                                            FontWeight="Bold"
+                                            FontSize="18"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.UpdateQuantityCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding Id, ConverterParameter=1, Converter={x:Static local:TupleParameterConverter.Instance}}"
+                                            Style="{x:Null}"/>
+                                </StackPanel>
+
+                                <!-- Remove Button -->
+                                <Button Grid.Column="3"
+                                        Content="Remove"
+                                        Style="{StaticResource RemoveButtonStyle}"
+                                        Command="{Binding DataContext.RemoveItemCommand, 
+                                                  RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                        CommandParameter="{Binding Id}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </ScrollViewer>
 
         <!-- Footer with Total, Discount, Delivery -->
         <Grid Grid.Row="2"
               Background="#222"
               Margin="0,0,0,0"
-              Height="110">
+              Height="110"
+              Visibility="{Binding HasItems, Converter={StaticResource NullToCollapsedConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -179,7 +180,7 @@
             <Button Grid.Column="1"
                     Content="Trimite comanda"
                     Command="{Binding PlaceOrderCommand}"
-                    IsEnabled="{Binding CanPlaceOrder}"
+                    IsEnabled="{Binding HasItems}"
                     Width="180" Height="40"
                     Margin="0,0,30,0"
                     VerticalAlignment="Center"
